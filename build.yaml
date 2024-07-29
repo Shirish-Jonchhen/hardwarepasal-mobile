@@ -1,0 +1,4 @@
+global_options:
+  auto_route_generator:autoRouteGenerator:
+    runs_before:
+      - injectable_generator:injectable_builder
