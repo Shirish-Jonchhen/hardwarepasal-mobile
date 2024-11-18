@@ -36,6 +36,8 @@ import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/wis
 
 import '../../feature/auth/presentation/cubit/logout/logout_cubit.dart';
 import '../../feature/auth/presentation/cubit/register/register_cubit.dart';
+import '../../feature/free_delivery_screen/prasentation/cubit/free_delivery_cubit.dart';
+import '../../feature/hot_deals_screen/presentation/cubit/hot_deals_cubit.dart';
 import '../../feature/search_screen/presentation/cubit/search_history_cubit.dart';
 
 class App extends StatelessWidget {
@@ -145,6 +147,8 @@ class App extends StatelessWidget {
             BlocProvider(create: (context) => getIt<ItemDetailsCubit>(),),
             BlocProvider(create: (context) => getIt<QuotationEmailCubit>(),),
             BlocProvider(create: (context) => getIt<NewArrivalsCubit>(),),
+            BlocProvider(create: (context) => getIt<FreeDeliveryCubit>(),),
+            BlocProvider(create: (context) => getIt<HotDealsCubit>(),),
 
 
           ],

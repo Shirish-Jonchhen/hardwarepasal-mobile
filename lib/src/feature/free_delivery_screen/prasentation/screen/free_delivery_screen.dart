@@ -14,20 +14,22 @@ import '../../../../core/themes/app_styles.dart';
 import '../../../../core/widgets/app_item_card.dart';
 import '../../../../core/widgets/app_texts.dart';
 import '../../../search_screen/presentation/screen/search_area_screen.dart';
+import '../cubit/free_delivery_cubit.dart';
 
-class NewArrivalsScreenPage extends StatefulWidget {
-  const NewArrivalsScreenPage({super.key});
+class FreeDeliveryScreenPage extends StatefulWidget {
+  const FreeDeliveryScreenPage({super.key});
 
   @override
-  State<NewArrivalsScreenPage> createState() => _NewArrivalsScreenPageState();
+  State<FreeDeliveryScreenPage> createState() => _FreeDeliveryScreenPageState();
 }
 
-class _NewArrivalsScreenPageState extends State<NewArrivalsScreenPage> {
+class _FreeDeliveryScreenPageState extends State<FreeDeliveryScreenPage> {
   bool isGrid = true;
 
   @override
   void initState() {
-    context.read<NewArrivalsCubit>().getNewArrivals(1);
+    context.read<FreeDeliveryCubit>().getFreeDelivery(1);
+    print("K vaio k vaio");
     super.initState();
   }
 
@@ -45,7 +47,7 @@ class _NewArrivalsScreenPageState extends State<NewArrivalsScreenPage> {
           // mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Texts(
-              texts: 'New Arrivals',
+              texts: 'Free Delivery',
               textStyle: AppStyles.text18PxRegular,
             ),
             const Spacer(),
@@ -76,7 +78,7 @@ class _NewArrivalsScreenPageState extends State<NewArrivalsScreenPage> {
           ],
         ),
       ),
-      body: BlocConsumer<NewArrivalsCubit, NewArrivalsState>(
+      body: BlocConsumer<FreeDeliveryCubit, FreeDeliveryState>(
         listener: (context, state) {
           state.maybeMap(
             orElse: () {},
@@ -92,7 +94,7 @@ class _NewArrivalsScreenPageState extends State<NewArrivalsScreenPage> {
         builder: (context, state) {
           return state.maybeWhen(
             initial: () {
-              context.read<NewArrivalsCubit>().getNewArrivals(1);
+              context.read<FreeDeliveryCubit>().getFreeDelivery(1);
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -130,7 +132,7 @@ class _NewArrivalsScreenPageState extends State<NewArrivalsScreenPage> {
                       Row(
                         children: [
                           Texts(
-                            texts: "New Arrivals",
+                            texts: "Free Delivery",
                             textStyle: AppStyles.text14PxMedium.copyWith(
                               color: AppColor.black,
                             ),
@@ -173,7 +175,6 @@ class _NewArrivalsScreenPageState extends State<NewArrivalsScreenPage> {
                       SizedBox(
                         height: 0.024 * scHeight,
                       ),
-
                       if(products.isEmpty)
                         const Center(child: Text("No Products Found"),)
                       else

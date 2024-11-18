@@ -29,6 +29,8 @@ import 'package:hardwarepasal/src/feature/checkout/presentation/screen/checkout_
 import 'package:hardwarepasal/src/feature/home_screen/presentation/screen/home_screen.dart';
 import 'package:hardwarepasal/src/feature/profile_screen/presntation/screen/profile_screen.dart';
 
+import '../../feature/free_delivery_screen/prasentation/screen/free_delivery_screen.dart';
+import '../../feature/hot_deals_screen/presentation/screen/hot_deals_screen.dart';
 import '../../feature/my_orders_screen/presentation/screen/my_orders_screen.dart';
 import '../../feature/item_detail_screen/presentation/screen/item_detail_screen.dart';
 import '../../feature/new_arrivals_screen/presentation/screen/new_arrivals_screen.dart';
@@ -67,6 +69,8 @@ export 'app_router.gr.dart';
     AutoRoute<void>(page: FeaturedProductsScreenPage),
     AutoRoute<void>(page: SimilarProductsScreenPage),
     AutoRoute<void>(page: NewArrivalsScreenPage),
+    AutoRoute<void>(page: FreeDeliveryScreenPage),
+    AutoRoute<void>(page: HotDealsScreenPage),
     AutoRoute<void>(
       page: BottomNavigationPage,
       children: [

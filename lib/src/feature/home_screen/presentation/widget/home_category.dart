@@ -17,6 +17,7 @@ class HomeCategory extends StatelessWidget {
       'color': Colors.greenAccent,
       'url': 'https://hardwarepasal.com/express',
       'route': null,
+      'route': const FreeDeliveryScreenRoute(),
     },
     {
       'name': 'Hot Deals',
@@ -24,6 +25,7 @@ class HomeCategory extends StatelessWidget {
       'color': Colors.redAccent,
       'url': 'https://hardwarepasal.com/product?hotdeals=1',
     'route': null,
+      'route': const HotDealsScreenRoute(),
 
 
     },
@@ -80,10 +82,15 @@ class HomeCategory extends StatelessWidget {
         if(route != null){
           context.router.push(route);
         }
+        else{
+          // if (await canLaunchUrl(Uri.parse(url))) {
+            await launchUrl(Uri.parse(url));
+          // } else {
+          //   throw 'Could not launch $url';
+          // }
+        }
         print("Hello world there there");
-        // if(await canLaunchUrl(Uri.parse(url))){
-        //   await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-        // }
+
       },
       child: Container(
         decoration: BoxDecoration(
