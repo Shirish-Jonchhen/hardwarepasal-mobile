@@ -350,13 +350,16 @@ class AppReviewSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Texts(
-                  texts: "View All",
+                  texts: reviews.isEmpty?"No Reviews": "View All",
                   textStyle: AppStyles.text12PxRegular
-                      .copyWith(color: AppColor.appColor),
+                      .copyWith(color: reviews.isEmpty? AppColor.errorColor :AppColor.appColor),
                 ),
+
+                if(reviews.isNotEmpty)
                 SizedBox(
                   width: 0.01 * scWidth,
                 ),
+                if(reviews.isNotEmpty)
                 Icon(
                   Icons.arrow_forward_ios,
                   color: AppColor.appColor,

@@ -4,6 +4,7 @@ import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/themes/app_styles.dart';
+import 'package:hardwarepasal/src/feature/category_level_3_screen/presentation/cubit/category_wise_products_cubit.dart';
 
 import '../../core/helpers/assets_helper.dart';
 import '../../core/themes/app_colors.dart';
@@ -12,8 +13,9 @@ import '../../feature/item_detail_screen/presentation/screen/item_detail_screen.
 import '../../feature/search_screen/presentation/cubit/search_cubit.dart';
 
 class SearchFilterScreenPage extends StatefulWidget {
-  const SearchFilterScreenPage({super.key, required this.searchText});
+  const SearchFilterScreenPage({super.key, required this.searchText, this.fromCategoryLevel3 = false});
   final String searchText;
+  final bool fromCategoryLevel3;
 
   @override
   State<SearchFilterScreenPage> createState() => _SearchFilterScreenPageState();
@@ -129,15 +131,27 @@ class _SearchFilterScreenPageState extends State<SearchFilterScreenPage> {
                 scHeight: scHeight,
                 title: "Apply filter",
                 onTap: () {
-                  context.read<SearchCubit>().filterProducts(
-                        searchText: widget.searchText,
-                        sortBy: 0,
-                        lowRange: minPriceController.text.trim(),
-                        highRange: maxPriceController.text.trim(),
-                        discount: discount,
-                        brand: brands.join(","),
-                        brandSearch: brandSearchController.text,
-                      );
+                  if(widget.fromCategoryLevel3){
+                    context.read<CategoryWiseProductsCubit>().getCategoryWiseProducts(
+                      filter: true,
+                      slug: widget.searchText,
+                      // sortBy: 0,
+                      Range: [minPriceController.text.trim(), maxPriceController.text.trim()],
+                      discount: discount,
+                      brand: brands.join(","),
+                      brandSearch: brandSearchController.text,
+                    );
+                  }else {
+                    context.read<SearchCubit>().filterProducts(
+                      searchText: widget.searchText,
+                      sortBy: 0,
+                      lowRange: minPriceController.text.trim(),
+                      highRange: maxPriceController.text.trim(),
+                      discount: discount,
+                      brand: brands.join(","),
+                      brandSearch: brandSearchController.text,
+                    );
+                  }
                   context.router.pop();
                 },
               ),

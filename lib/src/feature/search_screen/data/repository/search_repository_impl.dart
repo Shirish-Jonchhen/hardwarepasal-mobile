@@ -55,4 +55,52 @@ class SearchRepositoryImpl implements SearchRepository {
       return const Left(AppError.noInternet());
     }
   }
+
+  @override
+  Future<Either<AppError, ApiResponse<int>>> addSearchHistory(String search) async {
+    try {
+      final response = await _searchDataSource.addSearchHistory(search);
+      return Right(
+          ApiResponse(
+              data: response.data,
+              message: response.message,
+              error: response.error
+          )
+      );
+    } on AppException catch (e) {
+      return Left(AppError.serverError(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<AppError, ApiResponse<int>>> clearSearchHistory() async {
+    try {
+      final response = await _searchDataSource.clearSearchHistory();
+      return Right(
+          ApiResponse(
+              data: response.data,
+              message: response.message,
+              error: response.error
+          )
+      );
+    } on AppException catch (e) {
+      return Left(AppError.serverError(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<AppError, ApiResponse<List<String>>>> getSearchHistory() async {
+    try {
+      final response = await _searchDataSource.getSearchHistory();
+      return Right(
+          ApiResponse(
+              data: response.data,
+              message: response.message,
+              error: response.error
+          )
+      );
+    } on AppException catch (e) {
+      return Left(AppError.serverError(message: e.message));
+    }
+  }
 }

@@ -38,6 +38,9 @@ class AddToCartDataSourceImpl implements AddToCartDataSource {
         },
       );
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: AddToCartModel.fromJson(response.data),
           message: 'message',

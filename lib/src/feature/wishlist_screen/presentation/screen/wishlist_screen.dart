@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
+import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/error_widget.dart';
+import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/data/models/cart_item_model/cart_item_model.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/add_to_cart_cubit.dart';
 
@@ -102,10 +104,10 @@ class _WishListScreenPageState extends State<WishListScreenPage> {
         builder: (context, state) {
           return state.maybeWhen(
             initial: () => const Center(child: Text('Wishlist is empty')),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (message) => Center(child: Text('Error: $message')),
+            loading: () => const LoadingWidget(),
+            error: (message) => ErrorScreen(message: message, onTap: ()=>context.read<WishlistCubit>().getWishList()),
             noInternet: () =>
-                const Center(child: Text('No internet connection')),
+                ErrorScreen(message: "No Internet Connection", onTap: ()=>context.read<WishlistCubit>().getWishList()),
             success: (data)
             {
               if(data.isEmpty || data == null)
@@ -187,205 +189,216 @@ class _WishListScreenPageState extends State<WishListScreenPage> {
                 return Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: 0.042 * scWidth, vertical: 0.029 * scHeight),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(0.032 * scWidth),
-                        decoration: BoxDecoration(
-                          color: AppColor.whiteColor,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(
-                            color: AppColor.borderGrey,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<WishlistCubit>().getWishList();
+                    },
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => context.router.push(
+                            ItemDetailScreenRoute(productModel: data[index]
+                                .product!)
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(0.034 * scWidth),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: AppColor.borderGrey,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  child: Center(
-                                    child: CachedNetworkImage(
-                                      height: 0.059 * scHeight,
-                                      width: 0.138 * scHeight,
-                                      imageUrl:
-                                      '${StringHelper
-                                          .coverImageBaseUrl}${data[index]
-                                          .product!.cover_image}',
-                                      placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                              height: 0.059 * scHeight,
-                                              width: 0.138 * scHeight,
-                                              AssetsHelper.placeHolder),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(0.032 * scWidth),
+                            decoration: BoxDecoration(
+                              color: AppColor.whiteColor,
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(
+                                color: AppColor.borderGrey,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.all(0.034 * scWidth),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      // color: AppColor.borderGrey,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Center(
+                                        child: CachedNetworkImage(
+                                          height: 0.059 * scHeight,
+                                          width: 0.138 * scHeight,
+                                          imageUrl:
+                                          '${StringHelper
+                                              .productCoverImageBastUrl}${data[index]
+                                              .product!.cover_image}',
+                                          placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                                  height: 0.059 * scHeight,
+                                                  width: 0.138 * scHeight,
+                                                  AssetsHelper.placeHolder),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 0.021 * scWidth,
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
+                                SizedBox(
+                                  width: 0.021 * scWidth,
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      //name and price
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
                                         children: [
-                                          Texts(
-                                            texts:
-                                            "${data[index].product!.name!
-                                                .length > 20 ? '${data[index]
-                                                .product!.name!.substring(
-                                                0, 20)}...' : data[index]
-                                                .product!.name}",
-                                            textStyle: AppStyles
-                                                .text12PxRegular,
+                                          //name and price
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Texts(
+                                                texts:
+                                                "${data[index].product!.name!
+                                                    .length > 20 ? '${data[index]
+                                                    .product!.name!.substring(
+                                                    0, 20)}...' : data[index]
+                                                    .product!.name}",
+                                                textStyle: AppStyles
+                                                    .text12PxRegular,
+                                              ),
+                                              SizedBox(
+                                                height: 0.008 * scHeight,
+                                              ),
+                                              Texts(
+                                                texts:
+                                                'Rs. ${data[index].product!.price}',
+                                                textStyle:
+                                                AppStyles.text14PxMedium.copyWith(
+                                                  color: AppColor.appColor,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(
-                                            height: 0.008 * scHeight,
-                                          ),
-                                          Texts(
-                                            texts:
-                                            'Rs. ${data[index].product!.price}',
-                                            textStyle:
-                                            AppStyles.text14PxMedium.copyWith(
-                                              color: AppColor.appColor,
+                                          const Spacer(),
+
+                                          //inStock
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 0.021 * scWidth,
+                                                vertical: 0.008 * scHeight),
+                                            decoration: BoxDecoration(
+                                              color: AppColor.borderGrey,
+                                              borderRadius:
+                                              BorderRadius.circular(48.r),
                                             ),
-                                          ),
+                                            child: Texts(
+                                              texts: 'In Stock',
+                                              textStyle: AppStyles.text12PxRegular
+                                                  .copyWith(
+                                                  color: AppColor.textGreyColor,
+                                                  fontSize: 8.sp),
+                                            ),
+                                          )
                                         ],
                                       ),
-                                      const Spacer(),
+                                      SizedBox(
+                                        height: 4.h,
+                                      ),
 
-                                      //inStock
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 0.021 * scWidth,
-                                            vertical: 0.008 * scHeight),
-                                        decoration: BoxDecoration(
-                                          color: AppColor.borderGrey,
-                                          borderRadius:
-                                          BorderRadius.circular(48.r),
+                                      //rating cart and love
+                                      Row(children: [
+                          //rating
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.star,
+                                              size: 16.sp,
+                                              color: Colors.yellow,
+                                            ),
+                                            SizedBox(
+                                              width: 0.008 * scWidth,
+                                            ),
+                                            Texts(
+                                              texts: '4.5/5  71 Reviews',
+                                              textStyle:
+                                              AppStyles.text12PxRegular.copyWith(
+                                                color: AppColor.textGrey,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        child: Texts(
-                                          texts: 'In Stock',
-                                          textStyle: AppStyles.text12PxRegular
-                                              .copyWith(
-                                              color: AppColor.textGreyColor,
-                                              fontSize: 8.sp),
+                                        const Spacer(),
+                                        //cart and love
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<AddToCartCubit>()
+                                                    .addToCart(
+                                                    data[index]
+                                                        .product!
+                                                        .id
+                                                        .toString(),
+                                                    1.toString());
+                                                context
+                                                    .read<WishlistCubit>()
+                                                    .removeWishlist(
+                                                    data[index].product!.id!);
+                                              },
+                                              child: CircleAvatar(
+                                                radius: 12.5.r,
+                                                backgroundColor: AppColor.appColor
+                                                    .withOpacity(0.2),
+                                                child: Image.asset(
+                                                  AssetsHelper.cartBtn,
+                                                  width: 0.042 * scWidth,
+                                                  color: AppColor.appColor,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 8.w,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<WishlistCubit>()
+                                                    .removeWishlist(
+                                                    data[index].product!.id!);
+                                              },
+                                              child: CircleAvatar(
+                                                  radius: 12.5.r,
+                                                  backgroundColor: AppColor.appColor
+                                                      .withOpacity(0.2),
+                                                  child: const Icon(
+                                                    Icons.favorite,
+                                                    size: 14,
+                                                    color: AppColor.appColor,
+                                                  )),
+                                            ),
+                                          ],
                                         ),
-                                      )
+                                      ]),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 4.h,
-                                  ),
-
-                                  //rating cart and love
-                                  Row(children: [
-//rating
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.star,
-                                          size: 16.sp,
-                                          color: Colors.yellow,
-                                        ),
-                                        SizedBox(
-                                          width: 0.008 * scWidth,
-                                        ),
-                                        Texts(
-                                          texts: '4.5/5  71 Reviews',
-                                          textStyle:
-                                          AppStyles.text12PxRegular.copyWith(
-                                            color: AppColor.textGrey,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    //cart and love
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            context
-                                                .read<AddToCartCubit>()
-                                                .addToCart(
-                                                data[index]
-                                                    .product!
-                                                    .id
-                                                    .toString(),
-                                                1.toString());
-                                            context
-                                                .read<WishlistCubit>()
-                                                .removeWishlist(
-                                                data[index].product!.id!);
-                                          },
-                                          child: CircleAvatar(
-                                            radius: 12.5.r,
-                                            backgroundColor: AppColor.appColor
-                                                .withOpacity(0.2),
-                                            child: Image.asset(
-                                              AssetsHelper.cartBtn,
-                                              width: 0.042 * scWidth,
-                                              color: AppColor.appColor,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 8.w,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            context
-                                                .read<WishlistCubit>()
-                                                .removeWishlist(
-                                                data[index].product!.id!);
-                                          },
-                                          child: CircleAvatar(
-                                              radius: 12.5.r,
-                                              backgroundColor: AppColor.appColor
-                                                  .withOpacity(0.2),
-                                              child: const Icon(
-                                                Icons.favorite,
-                                                size: 14,
-                                                color: AppColor.appColor,
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) =>
-                        SizedBox(
-                          height: 0.014 * scHeight,
-                        ),
-                    itemCount: data.length,
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          SizedBox(
+                            height: 0.014 * scHeight,
+                          ),
+                      itemCount: data.length,
+                    ),
                   ),
                 );
               }

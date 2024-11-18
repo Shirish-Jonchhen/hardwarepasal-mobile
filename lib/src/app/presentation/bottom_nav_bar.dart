@@ -14,7 +14,7 @@ class BottomNavigationPage extends StatefulWidget {
 }
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
-  int currentIndex = 0;
+  // int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     final double scWidth = MediaQuery.of(context).size.width;

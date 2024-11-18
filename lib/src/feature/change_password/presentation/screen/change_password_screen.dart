@@ -127,14 +127,7 @@ class _ChangePasswordScreenPageState extends State<ChangePasswordScreenPage> {
               width: 0.064 * scWidth,
               color: AppColor.black,
             ),
-            SizedBox(
-              width: 0.026 * scWidth,
-            ),
-            Image.asset(
-              AssetsHelper.notificationBtn,
-              width: 0.064 * scWidth,
-              color: AppColor.black,
-            ),
+
           ],
         ),
       ),

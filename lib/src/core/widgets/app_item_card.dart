@@ -1,3 +1,6 @@
+// import 'dart:js_interop';
+
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +12,7 @@ import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_recently_viewed_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/add_to_cart_cubit.dart';
+import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/item_details_cubit.dart';
 
 import '../../feature/item_detail_screen/presentation/screen/item_detail_screen.dart';
 import '../di/injection.dart';
@@ -17,6 +21,7 @@ import '../helpers/snackbar_helper.dart';
 import '../themes/app_colors.dart';
 import '../themes/app_styles.dart';
 import 'app_texts.dart';
+
 
 class AppItemCard extends StatelessWidget {
   const AppItemCard({required this.productModel, super.key});
@@ -59,11 +64,11 @@ class AppItemCard extends StatelessWidget {
                 child: Center(
                   child: CachedNetworkImage(
                     imageUrl:
-                    '${StringHelper.coverImageBaseUrl}${productModel.cover_image}',
+                        '${StringHelper.productCoverImageBastUrl}${productModel.cover_image}',
                     placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
+                        const CircularProgressIndicator(),
                     errorWidget: (context, url, error) =>
-                        Image.asset( AssetsHelper.placeHolder),
+                        Image.asset(AssetsHelper.placeHolder),
                   ),
                 ),
               ),
@@ -81,15 +86,23 @@ class AppItemCard extends StatelessWidget {
                   //rating
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: Colors.yellow,
                         size: 11,
                       ),
+                      productModel.reviews != null?
                       Texts(
-                        texts: "4.1/5 (71)",
-                        textStyle: AppStyles.text12PxRegular
-                            .copyWith(color: AppColor.greyButtonText, fontSize: 10),
+                        texts: "${(productModel.reviews!.fold(0.0, (previousValue, element) {
+                          return previousValue + element.stars!;
+                        },)/productModel.reviews!.length).toStringAsFixed(1) }/5 (${productModel.reviews!.length})",
+                        textStyle: AppStyles.text12PxRegular.copyWith(
+                            color: AppColor.greyButtonText, fontSize: 10),
+                      )
+                          :  Texts(
+                        texts: "0/5 (0)",
+                        textStyle: AppStyles.text12PxRegular.copyWith(
+                            color: AppColor.greyButtonText, fontSize: 10),
                       )
                     ],
                   ),
@@ -119,6 +132,8 @@ class AppItemCard extends StatelessWidget {
                       SizedBox(
                         width: 0.01 * scWidth,
                       ),
+
+                      if(productModel.old_price != null && productModel.old_price!.isNotEmpty && productModel.old_price!.trim() != "")
                       Texts(
                         texts: ' Rs. ${productModel.old_price ?? ' '} ',
                         textStyle: AppStyles.text12PxBold.copyWith(
@@ -139,10 +154,9 @@ class AppItemCard extends StatelessWidget {
 
                   //button
                   BlocProvider(
-                      create: (context) => getIt<AddToCartCubit>(),
-                      child: BlocListener<AddToCartCubit, AddToCartState>(
-                          listener:
-                              (BuildContext context, AddToCartState state) {
+                    create: (context) => getIt<AddToCartCubit>(),
+                    child: BlocListener<AddToCartCubit, AddToCartState>(
+                      listener: (BuildContext context, AddToCartState state) {
                         state.maybeWhen(
                           orElse: () => Container(),
                           success: (data) {
@@ -212,7 +226,8 @@ class AppItemCard extends StatelessWidget {
                             );
                           },
                         );
-                      }, child: BlocBuilder<AddToCartCubit, AddToCartState>(
+                      },
+                      child: BlocBuilder<AddToCartCubit, AddToCartState>(
                         builder: (context, state) {
                           bool isLoading = state.maybeWhen(
                             orElse: () => false,
@@ -248,7 +263,9 @@ class AppItemCard extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Texts(
-                                        texts: (isLoading)? 'Adding...':'Add to Cart',
+                                        texts: (isLoading)
+                                            ? 'Adding...'
+                                            : 'Add to Cart',
                                         textStyle:
                                             AppStyles.text12PxRegular.copyWith(
                                           color: AppColor.greyButtonText,
@@ -270,7 +287,9 @@ class AppItemCard extends StatelessWidget {
                             ),
                           );
                         },
-                      )))
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

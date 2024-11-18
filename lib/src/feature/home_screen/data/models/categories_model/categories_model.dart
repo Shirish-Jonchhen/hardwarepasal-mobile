@@ -23,7 +23,7 @@ class CategoriesHomeSubCategorySubCategoriesModel with _$CategoriesHomeSubCatego
     String? meta_keywords,
     String? meta_descriprion,
     String? meta_title,
-    String? is_grouping,
+    int? is_grouping,
     int? display,
     String? show_on_home,
     String? offer_text,

@@ -52,6 +52,7 @@ abstract class RegisterModule {
   Dio get authenticatedDio => Dio(
         BaseOptions(
           // baseUrl: 'https://rknlws6b-7000.inc1.devtunnels.ms/',
+          // baseUrl: 'https://hardwarepasal.com/api/',
           baseUrl: 'https://hardwarepasalapi.checkmysite.live/api/',
           receiveTimeout: 60000,
           connectTimeout: 60000,
@@ -144,6 +145,7 @@ abstract class RegisterModule {
   Dio get unauthenticatedDio => Dio(
         BaseOptions(
           // baseUrl: 'https://rknlws6b-7000.inc1.devtunnels.ms/',
+          // baseUrl: 'https://hardwarepasal.com/api/',
           baseUrl: 'https://hardwarepasalapi.checkmysite.live/api/',
           receiveTimeout: 60000,
           connectTimeout: 60000,

@@ -98,6 +98,32 @@ class StorageHelper {
     return const UserDetails();
   }
 
+  //previous searches
+  Future<int> addSearchHistory({required String value}) async {
+    List<String> searchHistory = await getSearchHistory();
+    if (searchHistory.contains(value)) {
+      searchHistory.remove(value);
+    }
+    searchHistory.add(value);
+    String jsonString = jsonEncode(searchHistory);
+    await _storage.write(key: AppConstants.searchHistory, value: jsonString);
+    return 1;
+  }
+
+  Future<List<String>> getSearchHistory() async {
+    String? jsonString = await _storage.read(key: AppConstants.searchHistory);
+    if (jsonString != null) {
+      List<dynamic> jsonList = jsonDecode(jsonString);
+      return jsonList.map((item) => item.toString()).toList();
+    }
+    return [];
+  }
+
+  Future<int> clearSearchHistory() async {
+    await _storage.delete(key: AppConstants.searchHistory);
+    return 1;
+  }
+
   //cart routes
   Future<int> addItemsToCart(
       {required ProductModel value, int productQuantity = 1}) async {

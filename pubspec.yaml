@@ -67,6 +67,13 @@ dependencies:
   youtube_player_flutter: ^9.0.1
   intl: ^0.19.0
   image_picker: ^1.1.2
+  imepay_merchant_sdk: ^1.0.2+4
+  webview_flutter: ^4.2.2
+  flutter_easyloading: ^3.0.5
+#  flutter_sticky_header: ^0.7.0
+  sticky_headers: ^0.3.0+2
+  url_launcher: ^6.3.0
+  share_plus: ^10.1.1
 
 dev_dependencies:
   flutter_test:

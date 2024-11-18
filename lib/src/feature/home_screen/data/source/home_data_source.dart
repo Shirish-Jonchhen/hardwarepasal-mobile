@@ -36,6 +36,11 @@ class HomeDataSourceImpl implements HomeDataSource {
     try {
       final response = await _dio.get('');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
+        print("Response Data chai eta xa hai");
+        print(response.data["data"]['data']['noticead']);
         return ApiResponse(
           data: HomeModel.fromJson(response.data),
           message: 'message',
@@ -53,6 +58,9 @@ class HomeDataSourceImpl implements HomeDataSource {
     try {
       final response = await _dio.get('/brand-category');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: HomeBrandsByCategoryModel.fromJson(response.data),
           message: 'message',
@@ -70,6 +78,9 @@ class HomeDataSourceImpl implements HomeDataSource {
     try {
       final response = await _dio.get('/random-products?page=$page');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: HomeAllProductsModel.fromJson(response.data),
           message: 'message',

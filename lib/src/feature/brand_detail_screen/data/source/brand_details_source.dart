@@ -23,6 +23,9 @@ class BrandDetailsDataSourceImpl implements BrandDetailsDataSource {
     try {
       final response = await _dio.get('brand/$slug');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: BrandDetailsResponseModel.fromJson(response.data),
           message: 'message',

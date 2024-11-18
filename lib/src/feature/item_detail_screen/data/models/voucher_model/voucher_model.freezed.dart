@@ -24,16 +24,16 @@ mixin _$VoucherModel {
   String? get coupon_name => throw _privateConstructorUsedError;
   String? get coupon_code => throw _privateConstructorUsedError;
   String? get discount_type => throw _privateConstructorUsedError;
-  String? get discount_value => throw _privateConstructorUsedError;
-  String? get max_discount_value => throw _privateConstructorUsedError;
+  int? get discount_value => throw _privateConstructorUsedError;
+  int? get max_discount_value => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get usage_limit_coupon => throw _privateConstructorUsedError;
   String? get usage_limit_user => throw _privateConstructorUsedError;
-  String? get use_count => throw _privateConstructorUsedError;
-  String? get min_order => throw _privateConstructorUsedError;
+  int? get use_count => throw _privateConstructorUsedError;
+  int? get min_order => throw _privateConstructorUsedError;
   String? get expire_date => throw _privateConstructorUsedError;
-  String? get show_on_product => throw _privateConstructorUsedError;
-  String? get show_on_cart => throw _privateConstructorUsedError;
+  int? get show_on_product => throw _privateConstructorUsedError;
+  int? get show_on_cart => throw _privateConstructorUsedError;
   String? get applicable_area => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
@@ -56,16 +56,16 @@ abstract class $VoucherModelCopyWith<$Res> {
       String? coupon_name,
       String? coupon_code,
       String? discount_type,
-      String? discount_value,
-      String? max_discount_value,
+      int? discount_value,
+      int? max_discount_value,
       String? description,
       String? usage_limit_coupon,
       String? usage_limit_user,
-      String? use_count,
-      String? min_order,
+      int? use_count,
+      int? min_order,
       String? expire_date,
-      String? show_on_product,
-      String? show_on_cart,
+      int? show_on_product,
+      int? show_on_cart,
       String? applicable_area,
       String? status,
       String? created_at,
@@ -124,11 +124,11 @@ class _$VoucherModelCopyWithImpl<$Res, $Val extends VoucherModel>
       discount_value: freezed == discount_value
           ? _value.discount_value
           : discount_value // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       max_discount_value: freezed == max_discount_value
           ? _value.max_discount_value
           : max_discount_value // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -144,11 +144,11 @@ class _$VoucherModelCopyWithImpl<$Res, $Val extends VoucherModel>
       use_count: freezed == use_count
           ? _value.use_count
           : use_count // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       min_order: freezed == min_order
           ? _value.min_order
           : min_order // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       expire_date: freezed == expire_date
           ? _value.expire_date
           : expire_date // ignore: cast_nullable_to_non_nullable
@@ -156,11 +156,11 @@ class _$VoucherModelCopyWithImpl<$Res, $Val extends VoucherModel>
       show_on_product: freezed == show_on_product
           ? _value.show_on_product
           : show_on_product // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       show_on_cart: freezed == show_on_cart
           ? _value.show_on_cart
           : show_on_cart // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       applicable_area: freezed == applicable_area
           ? _value.applicable_area
           : applicable_area // ignore: cast_nullable_to_non_nullable
@@ -194,16 +194,16 @@ abstract class _$$VoucherModelImplCopyWith<$Res>
       String? coupon_name,
       String? coupon_code,
       String? discount_type,
-      String? discount_value,
-      String? max_discount_value,
+      int? discount_value,
+      int? max_discount_value,
       String? description,
       String? usage_limit_coupon,
       String? usage_limit_user,
-      String? use_count,
-      String? min_order,
+      int? use_count,
+      int? min_order,
       String? expire_date,
-      String? show_on_product,
-      String? show_on_cart,
+      int? show_on_product,
+      int? show_on_cart,
       String? applicable_area,
       String? status,
       String? created_at,
@@ -260,11 +260,11 @@ class __$$VoucherModelImplCopyWithImpl<$Res>
       discount_value: freezed == discount_value
           ? _value.discount_value
           : discount_value // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       max_discount_value: freezed == max_discount_value
           ? _value.max_discount_value
           : max_discount_value // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -280,11 +280,11 @@ class __$$VoucherModelImplCopyWithImpl<$Res>
       use_count: freezed == use_count
           ? _value.use_count
           : use_count // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       min_order: freezed == min_order
           ? _value.min_order
           : min_order // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       expire_date: freezed == expire_date
           ? _value.expire_date
           : expire_date // ignore: cast_nullable_to_non_nullable
@@ -292,11 +292,11 @@ class __$$VoucherModelImplCopyWithImpl<$Res>
       show_on_product: freezed == show_on_product
           ? _value.show_on_product
           : show_on_product // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       show_on_cart: freezed == show_on_cart
           ? _value.show_on_cart
           : show_on_cart // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       applicable_area: freezed == applicable_area
           ? _value.applicable_area
           : applicable_area // ignore: cast_nullable_to_non_nullable
@@ -353,9 +353,9 @@ class _$VoucherModelImpl implements _VoucherModel {
   @override
   final String? discount_type;
   @override
-  final String? discount_value;
+  final int? discount_value;
   @override
-  final String? max_discount_value;
+  final int? max_discount_value;
   @override
   final String? description;
   @override
@@ -363,15 +363,15 @@ class _$VoucherModelImpl implements _VoucherModel {
   @override
   final String? usage_limit_user;
   @override
-  final String? use_count;
+  final int? use_count;
   @override
-  final String? min_order;
+  final int? min_order;
   @override
   final String? expire_date;
   @override
-  final String? show_on_product;
+  final int? show_on_product;
   @override
-  final String? show_on_cart;
+  final int? show_on_cart;
   @override
   final String? applicable_area;
   @override
@@ -470,16 +470,16 @@ abstract class _VoucherModel implements VoucherModel {
       final String? coupon_name,
       final String? coupon_code,
       final String? discount_type,
-      final String? discount_value,
-      final String? max_discount_value,
+      final int? discount_value,
+      final int? max_discount_value,
       final String? description,
       final String? usage_limit_coupon,
       final String? usage_limit_user,
-      final String? use_count,
-      final String? min_order,
+      final int? use_count,
+      final int? min_order,
       final String? expire_date,
-      final String? show_on_product,
-      final String? show_on_cart,
+      final int? show_on_product,
+      final int? show_on_cart,
       final String? applicable_area,
       final String? status,
       final String? created_at,
@@ -497,9 +497,9 @@ abstract class _VoucherModel implements VoucherModel {
   @override
   String? get discount_type;
   @override
-  String? get discount_value;
+  int? get discount_value;
   @override
-  String? get max_discount_value;
+  int? get max_discount_value;
   @override
   String? get description;
   @override
@@ -507,15 +507,15 @@ abstract class _VoucherModel implements VoucherModel {
   @override
   String? get usage_limit_user;
   @override
-  String? get use_count;
+  int? get use_count;
   @override
-  String? get min_order;
+  int? get min_order;
   @override
   String? get expire_date;
   @override
-  String? get show_on_product;
+  int? get show_on_product;
   @override
-  String? get show_on_cart;
+  int? get show_on_cart;
   @override
   String? get applicable_area;
   @override

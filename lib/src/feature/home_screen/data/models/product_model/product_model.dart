@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../item_detail_screen/data/models/product_review_model/product_review_model.dart';
+
 part 'product_model.freezed.dart';
 
 part 'product_model.g.dart';
@@ -16,7 +18,7 @@ class ProductModel with _$ProductModel {
     String? cover_image,
     String? model_no,
     String? old_price,
-    int? price,
+    double? price,
     String? xtraAttribute,
     double? weight,
     int? quantity,
@@ -25,7 +27,7 @@ class ProductModel with _$ProductModel {
     String? created_at,
     String? updated_at,
     int? brand_id,
-    String? group_category_id,
+    int? group_category_id,
     int? clearance_sale,
     String? specification,
     String? delivery_days,
@@ -42,6 +44,7 @@ class ProductModel with _$ProductModel {
     String? video_link,
     int? is_blocked,
     int? is_ask_price,
+    List<ProductReviewModel>? reviews,
   }) = _ProductModel;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>

@@ -10,6 +10,7 @@ class AppColor {
   static const scaffoldBg = Color(0xffFAFAFA);
   static const greyButtonBorder = Color(0xffEAEAEA);
   static const greyButtonText = Color(0xff8C8C97);
+  static const lightBlurBtn = Color(0xffADD8E6);
 
   static const transparent = Color(0x00000000);
 

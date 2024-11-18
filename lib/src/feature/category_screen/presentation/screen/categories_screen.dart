@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hardwarepasal/src/core/helpers/assets_helper.dart';
@@ -5,8 +6,11 @@ import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 import 'package:hardwarepasal/src/core/widgets/app_texts.dart';
 import 'package:hardwarepasal/src/feature/category_screen/presentation/cubit/category_cubit.dart';
+import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
 
+import '../../../../core/helpers/string_helper.dart';
 import '../../../../core/themes/app_styles.dart';
+import '../widget/error_widget.dart';
 
 class CategoryScreenPage extends StatefulWidget {
   const CategoryScreenPage({super.key});
@@ -62,133 +66,145 @@ class _CategoryScreenPageState extends State<CategoryScreenPage> {
                 color: AppColor.black,
               ),
             ),
-            SizedBox(
-              width: 0.026 * scWidth,
-            ),
-            InkWell(
-              onTap: () => context.router.push(const NotificationScreenRoute()),
-              child: Image.asset(
-                AssetsHelper.notificationBtn,
-                width: 0.064 * scWidth,
-                height: 0.064 * scWidth,
-                color: AppColor.black,
-              ),
-            ),
-            SizedBox(
-              width: 0.042 * scWidth,
-            ),
+            // SizedBox(
+            //   width: 0.026 * scWidth,
+            // ),
+            // InkWell(
+            //   onTap: () => context.router.push(const NotificationScreenRoute()),
+            //   child: Image.asset(
+            //     AssetsHelper.notificationBtn,
+            //     width: 0.064 * scWidth,
+            //     height: 0.064 * scWidth,
+            //     color: AppColor.black,
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: 0.042 * scWidth,
+            // ),
           ],
         ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 0.042 * scWidth),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 0.024 * scHeight,
-              ),
-              BlocConsumer<CategoryCubit, CategoryState>(
-                builder: (context, state) => state.maybeWhen(
-                  initial: () => Container(),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (message) => Center(
-                    child: Texts(
-                      texts: message,
-                      textStyle: AppStyles.text14PxMedium.copyWith(
-                        color: AppColor.black,
-                      ),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            context.read<CategoryCubit>().getCategories();
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 0.024 * scHeight,
+                ),
+                BlocConsumer<CategoryCubit, CategoryState>(
+                  builder: (context, state) => state.maybeWhen(
+                    initial: () => Container(),
+                    loading: () =>
+                        const LoadingWidget(),
+
+                    error: (message) => ErrorScreen(
+                      message: message,
+                      onTap: () {
+                        context.read<CategoryCubit>().getCategories();
+                      },
                     ),
-                  ),
-                  noInternet: () => Center(
-                    child: Texts(
-                      texts: 'No Internet',
-                      textStyle: AppStyles.text14PxMedium.copyWith(
-                        color: AppColor.black,
-                      ),
+
+                    noInternet: () =>  ErrorScreen(
+                      message: "No Internet Connection",
+                      onTap: () {
+                        context.read<CategoryCubit>().getCategories();
+                      },
                     ),
-                  ),
-                  orElse: () => Container(),
-                  success: (data) => ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      // physics: AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: ()
-                          {
-                            print("CategoryScreenPage: ${data.data!.data!.data![index]}");
-                            context.router.push(SubCategoryScreenRoute(
-                                categoryItemModel:
-                                    data.data!.data!.data![index]));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(0.03 * scWidth),
-                            decoration: BoxDecoration(
-                              color: AppColor.whiteColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 0.08 * scWidth,
-                                  width: 0.08 * scWidth,
-                                  decoration: BoxDecoration(
-                                    color: AppColor.appColor.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Center(
-                                    child: Image.asset(
-                                      AssetsHelper.categoryIcon,
-                                      height: 0.042 * scWidth,
-                                      width: 0.042 * scWidth,
-                                      color: AppColor.appColor,
+
+                    orElse: () => Container(),
+                    success: (data) => ListView.separated(
+                        physics: NeverScrollableScrollPhysics(),
+                        // physics: AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              print(
+                                  "CategoryScreenPage: ${data.data!.data!.data![index]}");
+                              context.router.push(SubCategoryScreenRoute(
+                                  categoryItemModel:
+                                      data.data!.data!.data![index]));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(0.03 * scWidth),
+                              decoration: BoxDecoration(
+                                color: AppColor.whiteColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 0.08 * scWidth,
+                                    width: 0.08 * scWidth,
+                                    decoration: BoxDecoration(
+                                      // color: AppColor.appColor.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Center(
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                        '${StringHelper.productCategoryImageBastUrl}${data.data!.data!.data![index].icon}',
+                                        placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(AssetsHelper.placeHolder),
+                                      ),
+                                      // child: Image.asset(
+                                      //   AssetsHelper.categoryIcon,
+                                      //   height: 0.042 * scWidth,
+                                      //   width: 0.042 * scWidth,
+                                      //   color: AppColor.appColor,
+                                      // ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 0.042 * scWidth,
-                                ),
-                                Texts(
-                                  texts: data.data!.data!.data![index].name!,
-                                  textStyle: AppStyles.text14PxMedium.copyWith(
-                                    color: Color(0xff545464),
+                                  SizedBox(
+                                    width: 0.042 * scWidth,
                                   ),
-                                ),
-                                const Spacer(),
-                                Image.asset(
-                                  AssetsHelper.rightArrow,
-                                  height: 0.053 * scWidth,
-                                  width: 0.053 * scWidth,
-                                  // color: AppColor.black,
-                                ),
-                              ],
+                                  Texts(
+                                    texts: data.data!.data!.data![index].name!,
+                                    textStyle: AppStyles.text14PxMedium.copyWith(
+                                      color: Color(0xff545464),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Image.asset(
+                                    AssetsHelper.rightArrow,
+                                    height: 0.053 * scWidth,
+                                    width: 0.053 * scWidth,
+                                    // color: AppColor.black,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                            height: 0.009 * scHeight,
+                          );
+                        },
+                        itemCount: data.data!.data!.data!.length),
+                  ),
+                  listener: (context, state) {
+                    state.maybeWhen(
+                      orElse: () {},
+                      success: (data) {
+                        // show data
+                        setState(() {});
                       },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(
-                          height: 0.009 * scHeight,
-                        );
-                      },
-                      itemCount: data.data!.data!.data!.length),
+                    );
+                  },
                 ),
-                listener: (context, state) {
-                  state.maybeWhen(
-                    orElse: () {},
-                    success: (data) {
-                      // show data
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-              SizedBox(
-                height: 0.024 * scHeight,
-              ),
-            ],
+                SizedBox(
+                  height: 0.024 * scHeight,
+                ),
+              ],
+            ),
           ),
         ),
       ),

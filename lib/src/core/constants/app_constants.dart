@@ -12,6 +12,8 @@ class AppConstants {
   static const String recentlyViewed = 'recently-viewed';
   static const String userData = 'user-data';
 
+  static const String searchHistory = 'search-history';
+
   static const String noInternet =
       'Cannot login check the internet connection.';
 

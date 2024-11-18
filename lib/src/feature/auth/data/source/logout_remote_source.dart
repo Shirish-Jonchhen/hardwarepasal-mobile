@@ -22,6 +22,9 @@ class LogoutRemoteSourceImpl implements LogoutRemoteSource{
     try {
       final response = await _dio.post('/logout');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: LogoutModel.fromJson(response.data),
           message: 'message',

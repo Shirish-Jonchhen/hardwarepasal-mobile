@@ -7,7 +7,7 @@ import '../../../../core/errors/app_exceptions.dart';
 import '../model/my_orders_model/my_orders_model.dart';
 
 abstract class MyOrdersDataSource{
-  Future<ApiResponse<MyOrdersModel>> getMyOrders();
+  Future<ApiResponse<MyOrdersModel>> getMyOrders(int page);
 }
 
 
@@ -21,12 +21,15 @@ class MyOrdersDataSourceImpl implements MyOrdersDataSource{
   final Dio _dio;
   final Logger _logger;
   @override
-  Future<ApiResponse<MyOrdersModel>> getMyOrders() async {
+  Future<ApiResponse<MyOrdersModel>> getMyOrders(int page) async {
     try {
       final response = await _dio.get(
-        'orders',
+        'orders?page=$page',
       );
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: MyOrdersModel.fromJson(response.data),
           message: 'message',

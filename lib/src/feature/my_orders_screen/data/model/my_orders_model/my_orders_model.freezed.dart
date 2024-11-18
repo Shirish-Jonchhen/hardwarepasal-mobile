@@ -366,7 +366,18 @@ MyOrderInnerDataModel _$MyOrderInnerDataModelFromJson(
 
 /// @nodoc
 mixin _$MyOrderInnerDataModel {
+  int? get current_page => throw _privateConstructorUsedError;
   List<OrderData>? get data => throw _privateConstructorUsedError;
+  String? get first_page_url => throw _privateConstructorUsedError;
+  int? get from => throw _privateConstructorUsedError;
+  int? get last_page => throw _privateConstructorUsedError;
+  String? get last_page_url => throw _privateConstructorUsedError;
+  String? get next_page_url => throw _privateConstructorUsedError;
+  String? get path => throw _privateConstructorUsedError;
+  int? get per_page => throw _privateConstructorUsedError;
+  String? get prev_page_url => throw _privateConstructorUsedError;
+  int? get to => throw _privateConstructorUsedError;
+  int? get total => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -380,7 +391,19 @@ abstract class $MyOrderInnerDataModelCopyWith<$Res> {
           $Res Function(MyOrderInnerDataModel) then) =
       _$MyOrderInnerDataModelCopyWithImpl<$Res, MyOrderInnerDataModel>;
   @useResult
-  $Res call({List<OrderData>? data});
+  $Res call(
+      {int? current_page,
+      List<OrderData>? data,
+      String? first_page_url,
+      int? from,
+      int? last_page,
+      String? last_page_url,
+      String? next_page_url,
+      String? path,
+      int? per_page,
+      String? prev_page_url,
+      int? to,
+      int? total});
 }
 
 /// @nodoc
@@ -397,13 +420,68 @@ class _$MyOrderInnerDataModelCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? current_page = freezed,
     Object? data = freezed,
+    Object? first_page_url = freezed,
+    Object? from = freezed,
+    Object? last_page = freezed,
+    Object? last_page_url = freezed,
+    Object? next_page_url = freezed,
+    Object? path = freezed,
+    Object? per_page = freezed,
+    Object? prev_page_url = freezed,
+    Object? to = freezed,
+    Object? total = freezed,
   }) {
     return _then(_value.copyWith(
+      current_page: freezed == current_page
+          ? _value.current_page
+          : current_page // ignore: cast_nullable_to_non_nullable
+              as int?,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<OrderData>?,
+      first_page_url: freezed == first_page_url
+          ? _value.first_page_url
+          : first_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      from: freezed == from
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as int?,
+      last_page: freezed == last_page
+          ? _value.last_page
+          : last_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      last_page_url: freezed == last_page_url
+          ? _value.last_page_url
+          : last_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      next_page_url: freezed == next_page_url
+          ? _value.next_page_url
+          : next_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      path: freezed == path
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String?,
+      per_page: freezed == per_page
+          ? _value.per_page
+          : per_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      prev_page_url: freezed == prev_page_url
+          ? _value.prev_page_url
+          : prev_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: freezed == to
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as int?,
+      total: freezed == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -417,7 +495,19 @@ abstract class _$$MyOrderInnerDataModelImplCopyWith<$Res>
       __$$MyOrderInnerDataModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<OrderData>? data});
+  $Res call(
+      {int? current_page,
+      List<OrderData>? data,
+      String? first_page_url,
+      int? from,
+      int? last_page,
+      String? last_page_url,
+      String? next_page_url,
+      String? path,
+      int? per_page,
+      String? prev_page_url,
+      int? to,
+      int? total});
 }
 
 /// @nodoc
@@ -432,13 +522,68 @@ class __$$MyOrderInnerDataModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? current_page = freezed,
     Object? data = freezed,
+    Object? first_page_url = freezed,
+    Object? from = freezed,
+    Object? last_page = freezed,
+    Object? last_page_url = freezed,
+    Object? next_page_url = freezed,
+    Object? path = freezed,
+    Object? per_page = freezed,
+    Object? prev_page_url = freezed,
+    Object? to = freezed,
+    Object? total = freezed,
   }) {
     return _then(_$MyOrderInnerDataModelImpl(
+      current_page: freezed == current_page
+          ? _value.current_page
+          : current_page // ignore: cast_nullable_to_non_nullable
+              as int?,
       data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
               as List<OrderData>?,
+      first_page_url: freezed == first_page_url
+          ? _value.first_page_url
+          : first_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      from: freezed == from
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as int?,
+      last_page: freezed == last_page
+          ? _value.last_page
+          : last_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      last_page_url: freezed == last_page_url
+          ? _value.last_page_url
+          : last_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      next_page_url: freezed == next_page_url
+          ? _value.next_page_url
+          : next_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      path: freezed == path
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String?,
+      per_page: freezed == per_page
+          ? _value.per_page
+          : per_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      prev_page_url: freezed == prev_page_url
+          ? _value.prev_page_url
+          : prev_page_url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: freezed == to
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as int?,
+      total: freezed == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -447,12 +592,26 @@ class __$$MyOrderInnerDataModelImplCopyWithImpl<$Res>
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$MyOrderInnerDataModelImpl implements _MyOrderInnerDataModel {
-  const _$MyOrderInnerDataModelImpl({final List<OrderData>? data})
+  const _$MyOrderInnerDataModelImpl(
+      {this.current_page,
+      final List<OrderData>? data,
+      this.first_page_url,
+      this.from,
+      this.last_page,
+      this.last_page_url,
+      this.next_page_url,
+      this.path,
+      this.per_page,
+      this.prev_page_url,
+      this.to,
+      this.total})
       : _data = data;
 
   factory _$MyOrderInnerDataModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MyOrderInnerDataModelImplFromJson(json);
 
+  @override
+  final int? current_page;
   final List<OrderData>? _data;
   @override
   List<OrderData>? get data {
@@ -464,8 +623,29 @@ class _$MyOrderInnerDataModelImpl implements _MyOrderInnerDataModel {
   }
 
   @override
+  final String? first_page_url;
+  @override
+  final int? from;
+  @override
+  final int? last_page;
+  @override
+  final String? last_page_url;
+  @override
+  final String? next_page_url;
+  @override
+  final String? path;
+  @override
+  final int? per_page;
+  @override
+  final String? prev_page_url;
+  @override
+  final int? to;
+  @override
+  final int? total;
+
+  @override
   String toString() {
-    return 'MyOrderInnerDataModel(data: $data)';
+    return 'MyOrderInnerDataModel(current_page: $current_page, data: $data, first_page_url: $first_page_url, from: $from, last_page: $last_page, last_page_url: $last_page_url, next_page_url: $next_page_url, path: $path, per_page: $per_page, prev_page_url: $prev_page_url, to: $to, total: $total)';
   }
 
   @override
@@ -473,13 +653,43 @@ class _$MyOrderInnerDataModelImpl implements _MyOrderInnerDataModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MyOrderInnerDataModelImpl &&
-            const DeepCollectionEquality().equals(other._data, _data));
+            (identical(other.current_page, current_page) ||
+                other.current_page == current_page) &&
+            const DeepCollectionEquality().equals(other._data, _data) &&
+            (identical(other.first_page_url, first_page_url) ||
+                other.first_page_url == first_page_url) &&
+            (identical(other.from, from) || other.from == from) &&
+            (identical(other.last_page, last_page) ||
+                other.last_page == last_page) &&
+            (identical(other.last_page_url, last_page_url) ||
+                other.last_page_url == last_page_url) &&
+            (identical(other.next_page_url, next_page_url) ||
+                other.next_page_url == next_page_url) &&
+            (identical(other.path, path) || other.path == path) &&
+            (identical(other.per_page, per_page) ||
+                other.per_page == per_page) &&
+            (identical(other.prev_page_url, prev_page_url) ||
+                other.prev_page_url == prev_page_url) &&
+            (identical(other.to, to) || other.to == to) &&
+            (identical(other.total, total) || other.total == total));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
+  int get hashCode => Object.hash(
+      runtimeType,
+      current_page,
+      const DeepCollectionEquality().hash(_data),
+      first_page_url,
+      from,
+      last_page,
+      last_page_url,
+      next_page_url,
+      path,
+      per_page,
+      prev_page_url,
+      to,
+      total);
 
   @JsonKey(ignore: true)
   @override
@@ -497,14 +707,47 @@ class _$MyOrderInnerDataModelImpl implements _MyOrderInnerDataModel {
 }
 
 abstract class _MyOrderInnerDataModel implements MyOrderInnerDataModel {
-  const factory _MyOrderInnerDataModel({final List<OrderData>? data}) =
-      _$MyOrderInnerDataModelImpl;
+  const factory _MyOrderInnerDataModel(
+      {final int? current_page,
+      final List<OrderData>? data,
+      final String? first_page_url,
+      final int? from,
+      final int? last_page,
+      final String? last_page_url,
+      final String? next_page_url,
+      final String? path,
+      final int? per_page,
+      final String? prev_page_url,
+      final int? to,
+      final int? total}) = _$MyOrderInnerDataModelImpl;
 
   factory _MyOrderInnerDataModel.fromJson(Map<String, dynamic> json) =
       _$MyOrderInnerDataModelImpl.fromJson;
 
   @override
+  int? get current_page;
+  @override
   List<OrderData>? get data;
+  @override
+  String? get first_page_url;
+  @override
+  int? get from;
+  @override
+  int? get last_page;
+  @override
+  String? get last_page_url;
+  @override
+  String? get next_page_url;
+  @override
+  String? get path;
+  @override
+  int? get per_page;
+  @override
+  String? get prev_page_url;
+  @override
+  int? get to;
+  @override
+  int? get total;
   @override
   @JsonKey(ignore: true)
   _$$MyOrderInnerDataModelImplCopyWith<_$MyOrderInnerDataModelImpl>
@@ -519,7 +762,7 @@ OrderData _$OrderDataFromJson(Map<String, dynamic> json) {
 mixin _$OrderData {
   int? get id => throw _privateConstructorUsedError;
   String? get order_id => throw _privateConstructorUsedError;
-  String? get user_id => throw _privateConstructorUsedError;
+  int? get user_id => throw _privateConstructorUsedError;
   String? get session_id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
@@ -527,23 +770,23 @@ mixin _$OrderData {
   String? get city => throw _privateConstructorUsedError;
   String? get contact => throw _privateConstructorUsedError;
   String? get delivery => throw _privateConstructorUsedError;
-  String? get deliveryCharge => throw _privateConstructorUsedError;
-  String? get totalWeight => throw _privateConstructorUsedError;
-  String? get totalQuantityCharge => throw _privateConstructorUsedError;
+  double? get deliveryCharge => throw _privateConstructorUsedError;
+  double? get totalWeight => throw _privateConstructorUsedError;
+  double? get totalQuantityCharge => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
   String? get updated_at => throw _privateConstructorUsedError;
-  String? get express => throw _privateConstructorUsedError;
+  int? get express => throw _privateConstructorUsedError;
   String? get express_price => throw _privateConstructorUsedError;
-  String? get seen => throw _privateConstructorUsedError;
+  int? get seen => throw _privateConstructorUsedError;
   String? get totaldeliverycharge => throw _privateConstructorUsedError;
   String? get order_note => throw _privateConstructorUsedError;
   String? get coupon_discount => throw _privateConstructorUsedError;
   String? get payment_id => throw _privateConstructorUsedError;
-  String? get payment_status => throw _privateConstructorUsedError;
+  int? get payment_status => throw _privateConstructorUsedError;
   String? get used_coupon_code => throw _privateConstructorUsedError;
-  String? get is_customize => throw _privateConstructorUsedError;
-  String? get cancel_reason_id => throw _privateConstructorUsedError;
+  int? get is_customize => throw _privateConstructorUsedError;
+  int? get cancel_reason_id => throw _privateConstructorUsedError;
   List<ProductModel>? get products => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -560,7 +803,7 @@ abstract class $OrderDataCopyWith<$Res> {
   $Res call(
       {int? id,
       String? order_id,
-      String? user_id,
+      int? user_id,
       String? session_id,
       String? name,
       String? address,
@@ -568,23 +811,23 @@ abstract class $OrderDataCopyWith<$Res> {
       String? city,
       String? contact,
       String? delivery,
-      String? deliveryCharge,
-      String? totalWeight,
-      String? totalQuantityCharge,
+      double? deliveryCharge,
+      double? totalWeight,
+      double? totalQuantityCharge,
       String? status,
       String? created_at,
       String? updated_at,
-      String? express,
+      int? express,
       String? express_price,
-      String? seen,
+      int? seen,
       String? totaldeliverycharge,
       String? order_note,
       String? coupon_discount,
       String? payment_id,
-      String? payment_status,
+      int? payment_status,
       String? used_coupon_code,
-      String? is_customize,
-      String? cancel_reason_id,
+      int? is_customize,
+      int? cancel_reason_id,
       List<ProductModel>? products});
 }
 
@@ -642,7 +885,7 @@ class _$OrderDataCopyWithImpl<$Res, $Val extends OrderData>
       user_id: freezed == user_id
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       session_id: freezed == session_id
           ? _value.session_id
           : session_id // ignore: cast_nullable_to_non_nullable
@@ -674,15 +917,15 @@ class _$OrderDataCopyWithImpl<$Res, $Val extends OrderData>
       deliveryCharge: freezed == deliveryCharge
           ? _value.deliveryCharge
           : deliveryCharge // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       totalWeight: freezed == totalWeight
           ? _value.totalWeight
           : totalWeight // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       totalQuantityCharge: freezed == totalQuantityCharge
           ? _value.totalQuantityCharge
           : totalQuantityCharge // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -698,7 +941,7 @@ class _$OrderDataCopyWithImpl<$Res, $Val extends OrderData>
       express: freezed == express
           ? _value.express
           : express // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       express_price: freezed == express_price
           ? _value.express_price
           : express_price // ignore: cast_nullable_to_non_nullable
@@ -706,7 +949,7 @@ class _$OrderDataCopyWithImpl<$Res, $Val extends OrderData>
       seen: freezed == seen
           ? _value.seen
           : seen // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       totaldeliverycharge: freezed == totaldeliverycharge
           ? _value.totaldeliverycharge
           : totaldeliverycharge // ignore: cast_nullable_to_non_nullable
@@ -726,7 +969,7 @@ class _$OrderDataCopyWithImpl<$Res, $Val extends OrderData>
       payment_status: freezed == payment_status
           ? _value.payment_status
           : payment_status // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       used_coupon_code: freezed == used_coupon_code
           ? _value.used_coupon_code
           : used_coupon_code // ignore: cast_nullable_to_non_nullable
@@ -734,11 +977,11 @@ class _$OrderDataCopyWithImpl<$Res, $Val extends OrderData>
       is_customize: freezed == is_customize
           ? _value.is_customize
           : is_customize // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       cancel_reason_id: freezed == cancel_reason_id
           ? _value.cancel_reason_id
           : cancel_reason_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       products: freezed == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
@@ -758,7 +1001,7 @@ abstract class _$$OrderDataImplCopyWith<$Res>
   $Res call(
       {int? id,
       String? order_id,
-      String? user_id,
+      int? user_id,
       String? session_id,
       String? name,
       String? address,
@@ -766,23 +1009,23 @@ abstract class _$$OrderDataImplCopyWith<$Res>
       String? city,
       String? contact,
       String? delivery,
-      String? deliveryCharge,
-      String? totalWeight,
-      String? totalQuantityCharge,
+      double? deliveryCharge,
+      double? totalWeight,
+      double? totalQuantityCharge,
       String? status,
       String? created_at,
       String? updated_at,
-      String? express,
+      int? express,
       String? express_price,
-      String? seen,
+      int? seen,
       String? totaldeliverycharge,
       String? order_note,
       String? coupon_discount,
       String? payment_id,
-      String? payment_status,
+      int? payment_status,
       String? used_coupon_code,
-      String? is_customize,
-      String? cancel_reason_id,
+      int? is_customize,
+      int? cancel_reason_id,
       List<ProductModel>? products});
 }
 
@@ -838,7 +1081,7 @@ class __$$OrderDataImplCopyWithImpl<$Res>
       user_id: freezed == user_id
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       session_id: freezed == session_id
           ? _value.session_id
           : session_id // ignore: cast_nullable_to_non_nullable
@@ -870,15 +1113,15 @@ class __$$OrderDataImplCopyWithImpl<$Res>
       deliveryCharge: freezed == deliveryCharge
           ? _value.deliveryCharge
           : deliveryCharge // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       totalWeight: freezed == totalWeight
           ? _value.totalWeight
           : totalWeight // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       totalQuantityCharge: freezed == totalQuantityCharge
           ? _value.totalQuantityCharge
           : totalQuantityCharge // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -894,7 +1137,7 @@ class __$$OrderDataImplCopyWithImpl<$Res>
       express: freezed == express
           ? _value.express
           : express // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       express_price: freezed == express_price
           ? _value.express_price
           : express_price // ignore: cast_nullable_to_non_nullable
@@ -902,7 +1145,7 @@ class __$$OrderDataImplCopyWithImpl<$Res>
       seen: freezed == seen
           ? _value.seen
           : seen // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       totaldeliverycharge: freezed == totaldeliverycharge
           ? _value.totaldeliverycharge
           : totaldeliverycharge // ignore: cast_nullable_to_non_nullable
@@ -922,7 +1165,7 @@ class __$$OrderDataImplCopyWithImpl<$Res>
       payment_status: freezed == payment_status
           ? _value.payment_status
           : payment_status // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       used_coupon_code: freezed == used_coupon_code
           ? _value.used_coupon_code
           : used_coupon_code // ignore: cast_nullable_to_non_nullable
@@ -930,11 +1173,11 @@ class __$$OrderDataImplCopyWithImpl<$Res>
       is_customize: freezed == is_customize
           ? _value.is_customize
           : is_customize // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       cancel_reason_id: freezed == cancel_reason_id
           ? _value.cancel_reason_id
           : cancel_reason_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       products: freezed == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
@@ -986,7 +1229,7 @@ class _$OrderDataImpl implements _OrderData {
   @override
   final String? order_id;
   @override
-  final String? user_id;
+  final int? user_id;
   @override
   final String? session_id;
   @override
@@ -1002,11 +1245,11 @@ class _$OrderDataImpl implements _OrderData {
   @override
   final String? delivery;
   @override
-  final String? deliveryCharge;
+  final double? deliveryCharge;
   @override
-  final String? totalWeight;
+  final double? totalWeight;
   @override
-  final String? totalQuantityCharge;
+  final double? totalQuantityCharge;
   @override
   final String? status;
   @override
@@ -1014,11 +1257,11 @@ class _$OrderDataImpl implements _OrderData {
   @override
   final String? updated_at;
   @override
-  final String? express;
+  final int? express;
   @override
   final String? express_price;
   @override
-  final String? seen;
+  final int? seen;
   @override
   final String? totaldeliverycharge;
   @override
@@ -1028,13 +1271,13 @@ class _$OrderDataImpl implements _OrderData {
   @override
   final String? payment_id;
   @override
-  final String? payment_status;
+  final int? payment_status;
   @override
   final String? used_coupon_code;
   @override
-  final String? is_customize;
+  final int? is_customize;
   @override
-  final String? cancel_reason_id;
+  final int? cancel_reason_id;
   final List<ProductModel>? _products;
   @override
   List<ProductModel>? get products {
@@ -1155,7 +1398,7 @@ abstract class _OrderData implements OrderData {
   const factory _OrderData(
       {final int? id,
       final String? order_id,
-      final String? user_id,
+      final int? user_id,
       final String? session_id,
       final String? name,
       final String? address,
@@ -1163,23 +1406,23 @@ abstract class _OrderData implements OrderData {
       final String? city,
       final String? contact,
       final String? delivery,
-      final String? deliveryCharge,
-      final String? totalWeight,
-      final String? totalQuantityCharge,
+      final double? deliveryCharge,
+      final double? totalWeight,
+      final double? totalQuantityCharge,
       final String? status,
       final String? created_at,
       final String? updated_at,
-      final String? express,
+      final int? express,
       final String? express_price,
-      final String? seen,
+      final int? seen,
       final String? totaldeliverycharge,
       final String? order_note,
       final String? coupon_discount,
       final String? payment_id,
-      final String? payment_status,
+      final int? payment_status,
       final String? used_coupon_code,
-      final String? is_customize,
-      final String? cancel_reason_id,
+      final int? is_customize,
+      final int? cancel_reason_id,
       final List<ProductModel>? products}) = _$OrderDataImpl;
 
   factory _OrderData.fromJson(Map<String, dynamic> json) =
@@ -1190,7 +1433,7 @@ abstract class _OrderData implements OrderData {
   @override
   String? get order_id;
   @override
-  String? get user_id;
+  int? get user_id;
   @override
   String? get session_id;
   @override
@@ -1206,11 +1449,11 @@ abstract class _OrderData implements OrderData {
   @override
   String? get delivery;
   @override
-  String? get deliveryCharge;
+  double? get deliveryCharge;
   @override
-  String? get totalWeight;
+  double? get totalWeight;
   @override
-  String? get totalQuantityCharge;
+  double? get totalQuantityCharge;
   @override
   String? get status;
   @override
@@ -1218,11 +1461,11 @@ abstract class _OrderData implements OrderData {
   @override
   String? get updated_at;
   @override
-  String? get express;
+  int? get express;
   @override
   String? get express_price;
   @override
-  String? get seen;
+  int? get seen;
   @override
   String? get totaldeliverycharge;
   @override
@@ -1232,13 +1475,13 @@ abstract class _OrderData implements OrderData {
   @override
   String? get payment_id;
   @override
-  String? get payment_status;
+  int? get payment_status;
   @override
   String? get used_coupon_code;
   @override
-  String? get is_customize;
+  int? get is_customize;
   @override
-  String? get cancel_reason_id;
+  int? get cancel_reason_id;
   @override
   List<ProductModel>? get products;
   @override

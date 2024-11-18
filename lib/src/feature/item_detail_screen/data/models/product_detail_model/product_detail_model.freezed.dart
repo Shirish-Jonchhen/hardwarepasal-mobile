@@ -383,7 +383,7 @@ mixin _$ProductDetailInnerDataModel {
       throw _privateConstructorUsedError;
   @JsonKey(name: 'voucherlist')
   List<VoucherModel>? get voucherList => throw _privateConstructorUsedError;
-  List<ProductModel>? get brand_products => throw _privateConstructorUsedError;
+  List<ProductModel>? get brand_product => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -407,7 +407,7 @@ abstract class $ProductDetailInnerDataModelCopyWith<$Res> {
       List<ProductModel>? customersAreAlsoViewing,
       List<ProductModel>? recently_viewed_products,
       @JsonKey(name: 'voucherlist') List<VoucherModel>? voucherList,
-      List<ProductModel>? brand_products});
+      List<ProductModel>? brand_product});
 
   $ActualProductModelCopyWith<$Res>? get product;
 }
@@ -431,7 +431,7 @@ class _$ProductDetailInnerDataModelCopyWithImpl<$Res,
     Object? customersAreAlsoViewing = freezed,
     Object? recently_viewed_products = freezed,
     Object? voucherList = freezed,
-    Object? brand_products = freezed,
+    Object? brand_product = freezed,
   }) {
     return _then(_value.copyWith(
       product: freezed == product
@@ -454,9 +454,9 @@ class _$ProductDetailInnerDataModelCopyWithImpl<$Res,
           ? _value.voucherList
           : voucherList // ignore: cast_nullable_to_non_nullable
               as List<VoucherModel>?,
-      brand_products: freezed == brand_products
-          ? _value.brand_products
-          : brand_products // ignore: cast_nullable_to_non_nullable
+      brand_product: freezed == brand_product
+          ? _value.brand_product
+          : brand_product // ignore: cast_nullable_to_non_nullable
               as List<ProductModel>?,
     ) as $Val);
   }
@@ -491,7 +491,7 @@ abstract class _$$ProductDetailInnerDataModelImplCopyWith<$Res>
       List<ProductModel>? customersAreAlsoViewing,
       List<ProductModel>? recently_viewed_products,
       @JsonKey(name: 'voucherlist') List<VoucherModel>? voucherList,
-      List<ProductModel>? brand_products});
+      List<ProductModel>? brand_product});
 
   @override
   $ActualProductModelCopyWith<$Res>? get product;
@@ -515,7 +515,7 @@ class __$$ProductDetailInnerDataModelImplCopyWithImpl<$Res>
     Object? customersAreAlsoViewing = freezed,
     Object? recently_viewed_products = freezed,
     Object? voucherList = freezed,
-    Object? brand_products = freezed,
+    Object? brand_product = freezed,
   }) {
     return _then(_$ProductDetailInnerDataModelImpl(
       product: freezed == product
@@ -538,9 +538,9 @@ class __$$ProductDetailInnerDataModelImplCopyWithImpl<$Res>
           ? _value._voucherList
           : voucherList // ignore: cast_nullable_to_non_nullable
               as List<VoucherModel>?,
-      brand_products: freezed == brand_products
-          ? _value._brand_products
-          : brand_products // ignore: cast_nullable_to_non_nullable
+      brand_product: freezed == brand_product
+          ? _value._brand_product
+          : brand_product // ignore: cast_nullable_to_non_nullable
               as List<ProductModel>?,
     ));
   }
@@ -559,12 +559,12 @@ class _$ProductDetailInnerDataModelImpl
       final List<ProductModel>? customersAreAlsoViewing,
       final List<ProductModel>? recently_viewed_products,
       @JsonKey(name: 'voucherlist') final List<VoucherModel>? voucherList,
-      final List<ProductModel>? brand_products})
+      final List<ProductModel>? brand_product})
       : _productYouMightLike = productYouMightLike,
         _customersAreAlsoViewing = customersAreAlsoViewing,
         _recently_viewed_products = recently_viewed_products,
         _voucherList = voucherList,
-        _brand_products = brand_products;
+        _brand_product = brand_product;
 
   factory _$ProductDetailInnerDataModelImpl.fromJson(
           Map<String, dynamic> json) =>
@@ -618,19 +618,19 @@ class _$ProductDetailInnerDataModelImpl
     return EqualUnmodifiableListView(value);
   }
 
-  final List<ProductModel>? _brand_products;
+  final List<ProductModel>? _brand_product;
   @override
-  List<ProductModel>? get brand_products {
-    final value = _brand_products;
+  List<ProductModel>? get brand_product {
+    final value = _brand_product;
     if (value == null) return null;
-    if (_brand_products is EqualUnmodifiableListView) return _brand_products;
+    if (_brand_product is EqualUnmodifiableListView) return _brand_product;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'ProductDetailInnerDataModel(product: $product, productYouMightLike: $productYouMightLike, customersAreAlsoViewing: $customersAreAlsoViewing, recently_viewed_products: $recently_viewed_products, voucherList: $voucherList, brand_products: $brand_products)';
+    return 'ProductDetailInnerDataModel(product: $product, productYouMightLike: $productYouMightLike, customersAreAlsoViewing: $customersAreAlsoViewing, recently_viewed_products: $recently_viewed_products, voucherList: $voucherList, brand_product: $brand_product)';
   }
 
   @override
@@ -648,7 +648,7 @@ class _$ProductDetailInnerDataModelImpl
             const DeepCollectionEquality()
                 .equals(other._voucherList, _voucherList) &&
             const DeepCollectionEquality()
-                .equals(other._brand_products, _brand_products));
+                .equals(other._brand_product, _brand_product));
   }
 
   @JsonKey(ignore: true)
@@ -660,7 +660,7 @@ class _$ProductDetailInnerDataModelImpl
       const DeepCollectionEquality().hash(_customersAreAlsoViewing),
       const DeepCollectionEquality().hash(_recently_viewed_products),
       const DeepCollectionEquality().hash(_voucherList),
-      const DeepCollectionEquality().hash(_brand_products));
+      const DeepCollectionEquality().hash(_brand_product));
 
   @JsonKey(ignore: true)
   @override
@@ -687,7 +687,7 @@ abstract class _ProductDetailInnerDataModel
           final List<ProductModel>? customersAreAlsoViewing,
           final List<ProductModel>? recently_viewed_products,
           @JsonKey(name: 'voucherlist') final List<VoucherModel>? voucherList,
-          final List<ProductModel>? brand_products}) =
+          final List<ProductModel>? brand_product}) =
       _$ProductDetailInnerDataModelImpl;
 
   factory _ProductDetailInnerDataModel.fromJson(Map<String, dynamic> json) =
@@ -707,7 +707,7 @@ abstract class _ProductDetailInnerDataModel
   @JsonKey(name: 'voucherlist')
   List<VoucherModel>? get voucherList;
   @override
-  List<ProductModel>? get brand_products;
+  List<ProductModel>? get brand_product;
   @override
   @JsonKey(ignore: true)
   _$$ProductDetailInnerDataModelImplCopyWith<_$ProductDetailInnerDataModelImpl>

@@ -24,6 +24,9 @@ class ItemDetailDataSourceImpl implements ItemDetailDataSource {
     try {
       final response = await _dio.get('/fetch-single-product/$slug');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: ProductDetailModel.fromJson(response.data),
           message: 'message',

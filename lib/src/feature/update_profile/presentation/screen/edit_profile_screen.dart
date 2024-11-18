@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hardwarepasal/src/core/helpers/string_helper.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/widgets/app_textfield.dart';
 import 'package:hardwarepasal/src/feature/profile_screen/presntation/cubit/user_details_cubit.dart';
@@ -128,14 +129,14 @@ class _EditProfileScreenPageState extends State<EditProfileScreenPage> {
               width: 0.064 * scWidth,
               color: AppColor.black,
             ),
-            SizedBox(
-              width: 0.026 * scWidth,
-            ),
-            Image.asset(
-              AssetsHelper.notificationBtn,
-              width: 0.064 * scWidth,
-              color: AppColor.black,
-            ),
+            // SizedBox(
+            //   width: 0.026 * scWidth,
+            // ),
+            // Image.asset(
+            //   AssetsHelper.notificationBtn,
+            //   width: 0.064 * scWidth,
+            //   color: AppColor.black,
+            // ),
           ],
         ),
       ),
@@ -219,7 +220,7 @@ class _EditProfileScreenPageState extends State<EditProfileScreenPage> {
                             (data.data!.image != null && data.data!.image!.isNotEmpty)?
                             DecorationImage(
                               image: NetworkImage(
-                                  'https://hardwarepasalapi.checkmysite.live/src/img/users/${data.data!.image!}'),
+                                  '${StringHelper.userImageBastUrl}${data.data!.image!}'),
                               fit: BoxFit.cover,
                             ):
                             const DecorationImage(
@@ -300,26 +301,18 @@ class _EditProfileScreenPageState extends State<EditProfileScreenPage> {
                               scHeight: scHeight,
                               title: 'Update Profile',
                               onTap: () {
-                                print("=============================================");
-                                print( _nameController.text.split(" ")[0]);
-                                print( _nameController.text.split(" ")[1]);
-                                print( _addressController.text);
-                                print( _phoneController.text);
-                                print("=============================================");
-
                                 validateFullName(_nameController.text);
                                 validateContact(_phoneController.text);
 
                                 if (isFullNameValid && isContactValid) {
-                                  context
-                                      .read<UpdateProfileCubit>()
-                                      .updateProfile(
-                                        firstName: _nameController.text.split(" ")[0],
-                                        lastName: _nameController.text.split(" ")[1],
-                                        address: _addressController.text,
-                                        contact: _phoneController.text,
-                                        imageUrl: (editedPhoto.isNotEmpty && editedPhoto != null)?editedPhoto:null
-                                      );
+                                   context.read<UpdateProfileCubit>().updateProfile(
+                                      firstName: _nameController.text.split(" ")[0],
+                                      lastName: _nameController.text.split(" ").skip(1).join(" "),
+                                      address: _addressController.text,
+                                      contact: _phoneController.text,
+                                      imageUrl: (editedPhoto.isNotEmpty && editedPhoto != null) ? editedPhoto : "${StringHelper.userImageBastUrl}${data.data!.image!}",
+                                     context: context,
+                                  );
                                 }
                               }),
                           SizedBox(height: 0.014 * scHeight),

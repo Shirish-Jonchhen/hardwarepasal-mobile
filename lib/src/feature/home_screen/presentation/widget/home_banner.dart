@@ -4,16 +4,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hardwarepasal/src/app/presentation/app.dart';
+import 'package:hardwarepasal/src/core/helpers/snackbar_helper.dart';
 import 'package:hardwarepasal/src/core/helpers/string_helper.dart';
+import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/banner_model/banner_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/helpers/assets_helper.dart';
 import '../../../../core/themes/app_colors.dart';
 
 class HomeBanner extends StatefulWidget {
   const HomeBanner({super.key, required this.bannerModel});
-  final BannerModel bannerModel;
 
+  final BannerModel bannerModel;
 
   @override
   State<HomeBanner> createState() => _HomeBannerState();
@@ -32,7 +35,7 @@ class _HomeBannerState extends State<HomeBanner> {
 
     pageController = PageController();
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if(widget.bannerModel.data != null){
+      if (widget.bannerModel.data != null) {
         if (selectedIndex < widget.bannerModel.data!.length - 1) {
           selectedIndex++;
         } else {
@@ -46,7 +49,6 @@ class _HomeBannerState extends State<HomeBanner> {
         curve: Curves.easeIn,
       );
     });
-
   }
 
   @override
@@ -56,7 +58,6 @@ class _HomeBannerState extends State<HomeBanner> {
     pageController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,24 +76,41 @@ class _HomeBannerState extends State<HomeBanner> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
 
               // padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.r),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.fill,
-                    imageUrl:
-                    '${StringHelper.bannerBaseUrl}${widget.bannerModel.data?[index].image}',
-                    placeholder: (context,
-                        url) =>
-                    Center(child: const CircularProgressIndicator()),
-                    errorWidget: (context,
-                        url, error) =>
-                        Image.asset(
-                            AssetsHelper
-                                .placeHolder),
+              child: InkWell(
+                onTap: () {
+                  if (widget.bannerModel.data![index].link!
+                      .contains("/category")) {
+                    String slug =
+                        widget.bannerModel.data![index].link!.split("/").last;
+                    context.router.push(CategoryLevel3ScreenRoute(slug: slug));
+                  } else if (widget.bannerModel.data![index].link!
+                      .contains("/brand")) {
+                    String slug =
+                        widget.bannerModel.data![index].link!.split("/").last;
+                    context.router.push(BrandDetailScreenRoute(slug: slug));
+                  } else {
+                    launchUrl(Uri.parse(widget.bannerModel.data![index].link!)).onError((error, stackTrace) {
+                      SnackBarHelper.showSnackBar(message: "Oops! Somethig went wrong", context: context, isError: true
+                      );
+                      return true;
+                    },);
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.r),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.fill,
+                      imageUrl:
+                          '${StringHelper.bannerBaseUrl}${widget.bannerModel.data?[index].image}',
+                      placeholder: (context, url) =>
+                          Center(child: const CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          Image.asset(AssetsHelper.placeHolder),
+                    ),
                   ),
                 ),
               ),
@@ -110,7 +128,7 @@ class _HomeBannerState extends State<HomeBanner> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 widget.bannerModel.data?.length ?? 0,
-                    (index) => Container(
+                (index) => Container(
                   width: 8.w,
                   height: 8.h,
                   margin: EdgeInsets.symmetric(horizontal: 4.w),

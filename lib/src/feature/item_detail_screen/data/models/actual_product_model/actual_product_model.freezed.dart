@@ -30,12 +30,12 @@ mixin _$ActualProductModel {
   String? get old_price => throw _privateConstructorUsedError;
   int? get price => throw _privateConstructorUsedError;
   String? get xtraAttribute => throw _privateConstructorUsedError;
-  int? get weight => throw _privateConstructorUsedError;
+  double? get weight => throw _privateConstructorUsedError;
   String? get slug => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
   String? get updated_at => throw _privateConstructorUsedError;
   int? get brand_id => throw _privateConstructorUsedError;
-  String? get group_category_id => throw _privateConstructorUsedError;
+  int? get group_category_id => throw _privateConstructorUsedError;
   int? get clearanceSale => throw _privateConstructorUsedError;
   String? get specification => throw _privateConstructorUsedError;
   String? get delivery_days => throw _privateConstructorUsedError;
@@ -83,12 +83,12 @@ abstract class $ActualProductModelCopyWith<$Res> {
       String? old_price,
       int? price,
       String? xtraAttribute,
-      int? weight,
+      double? weight,
       String? slug,
       String? created_at,
       String? updated_at,
       int? brand_id,
-      String? group_category_id,
+      int? group_category_id,
       int? clearanceSale,
       String? specification,
       String? delivery_days,
@@ -213,7 +213,7 @@ class _$ActualProductModelCopyWithImpl<$Res, $Val extends ActualProductModel>
       weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       slug: freezed == slug
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
@@ -233,7 +233,7 @@ class _$ActualProductModelCopyWithImpl<$Res, $Val extends ActualProductModel>
       group_category_id: freezed == group_category_id
           ? _value.group_category_id
           : group_category_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       clearanceSale: freezed == clearanceSale
           ? _value.clearanceSale
           : clearanceSale // ignore: cast_nullable_to_non_nullable
@@ -381,12 +381,12 @@ abstract class _$$ActualProductModelImplCopyWith<$Res>
       String? old_price,
       int? price,
       String? xtraAttribute,
-      int? weight,
+      double? weight,
       String? slug,
       String? created_at,
       String? updated_at,
       int? brand_id,
-      String? group_category_id,
+      int? group_category_id,
       int? clearanceSale,
       String? specification,
       String? delivery_days,
@@ -512,7 +512,7 @@ class __$$ActualProductModelImplCopyWithImpl<$Res>
       weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       slug: freezed == slug
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
@@ -532,7 +532,7 @@ class __$$ActualProductModelImplCopyWithImpl<$Res>
       group_category_id: freezed == group_category_id
           ? _value.group_category_id
           : group_category_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       clearanceSale: freezed == clearanceSale
           ? _value.clearanceSale
           : clearanceSale // ignore: cast_nullable_to_non_nullable
@@ -696,7 +696,7 @@ class _$ActualProductModelImpl implements _ActualProductModel {
   @override
   final String? xtraAttribute;
   @override
-  final int? weight;
+  final double? weight;
   @override
   final String? slug;
   @override
@@ -706,7 +706,7 @@ class _$ActualProductModelImpl implements _ActualProductModel {
   @override
   final int? brand_id;
   @override
-  final String? group_category_id;
+  final int? group_category_id;
   @override
   final int? clearanceSale;
   @override
@@ -925,12 +925,12 @@ abstract class _ActualProductModel implements ActualProductModel {
           final String? old_price,
           final int? price,
           final String? xtraAttribute,
-          final int? weight,
+          final double? weight,
           final String? slug,
           final String? created_at,
           final String? updated_at,
           final int? brand_id,
-          final String? group_category_id,
+          final int? group_category_id,
           final int? clearanceSale,
           final String? specification,
           final String? delivery_days,
@@ -979,7 +979,7 @@ abstract class _ActualProductModel implements ActualProductModel {
   @override
   String? get xtraAttribute;
   @override
-  int? get weight;
+  double? get weight;
   @override
   String? get slug;
   @override
@@ -989,7 +989,7 @@ abstract class _ActualProductModel implements ActualProductModel {
   @override
   int? get brand_id;
   @override
-  String? get group_category_id;
+  int? get group_category_id;
   @override
   int? get clearanceSale;
   @override

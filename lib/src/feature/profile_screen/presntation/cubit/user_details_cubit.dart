@@ -17,17 +17,21 @@ class UserDetailsCubit extends Cubit<UserDetailsState>{
   UserDetailsCubit(this._useCase) : super(const UserDetailsState.initial());
 
   Future<void> getUserDetails() async {
+    print("getUserDetails, ma chirrio ni chirrio");
     emit(const UserDetailsState.loading());
 
     final response = await _useCase.call(const NoParams());
-    emit(response.fold(
+    response.fold(
           (l) =>
           l.when(
-            serverError: (message) => UserDetailsState.error(message: message),
-            noInternet: () => const UserDetailsState.noInternet(),
+            serverError: (message) => emit(UserDetailsState.error(message: message)),
+            noInternet: () => emit(const UserDetailsState.noInternet()),
           ),
-          (r) => UserDetailsState.success(data: r),
-    ));
+          (r) {
+        print("getUserDetails, ma chirrio ni chirrio, SUCCESSSSS yohohohohohohohoho");
+        return  emit(UserDetailsState.success(data: r));
+      },
+    );
   }
 
 }

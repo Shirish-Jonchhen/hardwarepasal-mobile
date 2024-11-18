@@ -43,7 +43,7 @@ class ProductDetailInnerDataModel with _$ProductDetailInnerDataModel{
   @JsonKey(name: 'customersAreAlsoViewing')List<ProductModel>? customersAreAlsoViewing,
   List<ProductModel>? recently_viewed_products,
   @JsonKey(name: 'voucherlist')List<VoucherModel>? voucherList,
-  List<ProductModel>? brand_products,
+  List<ProductModel>? brand_product,
   }) = _ProductDetailInnerDataModel;
 
   factory ProductDetailInnerDataModel.fromJson(Map<String, dynamic> json) =>

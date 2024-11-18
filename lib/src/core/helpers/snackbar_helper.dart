@@ -6,6 +6,7 @@ import '../themes/app_styles.dart';
 
 class SnackBarHelper {
   static void showSnackBar({required String message, bool isError = false, required BuildContext context}) {
+    print("Hello World Snackbar");
     ScaffoldMessenger.of(context)
         .showSnackBar(
       SnackBar(

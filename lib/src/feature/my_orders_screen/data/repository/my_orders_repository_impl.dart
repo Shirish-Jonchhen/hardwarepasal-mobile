@@ -17,10 +17,10 @@ class MyOrdersRepositoryImpl implements MyOrdersRepository {
   final NetworkInfo _networkInfo;
 
   @override
-  Future<Either<AppError, ApiResponse<MyOrdersModel>>> getMyOrders() async {
+  Future<Either<AppError, ApiResponse<MyOrdersModel>>> getMyOrders(int page) async {
     if (await _networkInfo.isConnected) {
       try {
-        final response = await _myOrdersDataSource.getMyOrders();
+        final response = await _myOrdersDataSource.getMyOrders(page);
         return Right(
           ApiResponse(
             data: response.data,

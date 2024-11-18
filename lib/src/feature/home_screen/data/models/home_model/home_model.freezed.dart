@@ -33,8 +33,9 @@ mixin _$HomeInnerDataModel {
       throw _privateConstructorUsedError;
   List<ProductModel>? get recently_view_product =>
       throw _privateConstructorUsedError;
-  ClearanceSaleModel? get clearance_sale => throw _privateConstructorUsedError;
-  AdsModel? get ads => throw _privateConstructorUsedError;
+  ClearanceSaleModel? get clearance_sale =>
+      throw _privateConstructorUsedError; // AdsModel? ads,
+// List<AdsDataModel>? ads,
   List<AdsDataModel>? get noticead => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -57,13 +58,11 @@ abstract class $HomeInnerDataModelCopyWith<$Res> {
       List<CategoriesHomeModel>? categories_home,
       List<ProductModel>? recently_view_product,
       ClearanceSaleModel? clearance_sale,
-      AdsModel? ads,
       List<AdsDataModel>? noticead});
 
   $BannerModelCopyWith<$Res>? get banner;
   $RenderViewFrontModelCopyWith<$Res>? get render_view_front;
   $ClearanceSaleModelCopyWith<$Res>? get clearance_sale;
-  $AdsModelCopyWith<$Res>? get ads;
 }
 
 /// @nodoc
@@ -86,7 +85,6 @@ class _$HomeInnerDataModelCopyWithImpl<$Res, $Val extends HomeInnerDataModel>
     Object? categories_home = freezed,
     Object? recently_view_product = freezed,
     Object? clearance_sale = freezed,
-    Object? ads = freezed,
     Object? noticead = freezed,
   }) {
     return _then(_value.copyWith(
@@ -118,10 +116,6 @@ class _$HomeInnerDataModelCopyWithImpl<$Res, $Val extends HomeInnerDataModel>
           ? _value.clearance_sale
           : clearance_sale // ignore: cast_nullable_to_non_nullable
               as ClearanceSaleModel?,
-      ads: freezed == ads
-          ? _value.ads
-          : ads // ignore: cast_nullable_to_non_nullable
-              as AdsModel?,
       noticead: freezed == noticead
           ? _value.noticead
           : noticead // ignore: cast_nullable_to_non_nullable
@@ -165,18 +159,6 @@ class _$HomeInnerDataModelCopyWithImpl<$Res, $Val extends HomeInnerDataModel>
       return _then(_value.copyWith(clearance_sale: value) as $Val);
     });
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AdsModelCopyWith<$Res>? get ads {
-    if (_value.ads == null) {
-      return null;
-    }
-
-    return $AdsModelCopyWith<$Res>(_value.ads!, (value) {
-      return _then(_value.copyWith(ads: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -195,7 +177,6 @@ abstract class _$$HomeInnerDataModelImplCopyWith<$Res>
       List<CategoriesHomeModel>? categories_home,
       List<ProductModel>? recently_view_product,
       ClearanceSaleModel? clearance_sale,
-      AdsModel? ads,
       List<AdsDataModel>? noticead});
 
   @override
@@ -204,8 +185,6 @@ abstract class _$$HomeInnerDataModelImplCopyWith<$Res>
   $RenderViewFrontModelCopyWith<$Res>? get render_view_front;
   @override
   $ClearanceSaleModelCopyWith<$Res>? get clearance_sale;
-  @override
-  $AdsModelCopyWith<$Res>? get ads;
 }
 
 /// @nodoc
@@ -226,7 +205,6 @@ class __$$HomeInnerDataModelImplCopyWithImpl<$Res>
     Object? categories_home = freezed,
     Object? recently_view_product = freezed,
     Object? clearance_sale = freezed,
-    Object? ads = freezed,
     Object? noticead = freezed,
   }) {
     return _then(_$HomeInnerDataModelImpl(
@@ -258,10 +236,6 @@ class __$$HomeInnerDataModelImplCopyWithImpl<$Res>
           ? _value.clearance_sale
           : clearance_sale // ignore: cast_nullable_to_non_nullable
               as ClearanceSaleModel?,
-      ads: freezed == ads
-          ? _value.ads
-          : ads // ignore: cast_nullable_to_non_nullable
-              as AdsModel?,
       noticead: freezed == noticead
           ? _value._noticead
           : noticead // ignore: cast_nullable_to_non_nullable
@@ -284,7 +258,6 @@ class _$HomeInnerDataModelImpl implements _HomeInnerDataModel {
       final List<CategoriesHomeModel>? categories_home,
       final List<ProductModel>? recently_view_product,
       this.clearance_sale,
-      this.ads,
       final List<AdsDataModel>? noticead})
       : _featuredProducts1 = featuredProducts1,
         _featuredProducts2 = featuredProducts2,
@@ -346,9 +319,11 @@ class _$HomeInnerDataModelImpl implements _HomeInnerDataModel {
 
   @override
   final ClearanceSaleModel? clearance_sale;
-  @override
-  final AdsModel? ads;
+// AdsModel? ads,
+// List<AdsDataModel>? ads,
   final List<AdsDataModel>? _noticead;
+// AdsModel? ads,
+// List<AdsDataModel>? ads,
   @override
   List<AdsDataModel>? get noticead {
     final value = _noticead;
@@ -360,7 +335,7 @@ class _$HomeInnerDataModelImpl implements _HomeInnerDataModel {
 
   @override
   String toString() {
-    return 'HomeInnerDataModel(banner: $banner, render_view_front: $render_view_front, featuredProducts1: $featuredProducts1, featuredProducts2: $featuredProducts2, categories_home: $categories_home, recently_view_product: $recently_view_product, clearance_sale: $clearance_sale, ads: $ads, noticead: $noticead)';
+    return 'HomeInnerDataModel(banner: $banner, render_view_front: $render_view_front, featuredProducts1: $featuredProducts1, featuredProducts2: $featuredProducts2, categories_home: $categories_home, recently_view_product: $recently_view_product, clearance_sale: $clearance_sale, noticead: $noticead)';
   }
 
   @override
@@ -381,7 +356,6 @@ class _$HomeInnerDataModelImpl implements _HomeInnerDataModel {
                 .equals(other._recently_view_product, _recently_view_product) &&
             (identical(other.clearance_sale, clearance_sale) ||
                 other.clearance_sale == clearance_sale) &&
-            (identical(other.ads, ads) || other.ads == ads) &&
             const DeepCollectionEquality().equals(other._noticead, _noticead));
   }
 
@@ -396,7 +370,6 @@ class _$HomeInnerDataModelImpl implements _HomeInnerDataModel {
       const DeepCollectionEquality().hash(_categories_home),
       const DeepCollectionEquality().hash(_recently_view_product),
       clearance_sale,
-      ads,
       const DeepCollectionEquality().hash(_noticead));
 
   @JsonKey(ignore: true)
@@ -425,7 +398,6 @@ abstract class _HomeInnerDataModel implements HomeInnerDataModel {
       final List<CategoriesHomeModel>? categories_home,
       final List<ProductModel>? recently_view_product,
       final ClearanceSaleModel? clearance_sale,
-      final AdsModel? ads,
       final List<AdsDataModel>? noticead}) = _$HomeInnerDataModelImpl;
 
   factory _HomeInnerDataModel.fromJson(Map<String, dynamic> json) =
@@ -447,9 +419,8 @@ abstract class _HomeInnerDataModel implements HomeInnerDataModel {
   List<ProductModel>? get recently_view_product;
   @override
   ClearanceSaleModel? get clearance_sale;
-  @override
-  AdsModel? get ads;
-  @override
+  @override // AdsModel? ads,
+// List<AdsDataModel>? ads,
   List<AdsDataModel>? get noticead;
   @override
   @JsonKey(ignore: true)

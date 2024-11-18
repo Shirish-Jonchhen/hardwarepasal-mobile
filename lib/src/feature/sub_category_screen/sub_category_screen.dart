@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/feature/category_screen/data/model/category_model/category_model.dart';
 
 import '../../core/helpers/assets_helper.dart';
+import '../../core/helpers/string_helper.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_styles.dart';
 import '../../core/widgets/app_texts.dart';
@@ -78,7 +80,9 @@ class _SubCategoryScreenPageState extends State<SubCategoryScreenPage> {
                       onTap: (){
                         print(widget.categoryItemModel);
                         context.router.push(
-                          const CategoryLevel3ScreenRoute(),
+                          CategoryLevel3ScreenRoute(
+                            slug: widget.categoryItemModel.sub_categories![index].slug!,
+                          ),
                         );
                       },
                       child: Container(
@@ -89,6 +93,33 @@ class _SubCategoryScreenPageState extends State<SubCategoryScreenPage> {
                         ),
                         child: Row(
                           children: [
+                            Container(
+                          height: 0.08 * scWidth,
+                          width: 0.08 * scWidth,
+                          decoration: BoxDecoration(
+                            // color: AppColor.appColor.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: CachedNetworkImage(
+                              imageUrl:
+                              '${StringHelper.productCategoryImageBastUrl}${widget.categoryItemModel.sub_categories![index].icon}',
+                              placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Image.asset(AssetsHelper.placeHolder),
+                            ),
+                            // child: Image.asset(
+                            //   AssetsHelper.categoryIcon,
+                            //   height: 0.042 * scWidth,
+                            //   width: 0.042 * scWidth,
+                            //   color: AppColor.appColor,
+                            // ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 0.042 * scWidth,
+                        ),
                             Texts(
                               texts: widget.categoryItemModel.sub_categories![index].name!,
                               textStyle: AppStyles.text14PxMedium.copyWith(

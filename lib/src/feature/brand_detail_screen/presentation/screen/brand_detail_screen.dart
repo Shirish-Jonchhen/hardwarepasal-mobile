@@ -2,9 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hardwarepasal/src/core/routes/app_router.dart';
-import 'package:hardwarepasal/src/feature/brand_detail_screen/presentation/cubit/brand_details_cubit.dart';
-import 'package:hardwarepasal/src/feature/brands_screen/data/model/brands_model/brands_model.dart';
+import '../../../../core/routes/app_router.dart';
+import '../cubit/brand_details_cubit.dart';
+import '../../../brands_screen/data/model/brands_model/brands_model.dart';
+import '../../../category_screen/presentation/widget/loading_widget.dart';
 
 import '../../../../core/helpers/assets_helper.dart';
 import '../../../../core/helpers/string_helper.dart';
@@ -13,11 +14,12 @@ import '../../../../core/themes/app_styles.dart';
 import '../../../../core/widgets/app_item_card.dart';
 import '../../../../core/widgets/app_texts.dart';
 import '../../../category_screen/data/model/category_model/category_model.dart';
+import '../../../category_screen/presentation/widget/error_widget.dart';
 import '../../../home_screen/data/models/product_model/product_model.dart';
 
 class BrandDetailScreenPage extends StatefulWidget {
-  const BrandDetailScreenPage({super.key, required this.brandData});
-  final BrandsItemModel brandData;
+  const BrandDetailScreenPage({super.key, required this.slug});
+  final String slug;
 
   @override
   State<BrandDetailScreenPage> createState() => _BrandDetailScreenPageState();
@@ -30,8 +32,13 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<BrandDetailsCubit>().getBrandDetails(widget.brandData.slug!);
+    context.read<BrandDetailsCubit>().getBrandDetails(widget.slug);
     super.initState();
+  }
+
+  String removeHtmlTags(String htmlText){
+    final RegExp exp = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true);
+    return htmlText.replaceAll(exp, '');
   }
 
   @override
@@ -103,30 +110,19 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
         builder: (BuildContext context, state) {
           return state.maybeWhen(
             orElse: () => SizedBox(),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            error: (message) => Center(
-              child: Texts(
-                texts: message,
-                textStyle: AppStyles.text14PxRegular.copyWith(
-                  color: AppColor.appColor,
-                ),
-              ),
-            ),
-            noInternet: () => Center(
-              child: Texts(
-                texts: 'No Internet Connection',
-                textStyle: AppStyles.text14PxRegular.copyWith(
-                  color: AppColor.appColor,
-                ),
-              ),
-            ),
+            loading: () => const LoadingWidget(),
+            error: (message) => ErrorScreen(message: message, onTap: () {
+              context.read<BrandDetailsCubit>().getBrandDetails(widget.slug!);
+            }),
+            noInternet: () => ErrorScreen(message: "No Internet Connection", onTap: () {
+          context.read<BrandDetailsCubit>().getBrandDetails(widget.slug!);
+          }),
             success: (data)
             {
               BrandsItemModel brandData = data.data!.data!.data!.brand!;
               List<CategoryItemModel> categoryData = data.data!.data!.data!.filteredCategories!;
               List<ProductModel> productData = data.data!.data!.data!.products!.data!;
+              List<ProductModel> displayData = productData.where((e) => e.product_cat_id == categoryData[selectedIndex].id,).toList();
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -161,7 +157,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                                     height: 0.2 * scWidth,
                                     width: 0.2 * scWidth,
                                     imageUrl:
-                                        'https://images.unsplash.com/photo-1612838320302-4b3b3b3b3b3b',
+                                        "${StringHelper.brandImageBastUrl}${data.data!.data!.data!.brand!.image}",
                                     placeholder: (context, url) =>
                                         const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
@@ -191,8 +187,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                             ),
                             Texts(
                               texts:
-                                  'Somany Ceramics Limited (SCL) is among the top 15 global giants of'
-                                  ' the Ceramic Industry. Founded in 1968 and Established more than 50 years ago by Late Shri Hiralal Somany Ji, Brand SOMANY, under the capable leadership of Mr. Shreekant Somany, Chairman & Managing Director and Mr. Abhishek Somany, Managing Director & CEO, is a household name in India for tiles and bathware. Moreover, it exports its products to over 55 countries across six continents. The company is a complete solution provider in decor solutions with the widest product selection in all categories: ceramic (wall and floor tiles), polished vitrified tiles, glazed vitrified tiles, sanitary ware and bath fittings.',
+                                  removeHtmlTags(data.data!.data!.data!.brand!.description!),
                               textStyle: AppStyles.text14PxRegular.copyWith(
                                 color: AppColor.textGreyColor,
                                 fontWeight: FontWeight.w300,
@@ -243,6 +238,17 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                     SizedBox(
                       height: 0.024 * scHeight,
                     ),
+
+                    productData.isEmpty && categoryData.isEmpty
+                        ? Center(
+                            child: Texts(
+                              texts: 'No Products Found',
+                              textStyle: AppStyles.text14PxRegular.copyWith(
+                                color: AppColor.appColor,
+                              ),
+                            ),
+                          )
+                        :
                     Container(
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
@@ -319,8 +325,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                                               child: CachedNetworkImage(
                                                 height: 0.061 * scHeight,
                                                 width: 0.18 * scWidth,
-                                                imageUrl: StringHelper
-                                                    .coverImageBaseUrl,
+                                                imageUrl:"${categoryData[index].image_url}",
                                                 placeholder: (context, url) =>
                                                     const CircularProgressIndicator(),
                                                 errorWidget:
@@ -358,7 +363,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                             GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: productData.length,
+                              itemCount: displayData.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -368,7 +373,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                               ),
                               itemBuilder: (context, index) {
                                 return AppItemCard(
-                                  productModel: productData[index],
+                                  productModel: displayData[index],
                                 );
                                 // return Container();
                               },
@@ -384,7 +389,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                 ),
               );
             },
-            initial: () => SizedBox(),
+            initial: () => const SizedBox(),
           );
         },
       ),

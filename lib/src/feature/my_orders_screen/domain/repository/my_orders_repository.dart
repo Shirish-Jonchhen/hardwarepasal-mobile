@@ -6,5 +6,5 @@ import '../../../../core/api_response/api_response.dart';
 import '../../../../core/errors/app_error.dart';
 
 abstract class MyOrdersRepository {
-  Future<Either<AppError, ApiResponse<MyOrdersModel>>> getMyOrders();
+  Future<Either<AppError, ApiResponse<MyOrdersModel>>> getMyOrders(int page);
 }

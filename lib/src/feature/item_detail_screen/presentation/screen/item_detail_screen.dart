@@ -15,7 +15,9 @@ import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/widget
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/add_wish_list_cubit.dart';
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/remove_wish_list_cubit.dart';
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/wishlist_cubit.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ticket_widget/ticket_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../core/di/injection.dart';
@@ -25,6 +27,7 @@ import '../../../../core/helpers/snackbar_helper.dart';
 import '../../../../core/helpers/storage_helper.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/widgets/app_item_card.dart';
+import '../../../home_screen/presentation/cubit/home_recently_viewed_cubit.dart';
 import '../../data/models/cart_item_model/cart_item_model.dart';
 
 class ItemDetailScreenPage extends StatefulWidget {
@@ -43,6 +46,14 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
   bool productImageDotTwo = false;
   bool productImageDotThree = false;
 
+
+  int recentlyViewedProductsIndex = 0;
+  PageController recentlyViewedProductPageController = PageController();
+
+  int similarBrandProductsIndex = 0;
+  PageController similarBrandProductsPageController = PageController();
+
+
   late List<CartItemModel> wishList = [];
 
   FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -51,6 +62,7 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
   @override
   initState() {
     super.initState();
+    context.read<HomeRecentlyViewedCubit>().getRecentlyViewedProducts();
     storageHelper = StorageHelper(storage);
     storageHelper.getCartItems().then((value) {
       wishList = value;
@@ -83,6 +95,37 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
   }
 
   int imageIndex = 0;
+
+
+// WhatsApp
+  void launchWhatsApp(String number) async {
+    final whatsappUrl = Uri.parse("https://wa.me/$number");
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl);
+    } else {
+      throw 'Could not launch $whatsappUrl';
+    }
+  }
+
+// Viber
+  void launchViber(String number) async {
+    final Uri viberUrl = Uri.parse("viber://chat?number=${Uri.encodeComponent(number)}");
+    if (await canLaunchUrl(viberUrl)) {
+      await launchUrl(viberUrl);
+    } else {
+      throw 'Could not launch $viberUrl';
+    }
+  }
+
+// Phone Call
+  void makePhoneCall(String number) async {
+    final phoneUrl = Uri.parse("tel:$number");
+    if (await canLaunchUrl(phoneUrl)) {
+      await launchUrl(phoneUrl);
+    } else {
+      throw 'Could not launch $phoneUrl';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -333,10 +376,17 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                       scHeight: scHeight,
                       title: isLoading ? " Adding... " : "Add To Cart",
                       onTap: () {
-                        if (!isLoading) {
+                        if (!isLoading && widget.productModel.quantity! != 0) {
                           context.read<AddToCartCubit>().addToCart(
                               widget.productModel.id.toString(),
                               quantity.toString());
+                        }else{
+                          SnackBarHelper.showSnackBar(
+                            message: "Out of Stock",
+                            context: context,
+                            isError: true,
+                          );
+                          return;
                         }
                       },
                     );
@@ -466,17 +516,19 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                                         height: 0.31 * scHeight,
                                         color: AppColor.appColor.withOpacity(0),
                                         child: Center(
-                                          child: CachedNetworkImage(
-                                            imageUrl: (index == 0)
-                                                ? '${StringHelper.coverImageBaseUrl}${response.product!.cover_image}'
-                                                : '${StringHelper.productImageBaseUrl}${response.product!.images![index - 1].image}',
-                                            placeholder: (context, url) =>
-                                                const CircularProgressIndicator(),
-                                            errorWidget: (context, url,
-                                                    error) =>
-                                                Image.asset(
-                                                    AssetsHelper.placeHolder),
+                                          child: InteractiveViewer(
+
+                                            maxScale: 5,
+                                            minScale: 1,
+                                            child: CachedNetworkImage(
+                                              imageUrl: (index == 0)
+                                                  ? '${StringHelper.productCoverImageBastUrl}${response.product!.cover_image}'
+                                                  : '${StringHelper.productImageBaseUrl}${response.product!.images![index - 1].image}',
+                                              placeholder: (context, url) => const CircularProgressIndicator(),
+                                              errorWidget: (context, url, error) => Image.asset(AssetsHelper.placeHolder),
+                                            ),
                                           ),
+
                                         ),
                                       ),
                                     ),
@@ -562,6 +614,8 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                                         SizedBox(
                                           width: 0.01 * scWidth,
                                         ),
+
+                                        if(response.product!.old_price != null && response.product!.old_price!.isNotEmpty && response.product!.old_price!.trim() != "")
                                         Texts(
                                           texts:
                                               "Rs. ${response.product!.old_price}",
@@ -600,21 +654,31 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                                                   fontSize: 10),
                                         ),
                                         const Spacer(),
-                                        Image.asset(
-                                          AssetsHelper.shareBtn,
-                                          width: 0.053 * scWidth,
-                                          height: 0.053 * scWidth,
-                                          color: AppColor.appColor,
+                                        InkWell(
+                                          onTap: () {
+                                            Share.share("https://hardwarepasal.com/product/${data.data!.data!.product!.slug!}");
+                                          },
+                                          child: Row(
+                                            children:[
+                                              Image.asset(
+                                                AssetsHelper.shareBtn,
+                                                width: 0.053 * scWidth,
+                                                height: 0.053 * scWidth,
+                                                color: AppColor.appColor,
+                                              ),
+                                              SizedBox(
+                                                width: 0.0051 * scWidth,
+                                              ),
+                                              Texts(
+                                                texts: "Share",
+                                                textStyle: AppStyles.text12PxRegular
+                                                    .copyWith(
+                                                    color: AppColor.appColor),
+                                              ),
+                                            ]
+                                          ),
                                         ),
-                                        SizedBox(
-                                          width: 0.0051 * scWidth,
-                                        ),
-                                        Texts(
-                                          texts: "Share",
-                                          textStyle: AppStyles.text12PxRegular
-                                              .copyWith(
-                                                  color: AppColor.appColor),
-                                        )
+
                                       ],
                                     ),
                                     SizedBox(
@@ -660,6 +724,15 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                                           ),
 
                                           //quantity box
+                                          widget.productModel.quantity == 0
+                                              ? Texts(
+                                                  texts: "Out of Stock",
+                                                  textStyle: AppStyles
+                                                      .text14PxRegular
+                                                      .copyWith(
+                                                          color: Colors.red),
+                                                )
+                                              :
                                           Container(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 0.026 * scWidth,
@@ -1088,117 +1161,132 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0xffF8F8F8),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 0.088 * scWidth,
-                                              vertical: 0.017 * scHeight,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  width: 0.1 * scWidth,
-                                                  height: 0.1 * scWidth,
-                                                  padding: EdgeInsets.all(
-                                                      0.021 * scWidth),
-                                                  decoration: BoxDecoration(
-                                                    color: AppColor.appColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                                          InkWell(
+                                            child:Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(0xffF8F8F8),
+                                                borderRadius:
+                                                BorderRadius.circular(8),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 0.088 * scWidth,
+                                                vertical: 0.017 * scHeight,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width: 0.1 * scWidth,
+                                                    height: 0.1 * scWidth,
+                                                    padding: EdgeInsets.all(
+                                                        0.021 * scWidth),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColor.appColor,
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          8),
+                                                    ),
+                                                    child: Image.asset(
+                                                      AssetsHelper.phoneIcon,
+                                                    ),
                                                   ),
-                                                  child: Image.asset(
-                                                    AssetsHelper.phoneIcon,
+                                                  SizedBox(
+                                                    height: 0.009 * scHeight,
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height: 0.009 * scHeight,
-                                                ),
-                                                Texts(
-                                                  texts: "Call",
-                                                  textStyle:
-                                                      AppStyles.text12PxRegular,
-                                                )
-                                              ],
+                                                  Texts(
+                                                    texts: "Call",
+                                                    textStyle:
+                                                    AppStyles.text12PxRegular,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            onTap: () => makePhoneCall(
+                                                response.product!.suppliers!.phone ?? "+977980-8441323"),
+                                          ),
+
+                                          InkWell(
+                                            onTap: () => launchViber(
+                                                response.product!.suppliers!.phone ?? "+977980-8441323"),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(0xffF8F8F8),
+                                                borderRadius:
+                                                BorderRadius.circular(8),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 0.088 * scWidth,
+                                                vertical: 0.017 * scHeight,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width: 0.1 * scWidth,
+                                                    height: 0.1 * scWidth,
+                                                    padding: EdgeInsets.all(
+                                                        0.021 * scWidth),
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xff7D3DAF),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          8),
+                                                    ),
+                                                    child: Image.asset(
+                                                        AssetsHelper.viberIcon),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 0.009 * scHeight,
+                                                  ),
+                                                  Texts(
+                                                    texts: "Viber",
+                                                    textStyle:
+                                                    AppStyles.text12PxRegular,
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0xffF8F8F8),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 0.088 * scWidth,
-                                              vertical: 0.017 * scHeight,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  width: 0.1 * scWidth,
-                                                  height: 0.1 * scWidth,
-                                                  padding: EdgeInsets.all(
-                                                      0.021 * scWidth),
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xff7D3DAF),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+
+                                          InkWell(
+                                            onTap: () => launchWhatsApp(
+                                                response.product!.suppliers!.phone ?? "+977980-8441323"),
+
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(0xffF8F8F8),
+                                                borderRadius:
+                                                BorderRadius.circular(8),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 0.088 * scWidth,
+                                                vertical: 0.017 * scHeight,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width: 0.1 * scWidth,
+                                                    height: 0.1 * scWidth,
+                                                    padding: EdgeInsets.all(
+                                                        0.021 * scWidth),
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xff60D669),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          8),
+                                                    ),
+                                                    child: Image.asset(
+                                                      AssetsHelper.whatsappIcon,
+                                                    ),
                                                   ),
-                                                  child: Image.asset(
-                                                      AssetsHelper.viberIcon),
-                                                ),
-                                                SizedBox(
-                                                  height: 0.009 * scHeight,
-                                                ),
-                                                Texts(
-                                                  texts: "Viber",
-                                                  textStyle:
-                                                      AppStyles.text12PxRegular,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0xffF8F8F8),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 0.088 * scWidth,
-                                              vertical: 0.017 * scHeight,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  width: 0.1 * scWidth,
-                                                  height: 0.1 * scWidth,
-                                                  padding: EdgeInsets.all(
-                                                      0.021 * scWidth),
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xff60D669),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                                                  SizedBox(
+                                                    height: 0.009 * scHeight,
                                                   ),
-                                                  child: Image.asset(
-                                                    AssetsHelper.whatsappIcon,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 0.009 * scHeight,
-                                                ),
-                                                Texts(
-                                                  texts: "Whatsapp",
-                                                  textStyle:
-                                                      AppStyles.text12PxRegular,
-                                                )
-                                              ],
+                                                  Texts(
+                                                    texts: "Whatsapp",
+                                                    textStyle:
+                                                    AppStyles.text12PxRegular,
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ]),
@@ -1340,6 +1428,342 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                         height: 0.024 * scHeight,
                       ),
 
+                      BlocConsumer<HomeRecentlyViewedCubit,
+                          HomeRecentlyViewedState>(
+                        builder: (BuildContext context, state) {
+                          return state.maybeWhen(
+                            orElse: () => Container(),
+                            initial: () =>
+                            const Center(
+                                child: Text('Wishlist is empty')),
+                            loading: () =>
+                            const Center(
+                                child: CircularProgressIndicator()),
+                            error: (message) =>
+                                Center(child: Text('Error: $message')),
+                            noInternet: () =>
+                            const Center(
+                                child: Text('No internet connection')),
+                            success: (products) {
+                              if (products.isEmpty) {
+                                return Container();
+                              } else {
+                                return Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(8),
+                                    color: AppColor.whiteColor,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: scWidth * 0.029),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 0.029 * scHeight,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Texts(
+                                              texts: 'Recently Viewed',
+                                              textStyle: AppStyles
+                                                  .text14PxMedium,
+                                            ),
+                                            InkWell(
+                                              onTap: () =>
+                                                  context.router.push(
+                                                      const RecentlyViewedScreenRoute()),
+                                              child: Texts(
+                                                texts: 'See All',
+                                                textStyle: AppStyles
+                                                    .text12PxRegular
+                                                    .copyWith(
+                                                  color:
+                                                  AppColor.appColor,
+                                                  decoration:
+                                                  TextDecoration
+                                                      .underline,
+                                                  decorationColor:
+                                                  AppColor.appColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 0.024 * scHeight,
+                                        ),
+                                        SizedBox(
+                                          height: 0.33 * scHeight,
+                                          child: PageView.builder(
+                                            controller:
+                                            recentlyViewedProductPageController,
+                                            onPageChanged: (index) {
+                                              recentlyViewedProductsIndex =
+                                                  index;
+                                              setState(() {});
+                                            },
+                                            itemCount:
+                                            (products.length > 8)
+                                                ? 4
+                                                : (products.length /
+                                                2)
+                                                .round(),
+                                            itemBuilder:
+                                                (context, index) {
+                                              return Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: AppItemCard(
+                                                      productModel:
+                                                      products[
+                                                      index *
+                                                          2],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                    0.021 * scWidth,
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: (products
+                                                        .length %
+                                                        2 !=
+                                                        0 &&
+                                                        index ==
+                                                            (products
+                                                                .length /
+                                                                2)
+                                                                .round() -
+                                                                1)
+                                                        ? Container()
+                                                        : AppItemCard(
+                                                      productModel:
+                                                      products[
+                                                      index * 2 +
+                                                          1],
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 0.011 * scHeight,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: List.generate(
+                                            (products.length > 8)
+                                                ? 4
+                                                : (products.length / 2)
+                                                .round(),
+                                                (index) =>
+                                                Container(
+                                                  height: 8.h,
+                                                  width: 8.w,
+                                                  margin:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 4.w),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape
+                                                        .circle,
+                                                    color: index ==
+                                                        recentlyViewedProductsIndex
+                                                        ? AppColor
+                                                        .appColor
+                                                        : AppColor
+                                                        .appColor
+                                                        .withOpacity(
+                                                        0.2),
+                                                  ),
+                                                ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 0.029 * scHeight,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                        },
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            success: (data) {
+                              setState(() {});
+                            },
+                            orElse: () {},
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 0.014 * scHeight,
+                      ),
+
+                      if(response.brand_product != null && response.brand_product!.isNotEmpty)
+                        Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.circular(8),
+                    color: AppColor.whiteColor,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: scWidth * 0.029),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 0.029 * scHeight,
+                        ),
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment
+                              .spaceBetween,
+                          children: [
+                            Texts(
+                              texts: 'Similar Brand Products',
+                              textStyle: AppStyles
+                                  .text14PxMedium,
+                            ),
+                            InkWell(
+                              onTap: (){},
+                              // onTap: () =>
+                              //     context.router.push(
+                              //         const RecentlyViewedScreenRoute()),
+                              child: Texts(
+                                texts: 'See All',
+                                textStyle: AppStyles
+                                    .text12PxRegular
+                                    .copyWith(
+                                  color:
+                                  AppColor.appColor,
+                                  decoration:
+                                  TextDecoration
+                                      .underline,
+                                  decorationColor:
+                                  AppColor.appColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 0.024 * scHeight,
+                        ),
+                        SizedBox(
+                          height: 0.33 * scHeight,
+                          child: PageView.builder(
+                            controller:
+                            similarBrandProductsPageController,
+                            onPageChanged: (index) {
+                              similarBrandProductsIndex =
+                                  index;
+                              setState(() {});
+                            },
+                            itemCount:
+                            (response.brand_product!.length > 8)
+                                ? 4
+                                : (response.brand_product!.length /
+                                2)
+                                .round(),
+                            itemBuilder:
+                                (context, index) {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: AppItemCard(
+                                      productModel:
+                                      response.brand_product![
+                                      index *
+                                          2],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                    0.021 * scWidth,
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: (response.brand_product!
+                                        .length %
+                                        2 !=
+                                        0 &&
+                                        index ==
+                                            (response.brand_product!
+                                                .length /
+                                                2)
+                                                .round() -
+                                                1)
+                                        ? Container()
+                                        : AppItemCard(
+                                      productModel:
+                                      response.brand_product![
+                                      index * 2 +
+                                          1],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 0.011 * scHeight,
+                        ),
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: List.generate(
+                            (response.brand_product!.length > 8)
+                                ? 4
+                                : (response.brand_product!.length / 2)
+                                .round(),
+                                (index) =>
+                                Container(
+                                  height: 8.h,
+                                  width: 8.w,
+                                  margin:
+                                  EdgeInsets.symmetric(
+                                      horizontal: 4.w),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape
+                                        .circle,
+                                    color: index ==
+                                        recentlyViewedProductsIndex
+                                        ? AppColor
+                                        .appColor
+                                        : AppColor
+                                        .appColor
+                                        .withOpacity(
+                                        0.2),
+                                  ),
+                                ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 0.029 * scHeight,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+
+                      if(response.customersAreAlsoViewing!.isNotEmpty)
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -1369,15 +1793,23 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
                                     textStyle: AppStyles.text14PxMedium,
                                   ),
                                   const Spacer(),
-                                  Texts(
-                                    texts: 'See All',
-                                    textStyle:
-                                        AppStyles.text12PxRegular.copyWith(
-                                      color: AppColor.appColor,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: AppColor.appColor,
+
+                                  InkWell(
+                                    onTap: (){
+                                      context.router.push(
+                                          SimilarProductsScreenRoute(products: response.customersAreAlsoViewing!, productName: response.product!.name!));
+                                    },
+                                    child:Texts(
+                                      texts: 'See All',
+                                      textStyle:
+                                      AppStyles.text12PxRegular.copyWith(
+                                        color: AppColor.appColor,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: AppColor.appColor,
+                                      ),
                                     ),
                                   ),
+
                                 ],
                               ),
                               SizedBox(

@@ -18,7 +18,7 @@ _$ProductSupplierModelImpl _$$ProductSupplierModelImplFromJson(
       updated_by: json['updated_by'] as int?,
       created_at: json['created_at'] as String?,
       updated_at: json['updated_at'] as String?,
-      markup_percent: json['markup_percent'] as String?,
+      markup_percent: json['markup_percent'] as int?,
       code: json['code'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,

@@ -28,7 +28,7 @@ mixin _$ProductModel {
   String? get cover_image => throw _privateConstructorUsedError;
   String? get model_no => throw _privateConstructorUsedError;
   String? get old_price => throw _privateConstructorUsedError;
-  int? get price => throw _privateConstructorUsedError;
+  double? get price => throw _privateConstructorUsedError;
   String? get xtraAttribute => throw _privateConstructorUsedError;
   double? get weight => throw _privateConstructorUsedError;
   int? get quantity => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ mixin _$ProductModel {
   String? get created_at => throw _privateConstructorUsedError;
   String? get updated_at => throw _privateConstructorUsedError;
   int? get brand_id => throw _privateConstructorUsedError;
-  String? get group_category_id => throw _privateConstructorUsedError;
+  int? get group_category_id => throw _privateConstructorUsedError;
   int? get clearance_sale => throw _privateConstructorUsedError;
   String? get specification => throw _privateConstructorUsedError;
   String? get delivery_days => throw _privateConstructorUsedError;
@@ -54,6 +54,7 @@ mixin _$ProductModel {
   String? get video_link => throw _privateConstructorUsedError;
   int? get is_blocked => throw _privateConstructorUsedError;
   int? get is_ask_price => throw _privateConstructorUsedError;
+  List<ProductReviewModel>? get reviews => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -76,7 +77,7 @@ abstract class $ProductModelCopyWith<$Res> {
       String? cover_image,
       String? model_no,
       String? old_price,
-      int? price,
+      double? price,
       String? xtraAttribute,
       double? weight,
       int? quantity,
@@ -85,7 +86,7 @@ abstract class $ProductModelCopyWith<$Res> {
       String? created_at,
       String? updated_at,
       int? brand_id,
-      String? group_category_id,
+      int? group_category_id,
       int? clearance_sale,
       String? specification,
       String? delivery_days,
@@ -101,7 +102,8 @@ abstract class $ProductModelCopyWith<$Res> {
       int? view_count,
       String? video_link,
       int? is_blocked,
-      int? is_ask_price});
+      int? is_ask_price,
+      List<ProductReviewModel>? reviews});
 }
 
 /// @nodoc
@@ -151,6 +153,7 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
     Object? video_link = freezed,
     Object? is_blocked = freezed,
     Object? is_ask_price = freezed,
+    Object? reviews = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -188,7 +191,7 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       xtraAttribute: freezed == xtraAttribute
           ? _value.xtraAttribute
           : xtraAttribute // ignore: cast_nullable_to_non_nullable
@@ -224,7 +227,7 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
       group_category_id: freezed == group_category_id
           ? _value.group_category_id
           : group_category_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       clearance_sale: freezed == clearance_sale
           ? _value.clearance_sale
           : clearance_sale // ignore: cast_nullable_to_non_nullable
@@ -289,6 +292,10 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
           ? _value.is_ask_price
           : is_ask_price // ignore: cast_nullable_to_non_nullable
               as int?,
+      reviews: freezed == reviews
+          ? _value.reviews
+          : reviews // ignore: cast_nullable_to_non_nullable
+              as List<ProductReviewModel>?,
     ) as $Val);
   }
 }
@@ -310,7 +317,7 @@ abstract class _$$ProductModelImplCopyWith<$Res>
       String? cover_image,
       String? model_no,
       String? old_price,
-      int? price,
+      double? price,
       String? xtraAttribute,
       double? weight,
       int? quantity,
@@ -319,7 +326,7 @@ abstract class _$$ProductModelImplCopyWith<$Res>
       String? created_at,
       String? updated_at,
       int? brand_id,
-      String? group_category_id,
+      int? group_category_id,
       int? clearance_sale,
       String? specification,
       String? delivery_days,
@@ -335,7 +342,8 @@ abstract class _$$ProductModelImplCopyWith<$Res>
       int? view_count,
       String? video_link,
       int? is_blocked,
-      int? is_ask_price});
+      int? is_ask_price,
+      List<ProductReviewModel>? reviews});
 }
 
 /// @nodoc
@@ -383,6 +391,7 @@ class __$$ProductModelImplCopyWithImpl<$Res>
     Object? video_link = freezed,
     Object? is_blocked = freezed,
     Object? is_ask_price = freezed,
+    Object? reviews = freezed,
   }) {
     return _then(_$ProductModelImpl(
       id: freezed == id
@@ -420,7 +429,7 @@ class __$$ProductModelImplCopyWithImpl<$Res>
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       xtraAttribute: freezed == xtraAttribute
           ? _value.xtraAttribute
           : xtraAttribute // ignore: cast_nullable_to_non_nullable
@@ -456,7 +465,7 @@ class __$$ProductModelImplCopyWithImpl<$Res>
       group_category_id: freezed == group_category_id
           ? _value.group_category_id
           : group_category_id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       clearance_sale: freezed == clearance_sale
           ? _value.clearance_sale
           : clearance_sale // ignore: cast_nullable_to_non_nullable
@@ -521,6 +530,10 @@ class __$$ProductModelImplCopyWithImpl<$Res>
           ? _value.is_ask_price
           : is_ask_price // ignore: cast_nullable_to_non_nullable
               as int?,
+      reviews: freezed == reviews
+          ? _value._reviews
+          : reviews // ignore: cast_nullable_to_non_nullable
+              as List<ProductReviewModel>?,
     ));
   }
 }
@@ -563,7 +576,9 @@ class _$ProductModelImpl implements _ProductModel {
       this.view_count,
       this.video_link,
       this.is_blocked,
-      this.is_ask_price});
+      this.is_ask_price,
+      final List<ProductReviewModel>? reviews})
+      : _reviews = reviews;
 
   factory _$ProductModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductModelImplFromJson(json);
@@ -585,7 +600,7 @@ class _$ProductModelImpl implements _ProductModel {
   @override
   final String? old_price;
   @override
-  final int? price;
+  final double? price;
   @override
   final String? xtraAttribute;
   @override
@@ -603,7 +618,7 @@ class _$ProductModelImpl implements _ProductModel {
   @override
   final int? brand_id;
   @override
-  final String? group_category_id;
+  final int? group_category_id;
   @override
   final int? clearance_sale;
   @override
@@ -636,10 +651,19 @@ class _$ProductModelImpl implements _ProductModel {
   final int? is_blocked;
   @override
   final int? is_ask_price;
+  final List<ProductReviewModel>? _reviews;
+  @override
+  List<ProductReviewModel>? get reviews {
+    final value = _reviews;
+    if (value == null) return null;
+    if (_reviews is EqualUnmodifiableListView) return _reviews;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, product_cat_id: $product_cat_id, sup_id: $sup_id, name: $name, description: $description, cover_image: $cover_image, model_no: $model_no, old_price: $old_price, price: $price, xtraAttribute: $xtraAttribute, weight: $weight, quantity: $quantity, status: $status, slug: $slug, created_at: $created_at, updated_at: $updated_at, brand_id: $brand_id, group_category_id: $group_category_id, clearance_sale: $clearance_sale, specification: $specification, delivery_days: $delivery_days, express_delivery_days: $express_delivery_days, express_delivery_price: $express_delivery_price, discount: $discount, meta_keywords: $meta_keywords, meta_description: $meta_description, meta_title: $meta_title, hot_deal: $hot_deal, warrenty: $warrenty, hpxpress: $hpxpress, view_count: $view_count, video_link: $video_link, is_blocked: $is_blocked, is_ask_price: $is_ask_price)';
+    return 'ProductModel(id: $id, product_cat_id: $product_cat_id, sup_id: $sup_id, name: $name, description: $description, cover_image: $cover_image, model_no: $model_no, old_price: $old_price, price: $price, xtraAttribute: $xtraAttribute, weight: $weight, quantity: $quantity, status: $status, slug: $slug, created_at: $created_at, updated_at: $updated_at, brand_id: $brand_id, group_category_id: $group_category_id, clearance_sale: $clearance_sale, specification: $specification, delivery_days: $delivery_days, express_delivery_days: $express_delivery_days, express_delivery_price: $express_delivery_price, discount: $discount, meta_keywords: $meta_keywords, meta_description: $meta_description, meta_title: $meta_title, hot_deal: $hot_deal, warrenty: $warrenty, hpxpress: $hpxpress, view_count: $view_count, video_link: $video_link, is_blocked: $is_blocked, is_ask_price: $is_ask_price, reviews: $reviews)';
   }
 
   @override
@@ -707,7 +731,8 @@ class _$ProductModelImpl implements _ProductModel {
             (identical(other.is_blocked, is_blocked) ||
                 other.is_blocked == is_blocked) &&
             (identical(other.is_ask_price, is_ask_price) ||
-                other.is_ask_price == is_ask_price));
+                other.is_ask_price == is_ask_price) &&
+            const DeepCollectionEquality().equals(other._reviews, _reviews));
   }
 
   @JsonKey(ignore: true)
@@ -747,7 +772,8 @@ class _$ProductModelImpl implements _ProductModel {
         view_count,
         video_link,
         is_blocked,
-        is_ask_price
+        is_ask_price,
+        const DeepCollectionEquality().hash(_reviews)
       ]);
 
   @JsonKey(ignore: true)
@@ -774,7 +800,7 @@ abstract class _ProductModel implements ProductModel {
       final String? cover_image,
       final String? model_no,
       final String? old_price,
-      final int? price,
+      final double? price,
       final String? xtraAttribute,
       final double? weight,
       final int? quantity,
@@ -783,7 +809,7 @@ abstract class _ProductModel implements ProductModel {
       final String? created_at,
       final String? updated_at,
       final int? brand_id,
-      final String? group_category_id,
+      final int? group_category_id,
       final int? clearance_sale,
       final String? specification,
       final String? delivery_days,
@@ -799,7 +825,8 @@ abstract class _ProductModel implements ProductModel {
       final int? view_count,
       final String? video_link,
       final int? is_blocked,
-      final int? is_ask_price}) = _$ProductModelImpl;
+      final int? is_ask_price,
+      final List<ProductReviewModel>? reviews}) = _$ProductModelImpl;
 
   factory _ProductModel.fromJson(Map<String, dynamic> json) =
       _$ProductModelImpl.fromJson;
@@ -821,7 +848,7 @@ abstract class _ProductModel implements ProductModel {
   @override
   String? get old_price;
   @override
-  int? get price;
+  double? get price;
   @override
   String? get xtraAttribute;
   @override
@@ -839,7 +866,7 @@ abstract class _ProductModel implements ProductModel {
   @override
   int? get brand_id;
   @override
-  String? get group_category_id;
+  int? get group_category_id;
   @override
   int? get clearance_sale;
   @override
@@ -872,6 +899,8 @@ abstract class _ProductModel implements ProductModel {
   int? get is_blocked;
   @override
   int? get is_ask_price;
+  @override
+  List<ProductReviewModel>? get reviews;
   @override
   @JsonKey(ignore: true)
   _$$ProductModelImplCopyWith<_$ProductModelImpl> get copyWith =>

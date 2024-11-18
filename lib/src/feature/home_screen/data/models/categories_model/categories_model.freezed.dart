@@ -37,7 +37,7 @@ mixin _$CategoriesHomeSubCategorySubCategoriesModel {
   String? get meta_keywords => throw _privateConstructorUsedError;
   String? get meta_descriprion => throw _privateConstructorUsedError;
   String? get meta_title => throw _privateConstructorUsedError;
-  String? get is_grouping => throw _privateConstructorUsedError;
+  int? get is_grouping => throw _privateConstructorUsedError;
   int? get display => throw _privateConstructorUsedError;
   String? get show_on_home => throw _privateConstructorUsedError;
   String? get offer_text => throw _privateConstructorUsedError;
@@ -78,7 +78,7 @@ abstract class $CategoriesHomeSubCategorySubCategoriesModelCopyWith<$Res> {
       String? meta_keywords,
       String? meta_descriprion,
       String? meta_title,
-      String? is_grouping,
+      int? is_grouping,
       int? display,
       String? show_on_home,
       String? offer_text,
@@ -193,7 +193,7 @@ class _$CategoriesHomeSubCategorySubCategoriesModelCopyWithImpl<$Res,
       is_grouping: freezed == is_grouping
           ? _value.is_grouping
           : is_grouping // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       display: freezed == display
           ? _value.display
           : display // ignore: cast_nullable_to_non_nullable
@@ -256,7 +256,7 @@ abstract class _$$CategoriesHomeSubCategorySubCategoriesModelImplCopyWith<$Res>
       String? meta_keywords,
       String? meta_descriprion,
       String? meta_title,
-      String? is_grouping,
+      int? is_grouping,
       int? display,
       String? show_on_home,
       String? offer_text,
@@ -370,7 +370,7 @@ class __$$CategoriesHomeSubCategorySubCategoriesModelImplCopyWithImpl<$Res>
       is_grouping: freezed == is_grouping
           ? _value.is_grouping
           : is_grouping // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       display: freezed == display
           ? _value.display
           : display // ignore: cast_nullable_to_non_nullable
@@ -474,7 +474,7 @@ class _$CategoriesHomeSubCategorySubCategoriesModelImpl
   @override
   final String? meta_title;
   @override
-  final String? is_grouping;
+  final int? is_grouping;
   @override
   final int? display;
   @override
@@ -619,7 +619,7 @@ abstract class _CategoriesHomeSubCategorySubCategoriesModel
           final String? meta_keywords,
           final String? meta_descriprion,
           final String? meta_title,
-          final String? is_grouping,
+          final int? is_grouping,
           final int? display,
           final String? show_on_home,
           final String? offer_text,
@@ -665,7 +665,7 @@ abstract class _CategoriesHomeSubCategorySubCategoriesModel
   @override
   String? get meta_title;
   @override
-  String? get is_grouping;
+  int? get is_grouping;
   @override
   int? get display;
   @override

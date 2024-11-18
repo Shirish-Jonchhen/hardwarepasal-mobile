@@ -16,10 +16,10 @@ class BrandsRepositoryImpl implements BrandsRepository{
   final BrandsDataSource _brandsDataSource;
   final NetworkInfo _networkInfo;
   @override
-  Future<Either<AppError, ApiResponse<BrandsModel>>> getBrands() async{
+  Future<Either<AppError, ApiResponse<BrandsModel>>> getBrands(int page) async{
     if(await _networkInfo.isConnected){
       try {
-        final response = await _brandsDataSource.getBrands();
+        final response = await _brandsDataSource.getBrands(page);
         return Right(
           ApiResponse(
               data: response.data,

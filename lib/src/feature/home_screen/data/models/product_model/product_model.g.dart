@@ -16,7 +16,7 @@ _$ProductModelImpl _$$ProductModelImplFromJson(Map<String, dynamic> json) =>
       cover_image: json['cover_image'] as String?,
       model_no: json['model_no'] as String?,
       old_price: json['old_price'] as String?,
-      price: json['price'] as int?,
+      price: (json['price'] as num?)?.toDouble(),
       xtraAttribute: json['xtra_attribute'] as String?,
       weight: (json['weight'] as num?)?.toDouble(),
       quantity: json['quantity'] as int?,
@@ -25,7 +25,7 @@ _$ProductModelImpl _$$ProductModelImplFromJson(Map<String, dynamic> json) =>
       created_at: json['created_at'] as String?,
       updated_at: json['updated_at'] as String?,
       brand_id: json['brand_id'] as int?,
-      group_category_id: json['group_category_id'] as String?,
+      group_category_id: json['group_category_id'] as int?,
       clearance_sale: json['clearance_sale'] as int?,
       specification: json['specification'] as String?,
       delivery_days: json['delivery_days'] as String?,
@@ -42,6 +42,9 @@ _$ProductModelImpl _$$ProductModelImplFromJson(Map<String, dynamic> json) =>
       video_link: json['video_link'] as String?,
       is_blocked: json['is_blocked'] as int?,
       is_ask_price: json['is_ask_price'] as int?,
+      reviews: (json['reviews'] as List<dynamic>?)
+          ?.map((e) => ProductReviewModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
@@ -80,4 +83,5 @@ Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>
       'video_link': instance.video_link,
       'is_blocked': instance.is_blocked,
       'is_ask_price': instance.is_ask_price,
+      'reviews': instance.reviews?.map((e) => e.toJson()).toList(),
     };

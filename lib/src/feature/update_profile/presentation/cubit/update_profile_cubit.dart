@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -30,9 +33,11 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     String? address,
     String? contact,
     String? imageUrl,
+    BuildContext? context,
   }) async {
-    print('ergfknerpjngeprijgnpreitnjeiprnjeirnjnjietnjietnj');
+    // print('ergfknerpjngeprijgnpreitnjeiprnjeirnjnjietnjietnj');
     emit(UpdateProfileState.loading());
+    EasyLoading.show(status: 'Updating Profile...');
     final response = await _updateProfileUsecase.call(
       UpdateProfileParams(
         firstName: firstName,
@@ -42,6 +47,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
         imageUrl: imageUrl,
       ),
     );
+    EasyLoading.dismiss();
     emit(response.fold(
       (l) => l.when(
         serverError: (message) => UpdateProfileState.error(message: message),
@@ -49,7 +55,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
       ),
       (r){
         FlutterSecureStorage storage = const FlutterSecureStorage();
-        UserDetails user = r.data!.data!.userDetails!;
+        // UserDetails user = r.data!.data!.userDetails!;
         UserDetails updatedUser;
         StorageHelper(storage).getUserData().then((value) {
           updatedUser = UserDetails(
@@ -64,9 +70,8 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
             user_id: r.data!.data!.userDetails!.user_id,
           );
           StorageHelper(storage).saveUserData(model:updatedUser).then((value) {
-            print("================================");
-            print("================================");
-            _userDetailsCubit.getUserDetails();
+            // _userDetailsCubit.getUserDetails();
+            context!.read<UserDetailsCubit>().getUserDetails();
           });
         });
         return UpdateProfileState.success(data: r);

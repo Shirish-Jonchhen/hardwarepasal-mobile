@@ -29,12 +29,21 @@ class UpdateProfileDataSourceImpl implements UpdateProfileDataSource {
         'last_name': lastName,
         'address': address,
         'contact': contact,
-        'image': (imageUrl != null)
-            ? await MultipartFile.fromFile(imageUrl, filename: '${imageUrl}.jpg')
-            : null,
       });
+
+      if(imageUrl != null){
+        if(imageUrl.contains("http")){
+          // formData.files.add(MapEntry('image', await MultipartFile.fromFile(imageUrl, filename: '${imageUrl}.jpg')));
+        }else{
+          formData.files.add(MapEntry('image', await MultipartFile.fromFile(imageUrl, filename: '${imageUrl}.jpg')));
+        }
+      }
+
       final response = await _dio.post('/user/update-profile', data: formData);
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: UpdateUserModel.fromJson(response.data),
           message: 'message',

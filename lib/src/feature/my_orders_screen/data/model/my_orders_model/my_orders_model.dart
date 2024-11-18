@@ -34,7 +34,18 @@ class MyOrderDataModel with _$MyOrderDataModel {
 class MyOrderInnerDataModel with _$MyOrderInnerDataModel {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory MyOrderInnerDataModel({
+    int? current_page,
     List<OrderData>? data,
+    String? first_page_url,
+    int? from,
+    int? last_page,
+    String? last_page_url,
+    String? next_page_url,
+    String? path,
+    int? per_page,
+    String? prev_page_url,
+    int? to,
+    int? total,
   }) = _MyOrderInnerDataModel;
 
   factory MyOrderInnerDataModel.fromJson(Map<String, dynamic> json) =>
@@ -47,7 +58,7 @@ class OrderData with _$OrderData {
   const factory OrderData({
     int? id,
     String? order_id,
-    String? user_id,
+    int? user_id,
     String? session_id,
     String? name,
     String? address,
@@ -55,23 +66,23 @@ class OrderData with _$OrderData {
     String? city,
     String? contact,
     String? delivery,
-    String? deliveryCharge,
-    String? totalWeight,
-    String? totalQuantityCharge,
+    double? deliveryCharge,
+    double? totalWeight,
+    double? totalQuantityCharge,
     String? status,
     String? created_at,
     String? updated_at,
-    String? express,
+    int? express,
     String? express_price,
-    String? seen,
+    int? seen,
     String? totaldeliverycharge,
     String? order_note,
     String? coupon_discount,
     String? payment_id,
-    String? payment_status,
+    int? payment_status,
     String? used_coupon_code,
-    String? is_customize,
-    String? cancel_reason_id,
+    int? is_customize,
+    int? cancel_reason_id,
     List<ProductModel>? products,
   }) = _OrderData;
 

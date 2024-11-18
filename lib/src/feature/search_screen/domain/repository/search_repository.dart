@@ -16,4 +16,8 @@ abstract class SearchRepository {
     String? brand,
     String? brandSearch,
   });
+
+  Future<Either<AppError, ApiResponse<List<String>>>> getSearchHistory();
+  Future<Either<AppError, ApiResponse<int>>> addSearchHistory(String search);
+  Future<Either<AppError, ApiResponse<int>>> clearSearchHistory();
 }

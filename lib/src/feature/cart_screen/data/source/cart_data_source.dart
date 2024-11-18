@@ -24,10 +24,15 @@ class CartDataSourceImpl implements CartDataSource{
     try {
       final response = await _dio.get('cart');
       if (response.statusCode == 200) {
-        return ApiResponse(
-          data: CartModel.fromJson(response.data),
-          message: 'message',
-        );
+        print(response.data);
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }else{
+          return ApiResponse(
+            data: CartModel.fromJson(response.data),
+            message: 'message',
+          );
+        }
       } else {
         throw const AppException(message: 'Unknown Error');
       }
@@ -42,6 +47,9 @@ class CartDataSourceImpl implements CartDataSource{
     try {
       final response = await _dio.delete('cart/$productId');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: RemoveFromCartModel.fromJson(response.data),
           message: 'message',
@@ -59,6 +67,9 @@ class CartDataSourceImpl implements CartDataSource{
     try {
       final response = await _dio.post('cart/update?product_id=$productId&quantity=$quantity');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: UpdateCartModel.fromJson(response.data),
           message: 'message',

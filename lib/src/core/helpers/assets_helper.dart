@@ -43,8 +43,13 @@ class AssetsHelper {
   static const String khaltiImg = 'asset/images/khalti.png';
   static const String fonepayImg = 'asset/images/fonepay.png';
   static const String connectipsImg = 'asset/images/connectips.png';
+  static const String imepayImg = 'asset/images/ime-pay-logo.png';
 
 
   static const String cartEmpty = 'asset/images/cart_empty.png';
   static const String swapIcon = 'asset/icons/Swap.png';
+
+  static const String botImg = 'asset/images/bot.png';
+  static const String noInternetImg = 'asset/images/no-wifi.png';
+  static const String errorImg = 'asset/images/error-img.png';
 }

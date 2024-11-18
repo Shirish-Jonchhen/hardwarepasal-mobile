@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hardwarepasal/src/core/helpers/assets_helper.dart';
+import 'package:hardwarepasal/src/core/helpers/string_helper.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 import 'package:hardwarepasal/src/core/themes/app_styles.dart';
 import 'package:hardwarepasal/src/core/widgets/app_texts.dart';
 import 'package:hardwarepasal/src/feature/auth/presentation/cubit/logout/logout_cubit.dart';
 import 'package:hardwarepasal/src/feature/profile_screen/presntation/cubit/user_details_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/di/injection.dart';
 
@@ -41,7 +43,7 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
     },
     {
       'title': 'Chat with us',
-      'route': null,
+      'route': "chat",
     },
   ];
   List<Map<String, dynamic>> legalList = [
@@ -62,6 +64,15 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
     context.read<UserDetailsCubit>().getUserDetails();
   }
 
+
+  void launchWhatsApp(String number) async {
+    final whatsappUrl = Uri.parse("https://wa.me/$number");
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl);
+    } else {
+      throw 'Could not launch $whatsappUrl';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final double scWidth = MediaQuery.of(context).size.width;
@@ -100,21 +111,6 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
                 color: AppColor.black,
               ),
             ),
-            SizedBox(
-              width: 0.026 * scWidth,
-            ),
-            InkWell(
-              onTap: () => context.router.push(const NotificationScreenRoute()),
-              child: Image.asset(
-                AssetsHelper.notificationBtn,
-                width: 0.064 * scWidth,
-                height: 0.064 * scWidth,
-                color: AppColor.black,
-              ),
-            ),
-            SizedBox(
-              width: 0.042 * scWidth,
-            ),
           ],
         ),
       ),
@@ -144,6 +140,7 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
                       child: Text(message),
                     ),
                     success: (data) {
+                      debugPrint(data.data!.last_name);
                       return ListTile(
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +174,7 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
                             image: (data.data!.image != null && data.data!.image!.isNotEmpty)?
                               DecorationImage(
                               image: NetworkImage(
-                                      'https://hardwarepasalapi.checkmysite.live/src/img/users/${data.data!.image!}',
+                                      '${StringHelper.userImageBastUrl}${data.data!.image!}',
 
 
                               ),
@@ -223,8 +220,11 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
                     final tabsRouter = AutoTabsRouter.of(context);
                     tabsRouter.setActiveIndex(1);
                   }
-                  if (generalList[index]['route'] != null) {
+                  if (generalList[index]['route'] != null && generalList[index]['route'] != "chat") {
                     context.router.push(generalList[index]['route']);
+                  }
+                  if(generalList[index]['route'] == "chat"){
+                   launchWhatsApp("+977980-8441323");
                   }
                 },
                 child: Padding(

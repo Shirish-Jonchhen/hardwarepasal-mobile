@@ -25,7 +25,7 @@ _$CategoriesHomeSubCategorySubCategoriesModelImpl
           meta_keywords: json['meta_keywords'] as String?,
           meta_descriprion: json['meta_descriprion'] as String?,
           meta_title: json['meta_title'] as String?,
-          is_grouping: json['is_grouping'] as String?,
+          is_grouping: json['is_grouping'] as int?,
           display: json['display'] as int?,
           show_on_home: json['show_on_home'] as String?,
           offer_text: json['offer_text'] as String?,

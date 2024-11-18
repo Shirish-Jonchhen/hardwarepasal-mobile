@@ -39,6 +39,9 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
         'password': password,
       });
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: UserModel.fromJson(response.data),
           message: 'message',
@@ -66,6 +69,9 @@ try {
         'confirm_password': confirmPassword,
       });
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: UserModel.fromJson(response.data),
           message: 'message',

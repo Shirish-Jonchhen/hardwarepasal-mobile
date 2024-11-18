@@ -61,7 +61,7 @@ _$ProductDetailInnerDataModelImpl _$$ProductDetailInnerDataModelImplFromJson(
       voucherList: (json['voucherlist'] as List<dynamic>?)
           ?.map((e) => VoucherModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      brand_products: (json['brand_products'] as List<dynamic>?)
+      brand_product: (json['brand_product'] as List<dynamic>?)
           ?.map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -77,6 +77,5 @@ Map<String, dynamic> _$$ProductDetailInnerDataModelImplToJson(
       'recently_viewed_products':
           instance.recently_viewed_products?.map((e) => e.toJson()).toList(),
       'voucherlist': instance.voucherList?.map((e) => e.toJson()).toList(),
-      'brand_products':
-          instance.brand_products?.map((e) => e.toJson()).toList(),
+      'brand_product': instance.brand_product?.map((e) => e.toJson()).toList(),
     };

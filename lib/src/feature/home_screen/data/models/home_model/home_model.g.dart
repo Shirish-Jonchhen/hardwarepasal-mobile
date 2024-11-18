@@ -32,9 +32,6 @@ _$HomeInnerDataModelImpl _$$HomeInnerDataModelImplFromJson(
           ? null
           : ClearanceSaleModel.fromJson(
               json['clearance_sale'] as Map<String, dynamic>),
-      ads: json['ads'] == null
-          ? null
-          : AdsModel.fromJson(json['ads'] as Map<String, dynamic>),
       noticead: (json['noticead'] as List<dynamic>?)
           ?.map((e) => AdsDataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -54,7 +51,6 @@ Map<String, dynamic> _$$HomeInnerDataModelImplToJson(
       'recently_view_product':
           instance.recently_view_product?.map((e) => e.toJson()).toList(),
       'clearance_sale': instance.clearance_sale?.toJson(),
-      'ads': instance.ads?.toJson(),
       'noticead': instance.noticead?.map((e) => e.toJson()).toList(),
     };
 

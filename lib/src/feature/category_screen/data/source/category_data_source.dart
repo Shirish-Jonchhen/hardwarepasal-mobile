@@ -23,6 +23,9 @@ class CategoryDataSourceImpl implements CategoryDataSource {
     try {
       final response = await _dio.get('product-categories');
       if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
         return ApiResponse(
           data: CategoryModel.fromJson(response.data),
           message: 'message',

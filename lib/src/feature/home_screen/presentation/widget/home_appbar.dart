@@ -34,8 +34,13 @@ class _HomeAppBarState extends State<HomeAppBar> {
           ),
           const Spacer(),
           InkWell(
-            onTap: () {
-              context.router.push(const CartScreenRoute());
+            onTap: () async{
+             final result =  await context.router.push(const CartScreenRoute());
+             print(result.toString());
+
+             if(result == "wishlist"){
+               AutoTabsRouter.of(context).setActiveIndex(1);
+             }
               // Navigator.pushNamed(context, Routes.searchScreen);
             },
             child: Image.asset(

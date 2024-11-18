@@ -1,18 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hardwarepasal/src/core/helpers/assets_helper.dart';
+import 'package:hardwarepasal/src/core/helpers/snackbar_helper.dart';
 import 'package:hardwarepasal/src/core/helpers/storage_helper.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 import 'package:hardwarepasal/src/core/themes/app_styles.dart';
 import 'package:hardwarepasal/src/core/widgets/app_texts.dart';
+import 'package:hardwarepasal/src/feature/cart_screen/presentation/cubit/quotation_email_cubit.dart';
+import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/error_widget.dart';
+import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../../core/helpers/string_helper.dart';
+import '../../../home_screen/presentation/screen/home_screen.dart';
 import '../../../item_detail_screen/presentation/screen/item_detail_screen.dart';
 import '../cubit/cart_data_cubit.dart';
 
@@ -28,6 +36,7 @@ class _CartScreenPageState extends State<CartScreenPage> {
   late StorageHelper storageHelper;
   late double total = 0;
   late double discount = 0;
+  late double subTotal = 0;
 
   int couponIndex = 0;
 
@@ -65,23 +74,70 @@ class _CartScreenPageState extends State<CartScreenPage> {
               textStyle: AppStyles.text18PxRegular,
             ),
             const Spacer(),
-            InkWell(
-              // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const SearchAreaScreen())),
-              child: Image.asset(
-                AssetsHelper.notificationBtn,
-                width: 0.064 * scWidth,
-                height: 0.064 * scWidth,
-                color: AppColor.black,
-              ),
+
+            // InkWell(
+            //   // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const SearchAreaScreen())),
+            //   child: Image.asset(
+            //     AssetsHelper.notificationBtn,
+            //     width: 0.064 * scWidth,
+            //     height: 0.064 * scWidth,
+            //     color: AppColor.black,
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: 0.026 * scWidth,
+            // ),
+
+            PopupMenuButton<String>(
+              iconSize: 0.064 * scWidth,
+
+              color: AppColor.whiteColor,
+              // initialValue: "Hello World",
+              onSelected: (String item) {
+                print(item);
+                if (item == "Wishlist") {
+                  // context.router.pushAndPopUntil(BottomNavigationRoute(), predicate:  (Route<dynamic> route) => false,);
+                  context.router.pop("wishlist"); // Example
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                    value: "Wishlist",
+                    child: Row(
+                      children: [
+                        Icon(Icons.favorite_outline,
+                            color: AppColor.greyButtonText),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'WishList',
+                          style: AppStyles.text14PxRegular
+                              .copyWith(color: AppColor.greyButtonText),
+                        ),
+                      ],
+                    )
+                    // child: Text('WishList'),
+                    ),
+
+                // PopupMenuItem<String>(
+                //   value: "Delete All",
+                //   child: Row(
+                //     children: [
+                //       Icon(Icons.delete, color: AppColor.greyButtonText),
+                //       SizedBox(width: 8,),
+                //       Text('Delete All', style: AppStyles.text14PxRegular.copyWith(color: AppColor.greyButtonText),),
+                //     ],
+                //   )
+                //   // child: Text('Delete All'),
+                // ),
+              ],
             ),
-            SizedBox(
-              width: 0.026 * scWidth,
-            ),
-            Icon(
-              Icons.more_vert,
-              color: AppColor.black,
-              size: 0.064 * scWidth,
-            ),
+            // Icon(
+            //   Icons.more_vert,
+            //   color: AppColor.black,
+            //   size: 0.064 * scWidth,
+            // ),
           ],
         ),
       ),
@@ -93,15 +149,13 @@ class _CartScreenPageState extends State<CartScreenPage> {
               initial: () => const Center(
                 child: CircularProgressIndicator(),
               ),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              noInternet: () => const Center(
-                child: Text('No Internet'),
-              ),
-              error: (message) => Center(
-                child: Text(message),
-              ),
+              loading: () => const LoadingWidget(),
+              noInternet: () => ErrorScreen(
+                  message: "No Internet Connection",
+                  onTap: () => context.read<CartDataCubit>().getCart(true)),
+              error: (message) => ErrorScreen(
+                  message: message,
+                  onTap: () => context.read<CartDataCubit>().getCart(true)),
               success: (data) {
                 final List<ProductModel> products = data.data!.cartdata!;
 
@@ -168,7 +222,8 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                       width: double.infinity,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          // context.router.pop();
+                                          context.router.pop();
+                                          // AutoTabsRouter.of(context).setActiveIndex(0);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0,
@@ -246,12 +301,6 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                               } else {
                                                 print("0 HUNDAINA");
                                               }
-
-                                              // storageHelper
-                                              //     .subtractQuantityFromCart(
-                                              //     product:
-                                              //     cartItems[index].product!)
-                                              //     .then((val) => setState(() {}));
                                             },
                                             onDelete: () {
                                               context
@@ -273,33 +322,38 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                     Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 0.052 * scWidth),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColor.appColor,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        width: double.infinity,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 0.042 * scWidth,
-                                            vertical: 0.016 * scHeight),
-                                        child: Row(
-                                          children: [
-                                            Texts(
-                                              texts: 'Download Quotation',
-                                              textStyle: AppStyles
-                                                  .text14PxMedium
-                                                  .copyWith(
-                                                      color:
-                                                          AppColor.whiteColor),
-                                            ),
-                                            const Spacer(),
-                                            Icon(
-                                              Icons.picture_as_pdf_rounded,
-                                              color: AppColor.whiteColor,
-                                              size: 0.064 * scWidth,
-                                            ),
-                                          ],
+                                      child: InkWell(
+                                        onTap: () {
+                                          showEmailInputModal(context);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColor.lightBlurBtn,
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          width: double.infinity,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0.042 * scWidth,
+                                              vertical: 0.016 * scHeight),
+                                          child: Row(
+                                            children: [
+                                              Texts(
+                                                texts: 'Download Quotation',
+                                                textStyle: AppStyles
+                                                    .text14PxMedium
+                                                    .copyWith(
+                                                        color: AppColor
+                                                            .whiteColor),
+                                              ),
+                                              const Spacer(),
+                                              Icon(
+                                                Icons.picture_as_pdf_rounded,
+                                                color: AppColor.whiteColor,
+                                                size: 0.064 * scWidth,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -415,196 +469,204 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                     ),
                                   ],
                                 ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: AppColor.whiteColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  // horizontal: 0.029 * scWidth,
-                                  vertical: 0.022 * scHeight),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
+                          data.data!.voucherlist!.isEmpty
+                              ? Container()
+                              : Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: AppColor.whiteColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: 0.029 * scWidth,
-                                    ),
-                                    child: Texts(
-                                      texts: "Collect Coupons",
-                                      textStyle: AppStyles.text14PxMedium,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 0.019 * scHeight,
-                                  ),
-                                  Container(
-                                    height: 0.168 * scHeight,
-                                    width: double.infinity,
-                                    child: PageView.builder(
-                                      onPageChanged: (index) {
-                                        setState(() {
-                                          couponIndex = index;
-                                        });
-                                      },
-                                      itemCount: data.data!.voucherlist!.length,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
+                                        // horizontal: 0.029 * scWidth,
+                                        vertical: 0.022 * scHeight),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
                                           padding: EdgeInsets.symmetric(
                                             horizontal: 0.029 * scWidth,
                                           ),
-                                          child: TicketWidget(
-                                            width: double.infinity,
-                                            height: 0.168 * scHeight,
-                                            color: AppColor.appColor,
-                                            isCornerRounded: true,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(2),
-                                              child: TicketWidget(
-                                                width: double.infinity,
-                                                height: 0.168 * scHeight,
-                                                color: AppColor.whiteColor,
-                                                isCornerRounded: true,
+                                          child: Texts(
+                                            texts: "Collect Coupons",
+                                            textStyle: AppStyles.text14PxMedium,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 0.019 * scHeight,
+                                        ),
+                                        Container(
+                                          height: 0.168 * scHeight,
+                                          width: double.infinity,
+                                          child: PageView.builder(
+                                            onPageChanged: (index) {
+                                              setState(() {
+                                                couponIndex = index;
+                                              });
+                                            },
+                                            itemCount:
+                                                data.data!.voucherlist!.length,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 0.029 * scWidth,
+                                                ),
                                                 child: TicketWidget(
-                                                  color: AppColor.appColor
-                                                      .withOpacity(0.2),
-                                                  isCornerRounded: true,
                                                   width: double.infinity,
-                                                  // padding: EdgeInsets.symmetric(
-                                                  //     vertical: 0.023 * scHeight,
-                                                  //     horizontal: 0.058 * scWidth),
                                                   height: 0.168 * scHeight,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 0.02 *
-                                                                    scHeight,
-                                                                horizontal:
-                                                                    0.058 *
-                                                                        scWidth),
-                                                        child: Row(
-                                                          children: [
-                                                            Texts(
-                                                              texts:
-                                                                  "${data.data!.voucherlist![index].discount_value}% OFF",
-                                                              textStyle: AppStyles
-                                                                  .text24PxSemiBold
-                                                                  .copyWith(
-                                                                      color: AppColor
-                                                                          .appColor),
-                                                            ),
-                                                            const Spacer(),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Texts(
-                                                                  texts:
-                                                                      "Min Spend",
-                                                                  textStyle: AppStyles
-                                                                      .text12PxRegular
-                                                                      .copyWith(
-                                                                    color: AppColor
-                                                                        .appColor,
-                                                                    fontSize:
-                                                                        10,
-                                                                  ),
-                                                                ),
-                                                                Texts(
-                                                                  texts:
-                                                                      "NRs. ${data.data!.voucherlist![index].min_order}",
-                                                                  textStyle: AppStyles
-                                                                      .text16PxMedium
-                                                                      .copyWith(
-                                                                    color: AppColor
-                                                                        .appColor,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        height: 2,
-                                                        color:
-                                                            AppColor.appColor,
-                                                      ),
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 0.012 *
-                                                                    scHeight,
-                                                                horizontal:
-                                                                    0.058 *
-                                                                        scWidth),
-                                                        child: Row(
+                                                  color: AppColor.appColor,
+                                                  isCornerRounded: true,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(2),
+                                                    child: TicketWidget(
+                                                      width: double.infinity,
+                                                      height: 0.168 * scHeight,
+                                                      color:
+                                                          AppColor.whiteColor,
+                                                      isCornerRounded: true,
+                                                      child: TicketWidget(
+                                                        color: AppColor.appColor
+                                                            .withOpacity(0.2),
+                                                        isCornerRounded: true,
+                                                        width: double.infinity,
+                                                        // padding: EdgeInsets.symmetric(
+                                                        //     vertical: 0.023 * scHeight,
+                                                        //     horizontal: 0.058 * scWidth),
+                                                        height:
+                                                            0.168 * scHeight,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            Texts(
-                                                              texts:
-                                                                  "${data.data!.voucherlist![index].coupon_name}",
-                                                              textStyle: AppStyles
-                                                                  .text16PxMedium,
+                                                            Padding(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 0.02 *
+                                                                      scHeight,
+                                                                  horizontal:
+                                                                      0.058 *
+                                                                          scWidth),
+                                                              child: Row(
+                                                                children: [
+                                                                  Texts(
+                                                                    texts:
+                                                                        "${data.data!.voucherlist![index].discount_value}% OFF",
+                                                                    textStyle: AppStyles
+                                                                        .text24PxSemiBold
+                                                                        .copyWith(
+                                                                            color:
+                                                                                AppColor.appColor),
+                                                                  ),
+                                                                  const Spacer(),
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Texts(
+                                                                        texts:
+                                                                            "Min Spend",
+                                                                        textStyle: AppStyles
+                                                                            .text12PxRegular
+                                                                            .copyWith(
+                                                                          color:
+                                                                              AppColor.appColor,
+                                                                          fontSize:
+                                                                              10,
+                                                                        ),
+                                                                      ),
+                                                                      Texts(
+                                                                        texts:
+                                                                            "NRs. ${data.data!.voucherlist![index].min_order}",
+                                                                        textStyle: AppStyles
+                                                                            .text16PxMedium
+                                                                            .copyWith(
+                                                                          color:
+                                                                              AppColor.appColor,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
-                                                            const Spacer(),
-                                                            AppButton(
-                                                                scWidth:
-                                                                    scWidth,
-                                                                scHeight:
-                                                                    scHeight,
-                                                                title:
-                                                                    "Collect",
-                                                                onTap: () {}),
+                                                            Container(
+                                                              height: 2,
+                                                              color: AppColor
+                                                                  .appColor,
+                                                            ),
+                                                            Padding(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  vertical: 0.012 *
+                                                                      scHeight,
+                                                                  horizontal:
+                                                                      0.058 *
+                                                                          scWidth),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Texts(
+                                                                    texts:
+                                                                        "${data.data!.voucherlist![index].coupon_name}",
+                                                                    textStyle:
+                                                                        AppStyles
+                                                                            .text16PxMedium,
+                                                                  ),
+                                                                  const Spacer(),
+                                                                  AppButton(
+                                                                      scWidth:
+                                                                          scWidth,
+                                                                      scHeight:
+                                                                          scHeight,
+                                                                      title:
+                                                                          "Collect",
+                                                                      onTap:
+                                                                          () {}),
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
+                                              );
+                                            },
                                           ),
-                                        );
-                                      },
+                                        ),
+                                        SizedBox(
+                                          height: 0.029 * scHeight,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: List.generate(
+                                            data.data!.voucherlist!.length,
+                                            (index) {
+                                              return Row(
+                                                children: [
+                                                  buildDot(
+                                                      index == couponIndex),
+                                                  SizedBox(
+                                                    width: 0.012 * scWidth,
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 0.029 * scHeight,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                      data.data!.voucherlist!.length,
-                                      (index) {
-                                        return Row(
-                                          children: [
-                                            buildDot(index == couponIndex),
-                                            SizedBox(
-                                              width: 0.012 * scWidth,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                ),
                         ],
                       ),
                     ),
@@ -612,7 +674,7 @@ class _CartScreenPageState extends State<CartScreenPage> {
                   bottomNavigationBar: (products.isEmpty)
                       ? null
                       : Container(
-                          height: 0.2 * scHeight,
+                          height: 0.22 * scHeight,
                           padding: EdgeInsets.symmetric(
                               horizontal: 0.064 * scWidth,
                               vertical: 0.014 * scHeight),
@@ -633,6 +695,36 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Texts(
+                                    texts: 'Sub Total',
+                                    textStyle: AppStyles.text12PxRegular,
+                                  ),
+                                  Builder(
+                                    builder: (context) {
+                                      subTotal = products.fold(
+                                          0,
+                                          (previousValue, element) =>
+                                              (previousValue +
+                                                  ((element.old_price!.isEmpty
+                                                          ? element.price!
+                                                          : int.parse(element
+                                                              .old_price!)) *
+                                                      element.quantity!)));
+                                      return Texts(
+                                        texts: 'Rs. $subTotal',
+                                        textStyle: AppStyles.text12PxRegular,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 0.007 * scHeight,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Texts(
                                     texts: 'Discounts',
                                     textStyle: AppStyles.text12PxRegular,
                                   ),
@@ -642,14 +734,11 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                           0,
                                           (previousValue, element) =>
                                               (previousValue +
-                                                  (
-                                                      ( element.old_price!
-                                                                .isEmpty
-                                                            ? element.price!
-                                                            : int.parse(element
-                                                                .old_price!)
-                                                        -element.price!
-                                                      ) *
+                                                  ((element.old_price!.isEmpty
+                                                          ? element.price!
+                                                          : int.parse(element
+                                                                  .old_price!) -
+                                                              element.price!) *
                                                       element.quantity!)));
                                       return Texts(
                                         texts: 'Rs. $discount',
@@ -744,6 +833,92 @@ class _CartScreenPageState extends State<CartScreenPage> {
     );
   }
 
+  void showEmailInputModal(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    bool isEmailValid = false;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('Enter your email'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      border: OutlineInputBorder(),
+                      errorText: isEmailValid || emailController.text.isEmpty
+                          ? null
+                          : 'Invalid email format',
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        isEmailValid = validateEmail(value);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: isEmailValid
+                      ? () {
+                          // Handle valid email submission here
+                          String email = emailController.text;
+                          print('Email entered: $email');
+                          sendQuatation(email);
+                          context.read<QuotationEmailCubit>().sendEmail(email);
+                          SnackBarHelper.showSnackBar(message: "Email Sent to $email", context: context);
+                          Navigator.of(context).pop();
+                        }
+                      : null, // Disable if email is not valid
+                  child: Text('Submit'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  bool validateEmail(String email) {
+    // Regular expression for basic email validation
+    String emailPattern = r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+    RegExp regex = RegExp(emailPattern);
+    return regex.hasMatch(email);
+  }
+
+  void sendQuatation(String email) async {
+    final _dio = Dio();
+    print({
+      "_token": await StorageHelper(storage).getToken(),
+      "email_address": email
+    });
+    try {
+      final Response = await _dio.post('https://hardwarepasal.com/cartdatamail',
+          data: {
+            "_token": await StorageHelper(storage).getToken(),
+            "email_address": email
+          });
+      print(Response.data);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Widget buildDot(bool isActive) {
     return Container(
       width: isActive ? 10 : 8,
@@ -779,164 +954,170 @@ class AppCartCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: AppColor.textGrey.withOpacity(0.2),
-          width: 1,
+    return InkWell(
+      onTap: () {
+        context.router.push(ItemDetailScreenRoute(productModel: product));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColor.whiteColor,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: AppColor.textGrey.withOpacity(0.2),
+            width: 1,
+          ),
         ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(0.032 * scWidth),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: 0.2 * scWidth,
-                height: 0.2 * scWidth,
-                decoration: BoxDecoration(
-                  color: AppColor.lightGreyBg,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(0.042 * scWidth),
-                  child: Center(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          'https://images.unsplash.com/photo-1612838320302-4b3b3b3b3b3b',
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          Image.asset(AssetsHelper.placeHolder),
+        child: Padding(
+          padding: EdgeInsets.all(0.032 * scWidth),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: 0.2 * scWidth,
+                  height: 0.2 * scWidth,
+                  decoration: BoxDecoration(
+                    color: AppColor.lightGreyBg,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(0.042 * scWidth),
+                    child: Center(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                        '${StringHelper.productCoverImageBastUrl}${product.cover_image}',
+                        placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            Image.asset(AssetsHelper.placeHolder),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: 0.021 * scWidth,
-            ),
-            Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Texts(
-                    texts: product.name!,
-                    textStyle: AppStyles.text12PxRegular,
-                  ),
-                  Row(
-                    children: [
-                      Texts(
-                        texts: 'Rs. ${product.price} ',
-                        textStyle: AppStyles.text12PxMedium
-                            .copyWith(color: AppColor.appColor),
-                      ),
-                      Texts(
-                        texts: 'Rs. ${product.old_price} ',
-                        textStyle: AppStyles.text12PxMedium.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: AppColor.greyButtonText,
-                          decorationThickness: 2,
-                          color: AppColor.greyButtonText,
-                          fontSize: 8.sp,
+              SizedBox(
+                width: 0.021 * scWidth,
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Texts(
+                      texts: product.name!,
+                      textStyle: AppStyles.text12PxRegular,
+                    ),
+                    Row(
+                      children: [
+                        Texts(
+                          texts: 'Rs. ${product.price} ',
+                          textStyle: AppStyles.text12PxMedium
+                              .copyWith(color: AppColor.appColor),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 0.002 * scHeight,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 0.013 * scWidth,
-                            vertical: 0.006 * scHeight),
-                        decoration: BoxDecoration(
-                          // color: AppColor.appColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColor.textGrey.withOpacity(0.2),
-                            width: 1,
+                        Texts(
+                          texts: 'Rs. ${product.old_price} ',
+                          textStyle: AppStyles.text12PxMedium.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: AppColor.greyButtonText,
+                            decorationThickness: 2,
+                            color: AppColor.greyButtonText,
+                            fontSize: 8.sp,
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: onSubtract,
-                              child: Container(
-                                padding: EdgeInsets.all(0.007 * scWidth),
-                                decoration: BoxDecoration(
-                                  // color: AppColor.textGrey.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(3.38),
-                                  border: Border.all(
-                                    color: AppColor.textGrey.withOpacity(0.2),
-                                    width: 1,
+                      ],
+                    ),
+                    SizedBox(
+                      height: 0.002 * scHeight,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.013 * scWidth,
+                              vertical: 0.006 * scHeight),
+                          decoration: BoxDecoration(
+                            // color: AppColor.appColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColor.textGrey.withOpacity(0.2),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: onSubtract,
+                                child: Container(
+                                  padding: EdgeInsets.all(0.007 * scWidth),
+                                  decoration: BoxDecoration(
+                                    // color: AppColor.textGrey.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(3.38),
+                                    border: Border.all(
+                                      color: AppColor.textGrey.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.remove,
+                                    color: AppColor.textGrey.withOpacity(0.5),
+                                    size: 0.03 * scWidth,
                                   ),
                                 ),
-                                child: Icon(
-                                  Icons.remove,
-                                  color: AppColor.textGrey.withOpacity(0.5),
-                                  size: 0.03 * scWidth,
-                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 0.059 * scWidth,
-                            ),
-                            Texts(
-                              texts: quantity.toString(),
-                              textStyle: AppStyles.text14PxRegular,
-                            ),
-                            SizedBox(
-                              width: 0.059 * scWidth,
-                            ),
-                            InkWell(
-                              onTap: onAdd,
-                              child: Container(
-                                padding: EdgeInsets.all(0.007 * scWidth),
-                                decoration: BoxDecoration(
-                                  // color: AppColor.textGrey.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(3.38),
-                                  border: Border.all(
-                                    color: AppColor.textGrey.withOpacity(0.2),
-                                    width: 1,
+                              SizedBox(
+                                width: 0.059 * scWidth,
+                              ),
+                              Texts(
+                                texts: quantity.toString(),
+                                textStyle: AppStyles.text14PxRegular,
+                              ),
+                              SizedBox(
+                                width: 0.059 * scWidth,
+                              ),
+                              InkWell(
+                                onTap: onAdd,
+                                child: Container(
+                                  padding: EdgeInsets.all(0.007 * scWidth),
+                                  decoration: BoxDecoration(
+                                    // color: AppColor.textGrey.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(3.38),
+                                    border: Border.all(
+                                      color: AppColor.textGrey.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppColor.textGrey.withOpacity(0.5),
+                                    size: 0.03 * scWidth,
                                   ),
                                 ),
-                                child: Icon(
-                                  Icons.add,
-                                  color: AppColor.textGrey.withOpacity(0.5),
-                                  size: 0.03 * scWidth,
-                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: onDelete,
-                        child: Icon(
-                          Icons.delete,
-                          color: AppColor.textGrey.withOpacity(0.5),
-                          size: 0.05 * scWidth,
+                        const Spacer(),
+                        InkWell(
+                          onTap: onDelete,
+                          child: Icon(
+                            Icons.delete,
+                            color: AppColor.textGrey.withOpacity(0.5),
+                            size: 0.05 * scWidth,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+      
   }
 }
