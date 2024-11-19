@@ -52,6 +52,8 @@ class _HomeScreenState extends State<HomeScreenPage> {
     "Car Equipments",
   ];
 
+  String allProductCategory = "all";
+
   List<Icon> categoryIcons = [
     Icon(
       Icons.ac_unit_outlined,
@@ -62,8 +64,24 @@ class _HomeScreenState extends State<HomeScreenPage> {
     Icon(Icons.account_tree, color: AppColor.appColor),
   ];
 
-  List<String> apCategory = ["All Products", "Power", "Heater", "Electrical"];
-
+  List<Map<String, dynamic>> apCategory = [
+    {
+      "name": "All Products",
+      "slug": "all"
+    },
+    {
+      "name": "Power",
+      "slug": "power-tools"
+    },
+    {
+      "name": "Heater",
+      "slug": "heater"
+    },
+    {
+      "name": "Electrical",
+      "slug": "electrical-tool"
+    }
+  ];
   List<IconData> apIcons = [
     Icons.stars_outlined,
     Icons.offline_bolt_outlined,
@@ -106,10 +124,18 @@ class _HomeScreenState extends State<HomeScreenPage> {
     _scrollController.addListener(() {
       print(_scrollController.position.maxScrollExtent);
       print(_scrollController.position.pixels);
+      print(allProductCategory);
 
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
         pageNumber++;
+        if(allProductCategory == "all"){
+          context.read<HomeAllProductsCubit>().loadMoreProducts();
+
+        }else{
+          context.read<HomeAllProductsCubit>().loadMoreCategoryProducts();
+
+        }
         context.read<HomeAllProductsCubit>().loadMoreProducts();
         print("puggio hai last ma last ma last ma");
       }
@@ -122,7 +148,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
         pageNumber++;
-        context.read<BrandsCubit>().loadMoreBrands();
+        // context.read<BrandsCubit>().loadMoreBrands();
         print("puggio hai last ma last ma last ma");
       }
     });
@@ -1346,45 +1372,66 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                           scrollDirection: Axis.horizontal,
                                           itemCount: apCategory.length,
                                           itemBuilder: (context, index) {
-                                            return Container(
-                                              padding: EdgeInsets.all(0.03 * scWidth),
-                                              width: 0.213 * scWidth,
-                                              decoration: BoxDecoration(
-                                                color: Color(0xffFBFBFB),
-                                                borderRadius:
-                                                BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 0.042 * scWidth,
-                                                        backgroundColor:
-                                                        apColors[index][1],
-                                                        child: Icon(
-                                                          apIcons[index],
-                                                          color: apColors[index][0],
-                                                          size: 25,
+                                            return InkWell(
+                                              onTap: (){
+                                                setState(() {
+                                                  allProductCategory = apCategory[index]["slug"].trim();
+                                                });
+                                                if(allProductCategory == "all"){
+                                                  print("Tapped ALL");
+
+                                                  context.read<HomeAllProductsCubit>().getAllProducts(1);
+                                                }else{
+                                                  print("Tapped ALL Hello");
+
+                                                  context.read<HomeAllProductsCubit>().getProductsByCategory(apCategory[index]["slug"].trim(), 1);
+                                                }
+                                              },
+                                              child:Container(
+                                                padding: EdgeInsets.all(0.03 * scWidth),
+                                                width: 0.213 * scWidth,
+                                                decoration: BoxDecoration(
+                                                  color: (allProductCategory == apCategory[index]['slug'])?AppColor.appColor.withOpacity(0.3):Color(0xffFBFBFB),
+                                                  borderRadius:
+                                                  BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: (allProductCategory == apCategory[index]['slug'])?AppColor.appColor:Color(0xffFBFBFB),
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 0.042 * scWidth,
+                                                          backgroundColor:
+                                                          apColors[index][1],
+                                                          child: Icon(
+                                                            apIcons[index],
+                                                            color: apColors[index][0],
+                                                            size: 25,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 0.006 * scHeight,
-                                                      ),
-                                                      Texts(
-                                                        texts:
-                                                        apCategory[index].trim(),
-                                                        textStyle: AppStyles
-                                                            .text12PxRegular
-                                                            .copyWith(
-                                                            fontSize: 10.sp,
-                                                            color: apColors[index]
-                                                            [0]),
-                                                      )
-                                                    ]),
+                                                        SizedBox(
+                                                          height: 0.006 * scHeight,
+                                                        ),
+                                                        Texts(
+                                                          texts:
+                                                          apCategory[index]["name"].trim(),
+                                                          textStyle: AppStyles
+                                                              .text12PxRegular
+                                                              .copyWith(
+                                                              fontSize: 10.sp,
+                                                              color: apColors[index]
+                                                              [0]),
+                                                        )
+                                                      ]),
+                                                ),
                                               ),
                                             );
+
                                           },
                                           separatorBuilder: (context, index) {
                                             return SizedBox(

@@ -713,8 +713,10 @@ extension GetItInjectableX on _i1.GetIt {
             gh<_i126.CategoryWiseProductsUsecase>()));
     gh.factory<_i153.ChangePasswordCubit>(
         () => _i153.ChangePasswordCubit(gh<_i129.ChangePasswordUsecase>()));
-    gh.factory<_i154.HomeAllProductsCubit>(
-        () => _i154.HomeAllProductsCubit(gh<_i133.HomeAllProductsUseCase>()));
+    gh.factory<_i154.HomeAllProductsCubit>(() => _i154.HomeAllProductsCubit(
+          gh<_i133.HomeAllProductsUseCase>(),
+          gh<_i126.CategoryWiseProductsUsecase>(),
+        ));
     gh.factory<_i155.HomeBrandsCubit>(
         () => _i155.HomeBrandsCubit(gh<_i134.HomeBrandsUseCase>()));
     return this;

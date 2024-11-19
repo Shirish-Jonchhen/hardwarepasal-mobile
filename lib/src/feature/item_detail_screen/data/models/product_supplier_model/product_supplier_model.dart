@@ -17,7 +17,7 @@ class ProductSupplierModel with _$ProductSupplierModel{
     int? updated_by,
     String? created_at,
     String? updated_at,
-    int? markup_percent,
+    String? markup_percent,
     String? code,
     String? phone,
     String? email,
