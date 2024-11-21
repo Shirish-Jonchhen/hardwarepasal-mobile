@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:hardwarepasal/src/feature/home_screen/data/models/featured_brands_model/featured_brands_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/home_all_products_model/home_all_products_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
 
@@ -21,4 +22,6 @@ abstract class HomeRepository {
 
   Future<Either<AppError, ApiResponse<int>>> addRecentlyViewedProduct(
       {required ProductModel product});
+
+  Future<Either<AppError, ApiResponse<FeaturedBrandsModel>>> getFeaturedBrands();
 }

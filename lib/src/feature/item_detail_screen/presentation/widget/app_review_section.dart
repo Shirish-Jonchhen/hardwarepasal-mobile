@@ -8,8 +8,9 @@ import '../../data/models/product_review_model/product_review_model.dart';
 import 'app_review_card.dart';
 
 class AppReviewSection extends StatelessWidget {
-  const AppReviewSection({super.key, required this.reviews});
+  const AppReviewSection({super.key, required this.reviews, required this.onTap});
   final List<ProductReviewModel> reviews;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +39,27 @@ class AppReviewSection extends StatelessWidget {
                   textStyle: AppStyles.text12PxRegular,
                 ),
                 const Spacer(),
-                Row(
-                  children: [
-                    Texts(
-                      texts: "Write a Review",
-                      textStyle: AppStyles.text12PxRegular
-                          .copyWith(color: AppColor.appColor),
-                    ),
-                    SizedBox(
-                      width: 0.01 * scWidth,
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColor.appColor,
-                      size: 0.03 * scWidth,
-                    )
-                  ],
+                InkWell(
+                  onTap: onTap,
+                  child: Row(
+                    children: [
+                      Texts(
+                        texts: "Write a Review",
+                        textStyle: AppStyles.text12PxRegular
+                            .copyWith(color: AppColor.appColor),
+                      ),
+                      SizedBox(
+                        width: 0.01 * scWidth,
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppColor.appColor,
+                        size: 0.03 * scWidth,
+                      )
+                    ],
+                  ),
                 ),
+
               ],
             ),
             SizedBox(

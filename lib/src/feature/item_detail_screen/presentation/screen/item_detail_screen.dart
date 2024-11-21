@@ -11,6 +11,7 @@ import 'package:hardwarepasal/src/core/widgets/app_texts.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/add_to_cart_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/item_details_cubit.dart';
+import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/post_review_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/widget/app_review_section.dart';
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/add_wish_list_cubit.dart';
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/remove_wish_list_cubit.dart';
@@ -126,6 +127,78 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
       throw 'Could not launch $phoneUrl';
     }
   }
+
+  void showAddReviewDialog(BuildContext context, Function(int stars, String description) onSubmit) {
+    int selectedStars = 0;
+    final TextEditingController descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Add Review'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Rate the product:'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, (index) {
+                      return IconButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedStars = index + 1;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.star,
+                          color: index < selectedStars ? Colors.amber : Colors.grey,
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    final description = descriptionController.text.trim();
+                    if (selectedStars > 0 && description.isNotEmpty) {
+                      onSubmit(selectedStars, description);
+                      Navigator.of(context).pop();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please add stars and a description.')),
+                      );
+                    }
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1304,7 +1377,12 @@ class _ItemDetailScreenPageState extends State<ItemDetailScreenPage> {
 
                             //review rating
                             AppReviewSection(
-                                reviews: response.product!.reviews!),
+                                reviews: response.product!.reviews!,
+                              onTap: ()=> showAddReviewDialog(context, (stars, description){
+                                context.read<PostReviewCubit>().postReview(slug: data.data!.data!.product!.slug!, stars: stars, descriptions: description, context: context);
+                                context.read<ItemDetailsCubit>().getItemDetail(data.data!.data!.product!.slug!);
+                              }),
+                            ),
 
                             SizedBox(
                               height: 0.014 * scHeight,

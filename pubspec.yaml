@@ -64,7 +64,7 @@ dependencies:
   dio_http_formatter: ^2.1.1
   icons_plus: ^5.0.0
   flutter_html: ^3.0.0-beta.2
-  youtube_player_flutter: ^9.0.1
+  youtube_player_flutter: ^9.1.1
   intl: ^0.19.0
   image_picker: ^1.1.2
   imepay_merchant_sdk: ^1.0.2+4

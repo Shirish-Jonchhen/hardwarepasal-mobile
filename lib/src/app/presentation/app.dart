@@ -25,6 +25,7 @@ import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_cu
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_recently_viewed_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/add_to_cart_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/item_details_cubit.dart';
+import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/post_review_cubit.dart';
 import 'package:hardwarepasal/src/feature/my_orders_screen/presentation/cubit/my_order_cubit.dart';
 import 'package:hardwarepasal/src/feature/new_arrivals_screen/presentation/cubit/new_arrivals_cubit.dart';
 import 'package:hardwarepasal/src/feature/profile_screen/presntation/cubit/user_details_cubit.dart';
@@ -149,6 +150,7 @@ class App extends StatelessWidget {
             BlocProvider(create: (context) => getIt<NewArrivalsCubit>(),),
             BlocProvider(create: (context) => getIt<FreeDeliveryCubit>(),),
             BlocProvider(create: (context) => getIt<HotDealsCubit>(),),
+            BlocProvider(create: (context) => getIt<PostReviewCubit>(),),
 
 
           ],

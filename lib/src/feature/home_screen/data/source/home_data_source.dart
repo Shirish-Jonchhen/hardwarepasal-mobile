@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hardwarepasal/src/feature/home_screen/data/models/featured_brands_model/featured_brands_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/home_all_products_model/home_all_products_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/home_brands_model/home_brands_by_category_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/home_model/home_model.dart';
@@ -20,6 +21,7 @@ abstract class HomeDataSource {
 
   Future<ApiResponse<List<ProductModel>>> getRecentlyViewedProducts();
   Future<ApiResponse<int>> addRecentlyViewedProduct(ProductModel product);
+  Future<ApiResponse<FeaturedBrandsModel>> getFeaturedBrands();
 
 
 }
@@ -83,6 +85,26 @@ class HomeDataSourceImpl implements HomeDataSource {
         }
         return ApiResponse(
           data: HomeAllProductsModel.fromJson(response.data),
+          message: 'message',
+        );
+      } else {
+        throw const AppException(message: 'Unknown Error');
+      }
+    } on DioError catch (e) {
+      throw AppException.fromDioError(e);
+    }
+  }
+
+  @override
+  Future<ApiResponse<FeaturedBrandsModel>> getFeaturedBrands() async {
+    try {
+      final response = await _dio.get('/featured-brands');
+      if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
+        return ApiResponse(
+          data: FeaturedBrandsModel.fromJson(response.data),
           message: 'message',
         );
       } else {

@@ -49,6 +49,7 @@ class HomeAllProductsCubit extends Cubit<HomeAllProductsState> {
         final products = r.data?.data?.products?.data ?? [];
         if (products.isEmpty) {
           _hasMoreProducts = false;
+          emit(HomeAllProductsState.success(data: []));
         } else {
           _products.addAll(products);
           _currentPage++;

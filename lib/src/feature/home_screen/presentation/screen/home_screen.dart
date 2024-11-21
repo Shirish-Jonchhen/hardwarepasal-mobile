@@ -20,6 +20,7 @@ import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_all_products_cubit.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_brands_cubit.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_cubit.dart';
+import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_featured_brands_cubit.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_recently_viewed_cubit.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/widget/home_appbar.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/widget/home_banner.dart';
@@ -52,6 +53,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
     "Car Equipments",
   ];
 
+  bool adShown = false;
   String allProductCategory = "all";
 
   List<Icon> categoryIcons = [
@@ -169,19 +171,30 @@ class _HomeScreenState extends State<HomeScreenPage> {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return CachedNetworkImage(
-          imageUrl:
-          imageUrl,
-          placeholder: (context,
-              url) =>
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-          errorWidget: (context,
-              url, error) =>
-              Image.asset(
-                  AssetsHelper
-                      .placeHolder),
+        return Stack(
+          children: [
+            Center(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) =>
+                    Image.asset(AssetsHelper.placeHolder),
+              ),
+            ),
+            Positioned(
+              right: 0.w,
+              top: 220.h,
+              child: IconButton(
+                onPressed: context.router.pop,
+                icon: const Icon(
+                  Icons.cancel,
+                  color: AppColor.whiteColor,
+                ),
+              ),
+            )
+          ],
         );
       },
     );
@@ -237,7 +250,13 @@ class _HomeScreenState extends State<HomeScreenPage> {
                     onTap: () => context.read<HomeCubit>().getProducts(),
                   ),
               success: (data) {
+                !adShown?
                 WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if(!adShown){
+                    setState(() {
+                      adShown = true;
+                    });
+                  }
                   if (data.data!.data!.data!.noticead!.isNotEmpty) {
                     showPopupAd(context, data.data!.data!.data!.noticead![0]
                         .image!);
@@ -245,7 +264,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                     showPopupAd(context,
                         "https://hardwarepasalapi.checkmysite.live/src/img/notice/2024-06-07-12-41-41_810Cmz9Gyo_notice.png");
                   }
-                });
+                }): const SizedBox.shrink();
                 print("Image Eta xa hai eta");
                 print(data.data!.data!.data!.noticead!);
                 // showPopupAd(context);
@@ -566,10 +585,10 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                         ),
                                         BlocProvider(
                                           create: (context) =>
-                                          getIt<BrandsCubit>()
-                                            ..getBrands(1),
-                                          child: BlocBuilder<BrandsCubit,
-                                              BrandsState>(
+                                          getIt<HomeFeaturedBrandsCubit>()
+                                            ..getFeaturedBrands(),
+                                          child: BlocBuilder<HomeFeaturedBrandsCubit,
+                                              HomeFeaturedBrandsState>(
                                             builder: (context, state) {
                                               return state.when(
                                                 initial: () =>
@@ -591,14 +610,6 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                   child: Text('No Internet'),
                                                 ),
                                                 success: (data) {
-                                                  List<BrandsItemModel> brands =
-                                                  [];
-                                                  for (BrandsItemModel item
-                                                  in data) {
-                                                    // if(item.status == "featured"){
-                                                    brands.add(item);
-                                                    // }
-                                                  }
                                                   return SizedBox(
                                                     height: 0.225 * scHeight,
                                                     child: GridView.builder(
@@ -606,7 +617,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                       scrollDirection:
                                                       Axis.horizontal,
                                                       // itemCount: brands.length,
-                                                      itemCount: brands.length,
+                                                      itemCount: data.data!.data!.length,
                                                       gridDelegate:
                                                       SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount: 2,
@@ -624,7 +635,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                                   .router
                                                                   .push(
                                                                 BrandDetailScreenRoute(
-                                                                    slug: brands[
+                                                                    slug: data.data!.data![
                                                                     index]
                                                                         .slug!),
                                                               ),
@@ -684,7 +695,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                                       CachedNetworkImage(
                                                                         imageUrl:
                                                                         '${StringHelper
-                                                                            .brandImageBastUrl}${brands[index]
+                                                                            .brandImageBastUrl}${data.data!.data![index]
                                                                             .image!}',
                                                                         placeholder:
                                                                             (
@@ -707,7 +718,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                                         scHeight,
                                                                   ),
                                                                   Texts(
-                                                                    texts: brands[index]
+                                                                    texts: data.data!.data![index]
                                                                         .name ??
                                                                         '',
                                                                     textAlign:
@@ -1363,8 +1374,11 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                   itemCount: 1,
                                   itemBuilder: (context, index) {
                                     return StickyHeader(
+                                      controller: _scrollController,
                                       overlapHeaders: false,
-                                      header: SizedBox(
+                                      header: Container(
+                                        color: AppColor.whiteColor,
+                                        padding: EdgeInsets.symmetric(vertical: 0.013 * scHeight),
                                         height: 0.12 * scHeight,
                                         width: scWidth,
                                         child: ListView.separated(

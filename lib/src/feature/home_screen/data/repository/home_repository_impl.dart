@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hardwarepasal/src/core/errors/app_exceptions.dart';
 import 'package:hardwarepasal/src/core/network/network_info.dart';
+import 'package:hardwarepasal/src/feature/home_screen/data/models/featured_brands_model/featured_brands_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/home_all_products_model/home_all_products_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/home_brands_model/home_brands_by_category_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
@@ -97,6 +98,21 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Either<AppError, ApiResponse<List<ProductModel>>>> getRecentlyViewedProducts() async {
     try {
       final response = await _homeDataSource.getRecentlyViewedProducts();
+      return Right(
+        ApiResponse(
+            data: response.data,
+            message: response.message,
+            error: response.error),
+      );
+    } on AppException catch (e) {
+      return Left(AppError.serverError(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<AppError, ApiResponse<FeaturedBrandsModel>>> getFeaturedBrands() async {
+    try {
+      final response = await _homeDataSource.getFeaturedBrands();
       return Right(
         ApiResponse(
             data: response.data,
