@@ -29,7 +29,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         child: SizedBox(
           height: 48.h,
           child: Row(
@@ -37,49 +37,50 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SearchAreaScreenPage(),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchAreaScreenPage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.transparent,
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(
+                          color: AppColor.textGrey.withOpacity(0.2),
+                          width: 1,
+                        ),
                       ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.transparent,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(
-                        color: AppColor.textGrey.withOpacity(0.2),
-                        width: 1,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0.032 * scWidth, vertical: 0.01 * scHeight),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.search,
-                            color: AppColor.textGrey,
-                            size: 24.sp,
-                          ),
-                          SizedBox(
-                            width: 0.026 * scWidth,
-                          ),
-                          Text(
-                            'Search for products',
-                            style: TextStyle(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.032 * scWidth,
+                            vertical: 0.01 * scHeight),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search,
                               color: AppColor.textGrey,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w300,
+                              size: 24.sp,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: 0.026 * scWidth,
+                            ),
+                            Text(
+                              'Search for products',
+                              style: TextStyle(
+                                color: AppColor.textGrey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ),
+                    )),
               ),
             ],
           ),
