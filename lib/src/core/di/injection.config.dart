@@ -304,14 +304,14 @@ extension GetItInjectableX on _i1.GetIt {
     final registerModule = _$RegisterModule();
     gh.lazySingleton<_i3.AppRouter>(() => registerModule.router);
     gh.lazySingleton<_i4.Dio>(
-      () => registerModule.unauthenticatedDio,
-      instanceName: 'un-authenticated',
-    );
-    gh.lazySingleton<_i4.Dio>(
       () => registerModule.authenticatedDio,
       instanceName: 'authenticated',
     );
     gh.lazySingleton<_i4.Dio>(() => registerModule.dio);
+    gh.lazySingleton<_i4.Dio>(
+      () => registerModule.unauthenticatedDio,
+      instanceName: 'un-authenticated',
+    );
     gh.lazySingleton<_i5.FlutterSecureStorage>(() => registerModule.storage);
     gh.lazySingleton<_i6.InternetConnectionChecker>(
         () => registerModule.internetConnectionChecker);

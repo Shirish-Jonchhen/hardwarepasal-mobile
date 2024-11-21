@@ -53,13 +53,13 @@ class _HomeScreenState extends State<HomeScreenPage> {
   ];
 
   List<Icon> categoryIcons = [
-    Icon(
+    const Icon(
       Icons.ac_unit_outlined,
       color: AppColor.appColor,
     ),
-    Icon(Icons.access_time, color: AppColor.appColor),
-    Icon(Icons.account_balance, color: AppColor.appColor),
-    Icon(Icons.account_tree, color: AppColor.appColor),
+    const Icon(Icons.access_time, color: AppColor.appColor),
+    const Icon(Icons.account_balance, color: AppColor.appColor),
+    const Icon(Icons.account_tree, color: AppColor.appColor),
   ];
 
   List<String> apCategory = ["All Products", "Power", "Heater", "Electrical"];
@@ -74,20 +74,20 @@ class _HomeScreenState extends State<HomeScreenPage> {
   int pageNumber = 1;
   List<List<Color>> apColors = [
     [
-      Color(0xffF6982B),
-      Color(0xffFFF1E2),
+      const Color(0xffF6982B),
+      const Color(0xffFFF1E2),
     ],
     [
-      Color(0xffF8644A),
-      Color(0xffFFE9E5),
+      const Color(0xffF8644A),
+      const Color(0xffFFE9E5),
     ],
     [
-      Color(0xffAE80FF),
-      Color(0xffF3EFFA),
+      const Color(0xffAE80FF),
+      const Color(0xffF3EFFA),
     ],
     [
-      Color(0xff1BADFF),
-      Color(0xffD2EFFF),
+      const Color(0xff1BADFF),
+      const Color(0xffD2EFFF),
     ],
   ];
 
@@ -100,6 +100,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
 
   final ScrollController _scrollController = ScrollController();
   final ScrollController _gridScrollController = ScrollController();
+  bool adshown = false;
 
   @override
   void initState() {
@@ -134,28 +135,39 @@ class _HomeScreenState extends State<HomeScreenPage> {
     super.initState();
   }
 
-
   void showPopupAd(BuildContext context, String imageUrl) {
     final TextEditingController itemNameController = TextEditingController();
-    final TextEditingController itemDescriptionController = TextEditingController();
+    final TextEditingController itemDescriptionController =
+        TextEditingController();
 
     showDialog(
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return CachedNetworkImage(
-          imageUrl:
-          imageUrl,
-          placeholder: (context,
-              url) =>
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-          errorWidget: (context,
-              url, error) =>
-              Image.asset(
-                  AssetsHelper
-                      .placeHolder),
+        return Stack(
+          children: [
+            Center(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) =>
+                    Image.asset(AssetsHelper.placeHolder),
+              ),
+            ),
+            Positioned(
+              right: 0.w,
+              top: 220.h,
+              child: IconButton(
+                onPressed: context.router.pop,
+                icon: const Icon(
+                  Icons.cancel,
+                  color: AppColor.whiteColor,
+                ),
+              ),
+            )
+          ],
         );
       },
     );
@@ -163,14 +175,8 @@ class _HomeScreenState extends State<HomeScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double scWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final double scHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final double scWidth = MediaQuery.of(context).size.width;
+    final double scHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: AppColor.scaffoldBg,
@@ -181,45 +187,46 @@ class _HomeScreenState extends State<HomeScreenPage> {
         flexibleSpace: const HomeAppBar(),
         surfaceTintColor: AppColor.whiteColor,
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(0.1 * scHeight),
+          preferredSize: Size.fromHeight(16.h),
           child: const HomeSearchBar(),
         ),
       ),
       body: BlocProvider(
-        create: (context) =>
-        getIt<HomeCubit>()
-          ..getProducts(),
+        create: (context) => getIt<HomeCubit>()..getProducts(),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (BuildContext context, HomeState state) {
             return state.when(
-              initial: () =>
-              const Center(
+              initial: () => const Center(
                 child: CircularProgressIndicator(),
               ),
-              loading: () =>
-              const Center(
+              loading: () => const Center(
                 child: HomeShimmer(),
               ),
-              error: (message) =>
-                  ErrorScreen(
-                    message: message,
-                    onTap: () => context.read<HomeCubit>().getProducts(),
-                  ),
-              noInternet: () =>
-                  ErrorScreen(
-                    message: "No Internet Connection",
-                    onTap: () => context.read<HomeCubit>().getProducts(),
-                  ),
+              error: (message) => ErrorScreen(
+                message: message,
+                onTap: () => context.read<HomeCubit>().getProducts(),
+              ),
+              noInternet: () => ErrorScreen(
+                message: "No Internet Connection",
+                onTap: () => context.read<HomeCubit>().getProducts(),
+              ),
               success: (data) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (data.data!.data!.data!.noticead!.isNotEmpty) {
-                    showPopupAd(context, data.data!.data!.data!.noticead![0]
-                        .image!);
-                  } else {
-                    showPopupAd(context,
-                        "https://hardwarepasalapi.checkmysite.live/src/img/notice/2024-06-07-12-41-41_810Cmz9Gyo_notice.png");
-                  }
-                });
+                !adshown
+                    ? WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (adshown == false) {
+                          setState(() {
+                            adshown = true;
+                          });
+                        }
+                        if (data.data!.data!.data!.noticead!.isNotEmpty) {
+                          showPopupAd(context,
+                              data.data!.data!.data!.noticead![0].image!);
+                        } else {
+                          showPopupAd(context,
+                              "https://hardwarepasalapi.checkmysite.live/src/img/notice/2024-06-07-12-41-41_810Cmz9Gyo_notice.png");
+                        }
+                      })
+                    : const SizedBox.shrink();
                 print("Image Eta xa hai eta");
                 print(data.data!.data!.data!.noticead!);
                 // showPopupAd(context);
@@ -242,7 +249,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                         ),
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: scWidth * 0.013),
+                              EdgeInsets.symmetric(horizontal: scWidth * 0.013),
                           child: Column(
                             children: [
                               //categories
@@ -262,7 +269,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Texts(
                                             texts: 'Categories',
@@ -279,9 +286,9 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                   .copyWith(
                                                 color: AppColor.appColor,
                                                 decoration:
-                                                TextDecoration.underline,
+                                                    TextDecoration.underline,
                                                 decorationColor:
-                                                AppColor.appColor,
+                                                    AppColor.appColor,
                                               ),
                                             ),
                                           ),
@@ -298,9 +305,9 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                               .render_view_front!.data?.length,
                                           scrollDirection: Axis.horizontal,
                                           gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              SliverGridDelegateWithFixedCrossAxisCount(
                                             childAspectRatio:
-                                            scHeight / scWidth * 0.6,
+                                                scHeight / scWidth * 0.6,
                                             crossAxisCount: 2,
                                             mainAxisSpacing: 0.013 * scWidth,
                                             crossAxisSpacing: 0.019 * scHeight,
@@ -309,9 +316,9 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                             return InkWell(
                                               onTap: () {
                                                 FlutterSecureStorage storage =
-                                                FlutterSecureStorage();
+                                                    const FlutterSecureStorage();
                                                 StorageHelper storageHelper =
-                                                StorageHelper(storage);
+                                                    StorageHelper(storage);
 
                                                 storageHelper
                                                     .getUserData()
@@ -341,23 +348,19 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                         // color: AppColor.appColor
                                                         //     .withOpacity(0.1),
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                       ),
                                                       child: Center(
                                                         child:
-                                                        CachedNetworkImage(
+                                                            CachedNetworkImage(
                                                           imageUrl:
-                                                          '${response.data!
-                                                              .render_view_front!
-                                                              .data?[index]
-                                                              .image_url ??
-                                                              ''}',
+                                                              '${response.data!.render_view_front!.data?[index].image_url ?? ''}',
                                                           placeholder: (context,
-                                                              url) =>
-                                                          const CircularProgressIndicator(),
+                                                                  url) =>
+                                                              const CircularProgressIndicator(),
                                                           errorWidget: (context,
-                                                              url, error) =>
+                                                                  url, error) =>
                                                               Image.asset(
                                                                   AssetsHelper
                                                                       .placeHolder),
@@ -369,13 +372,13 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                     ),
                                                     Texts(
                                                       texts: response
-                                                          .data!
-                                                          .render_view_front!
-                                                          .data?[index]
-                                                          .name ??
+                                                              .data!
+                                                              .render_view_front!
+                                                              .data?[index]
+                                                              .name ??
                                                           '',
                                                       textAlign:
-                                                      TextAlign.center,
+                                                          TextAlign.center,
                                                       textStyle: AppStyles
                                                           .text12PxRegular
                                                           .copyWith(
@@ -383,7 +386,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                       ),
                                                       maxLines: 2,
                                                       overflow:
-                                                      TextOverflow.ellipsis,
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ],
                                                 ),
@@ -509,12 +512,12 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Texts(
                                               texts: 'Shop by Brands',
                                               textStyle:
-                                              AppStyles.text14PxMedium,
+                                                  AppStyles.text14PxMedium,
                                             ),
                                             InkWell(
                                               onTap: () =>
@@ -527,9 +530,9 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                     .copyWith(
                                                   color: AppColor.appColor,
                                                   decoration:
-                                                  TextDecoration.underline,
+                                                      TextDecoration.underline,
                                                   decorationColor:
-                                                  AppColor.appColor,
+                                                      AppColor.appColor,
                                                 ),
                                               ),
                                             ),
@@ -540,35 +543,31 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                         ),
                                         BlocProvider(
                                           create: (context) =>
-                                          getIt<BrandsCubit>()
-                                            ..getBrands(1),
+                                              getIt<BrandsCubit>()
+                                                ..getBrands(1),
                                           child: BlocBuilder<BrandsCubit,
                                               BrandsState>(
                                             builder: (context, state) {
                                               return state.when(
-                                                initial: () =>
-                                                const Center(
+                                                initial: () => const Center(
                                                   child:
-                                                  CircularProgressIndicator(),
+                                                      CircularProgressIndicator(),
                                                 ),
-                                                loading: () =>
-                                                const Center(
+                                                loading: () => const Center(
                                                   child:
-                                                  CircularProgressIndicator(),
+                                                      CircularProgressIndicator(),
                                                 ),
-                                                error: (message) =>
-                                                    Center(
-                                                      child: Text(message),
-                                                    ),
-                                                noInternet: () =>
-                                                const Center(
+                                                error: (message) => Center(
+                                                  child: Text(message),
+                                                ),
+                                                noInternet: () => const Center(
                                                   child: Text('No Internet'),
                                                 ),
                                                 success: (data) {
                                                   List<BrandsItemModel> brands =
-                                                  [];
+                                                      [];
                                                   for (BrandsItemModel item
-                                                  in data) {
+                                                      in data) {
                                                     // if(item.status == "featured"){
                                                     brands.add(item);
                                                     // }
@@ -576,50 +575,50 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                   return SizedBox(
                                                     height: 0.225 * scHeight,
                                                     child: GridView.builder(
-                                                      controller: _gridScrollController,
+                                                      controller:
+                                                          _gridScrollController,
                                                       scrollDirection:
-                                                      Axis.horizontal,
+                                                          Axis.horizontal,
                                                       // itemCount: brands.length,
                                                       itemCount: brands.length,
                                                       gridDelegate:
-                                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount: 2,
                                                         mainAxisSpacing:
-                                                        0.013 * scWidth,
+                                                            0.013 * scWidth,
                                                         crossAxisSpacing:
-                                                        0.024 * scHeight,
+                                                            0.024 * scHeight,
                                                       ),
                                                       itemBuilder:
                                                           (BuildContext context,
-                                                          int index) {
+                                                              int index) {
                                                         return InkWell(
-                                                          onTap: () =>
-                                                              context
-                                                                  .router
-                                                                  .push(
-                                                                BrandDetailScreenRoute(
-                                                                    slug: brands[
-                                                                    index]
-                                                                        .slug!),
-                                                              ),
+                                                          onTap: () => context
+                                                              .router
+                                                              .push(
+                                                            BrandDetailScreenRoute(
+                                                                slug: brands[
+                                                                        index]
+                                                                    .slug!),
+                                                          ),
                                                           child: Container(
                                                             width:
-                                                            0.157 * scWidth,
+                                                                0.157 * scWidth,
                                                             // height: 0.086 * scHeight,
                                                             decoration:
-                                                            BoxDecoration(
+                                                                BoxDecoration(
                                                               // color: AppColor.appColor.withOpacity(0.1),
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  10),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
                                                             ),
                                                             child: Padding(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                  horizontal:
-                                                                  0.014 *
-                                                                      scWidth),
+                                                                      horizontal:
+                                                                          0.014 *
+                                                                              scWidth),
                                                               child: Column(
                                                                 children: [
                                                                   Container(
@@ -628,19 +627,18 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                                     width: 0.128 *
                                                                         scWidth,
                                                                     decoration:
-                                                                    BoxDecoration(
+                                                                        BoxDecoration(
                                                                       color: AppColor
                                                                           .whiteColor,
                                                                       boxShadow: [
                                                                         BoxShadow(
                                                                           color: AppColor
                                                                               .textGrey
-                                                                              .withOpacity(
-                                                                              0.1),
+                                                                              .withOpacity(0.1),
                                                                           spreadRadius:
-                                                                          0,
+                                                                              0,
                                                                           blurRadius:
-                                                                          3,
+                                                                              3,
                                                                           offset: const Offset(
                                                                               0,
                                                                               1),
@@ -648,31 +646,22 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                                       ],
                                                                       // color: AppColor.appColor.withOpacity(0.1),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          10),
+                                                                          BorderRadius.circular(
+                                                                              10),
                                                                     ),
                                                                     child:
-                                                                    Center(
+                                                                        Center(
                                                                       child:
-                                                                      CachedNetworkImage(
+                                                                          CachedNetworkImage(
                                                                         imageUrl:
-                                                                        '${StringHelper
-                                                                            .brandImageBastUrl}${brands[index]
-                                                                            .image!}',
+                                                                            '${StringHelper.brandImageBastUrl}${brands[index].image!}',
                                                                         placeholder:
-                                                                            (
-                                                                            context,
-                                                                            url) =>
-                                                                        const CircularProgressIndicator(),
-                                                                        errorWidget: (
-                                                                            context,
-                                                                            url,
-                                                                            error) =>
-                                                                            Image
-                                                                                .asset(
-                                                                                AssetsHelper
-                                                                                    .placeHolder),
+                                                                            (context, url) =>
+                                                                                const CircularProgressIndicator(),
+                                                                        errorWidget: (context,
+                                                                                url,
+                                                                                error) =>
+                                                                            Image.asset(AssetsHelper.placeHolder),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -682,21 +671,21 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                                   ),
                                                                   Texts(
                                                                     texts: brands[index]
-                                                                        .name ??
+                                                                            .name ??
                                                                         '',
                                                                     textAlign:
-                                                                    TextAlign
-                                                                        .center,
+                                                                        TextAlign
+                                                                            .center,
                                                                     textStyle: AppStyles
                                                                         .text12PxRegular
                                                                         .copyWith(
                                                                       fontSize:
-                                                                      10,
+                                                                          10,
                                                                     ),
                                                                     maxLines: 2,
                                                                     overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                   ),
                                                                 ],
                                                               ),
@@ -720,7 +709,6 @@ class _HomeScreenState extends State<HomeScreenPage> {
                               SizedBox(
                                 height: 0.014 * scHeight,
                               ),
-
 
                               // if(response.data!.ads!.isNotEmpty &&
                               //     response.data!.ads!.length > 1)
@@ -825,18 +813,17 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Texts(
                                             texts: 'Featured Products',
                                             textStyle: AppStyles.text14PxMedium,
                                           ),
                                           InkWell(
-                                            onTap: () =>
-                                                context.router.push(
-                                                    FeaturedProductsScreenRoute(
-                                                      products: featuredProducts,
-                                                    )),
+                                            onTap: () => context.router.push(
+                                                FeaturedProductsScreenRoute(
+                                              products: featuredProducts,
+                                            )),
                                             child: Texts(
                                               texts: 'See All',
                                               textStyle: AppStyles
@@ -844,9 +831,9 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                   .copyWith(
                                                 color: AppColor.appColor,
                                                 decoration:
-                                                TextDecoration.underline,
+                                                    TextDecoration.underline,
                                                 decorationColor:
-                                                AppColor.appColor,
+                                                    AppColor.appColor,
                                               ),
                                             ),
                                           ),
@@ -859,16 +846,16 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                         height: 0.33 * scHeight,
                                         child: PageView.builder(
                                           controller:
-                                          featuredProductPageController,
+                                              featuredProductPageController,
                                           onPageChanged: (index) {
                                             featuredProductIndex = index;
                                             setState(() {});
                                           },
                                           itemCount: (featuredProducts.length >
-                                              8)
+                                                  8)
                                               ? 4
                                               : (featuredProducts.length / 2)
-                                              .round(),
+                                                  .round(),
                                           itemBuilder: (context, index) {
                                             return Row(
                                               children: [
@@ -876,8 +863,8 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                   flex: 1,
                                                   child: AppItemCard(
                                                     productModel:
-                                                    featuredProducts[
-                                                    index * 2],
+                                                        featuredProducts[
+                                                            index * 2],
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -886,22 +873,22 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: (featuredProducts
-                                                      .length %
-                                                      2 !=
-                                                      0 &&
-                                                      index ==
-                                                          (featuredProducts
-                                                              .length /
-                                                              2)
-                                                              .round() -
-                                                              1)
+                                                                      .length %
+                                                                  2 !=
+                                                              0 &&
+                                                          index ==
+                                                              (featuredProducts
+                                                                              .length /
+                                                                          2)
+                                                                      .round() -
+                                                                  1)
                                                       ? Container()
                                                       : AppItemCard(
-                                                    productModel:
-                                                    featuredProducts[
-                                                    index * 2 +
-                                                        1],
-                                                  ),
+                                                          productModel:
+                                                              featuredProducts[
+                                                                  index * 2 +
+                                                                      1],
+                                                        ),
                                                 ),
                                               ],
                                             );
@@ -913,27 +900,26 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: List.generate(
                                           (featuredProducts.length > 8)
                                               ? 4
                                               : (featuredProducts.length / 2)
-                                              .round(),
-                                              (index) =>
-                                              Container(
-                                                height: 8.h,
-                                                width: 8.w,
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: 4.w),
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:
+                                                  .round(),
+                                          (index) => Container(
+                                            height: 8.h,
+                                            width: 8.w,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 4.w),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color:
                                                   index == featuredProductIndex
                                                       ? AppColor.appColor
                                                       : AppColor.appColor
-                                                      .withOpacity(0.2),
-                                                ),
-                                              ),
+                                                          .withOpacity(0.2),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -1038,16 +1024,13 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                 builder: (BuildContext context, state) {
                                   return state.maybeWhen(
                                     orElse: () => Container(),
-                                    initial: () =>
-                                    const Center(
+                                    initial: () => const Center(
                                         child: Text('Wishlist is empty')),
-                                    loading: () =>
-                                    const Center(
+                                    loading: () => const Center(
                                         child: CircularProgressIndicator()),
                                     error: (message) =>
                                         Center(child: Text('Error: $message')),
-                                    noInternet: () =>
-                                    const Center(
+                                    noInternet: () => const Center(
                                         child: Text('No internet connection')),
                                     success: (products) {
                                       if (products.isEmpty) {
@@ -1057,7 +1040,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(8),
+                                                BorderRadius.circular(8),
                                             color: AppColor.whiteColor,
                                           ),
                                           child: Padding(
@@ -1070,8 +1053,8 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                 ),
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Texts(
                                                       texts: 'Recently Viewed',
@@ -1088,12 +1071,12 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                             .text12PxRegular
                                                             .copyWith(
                                                           color:
-                                                          AppColor.appColor,
+                                                              AppColor.appColor,
                                                           decoration:
-                                                          TextDecoration
-                                                              .underline,
+                                                              TextDecoration
+                                                                  .underline,
                                                           decorationColor:
-                                                          AppColor.appColor,
+                                                              AppColor.appColor,
                                                         ),
                                                       ),
                                                     ),
@@ -1106,18 +1089,18 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                   height: 0.33 * scHeight,
                                                   child: PageView.builder(
                                                     controller:
-                                                    recentlyViewedProductPageController,
+                                                        recentlyViewedProductPageController,
                                                     onPageChanged: (index) {
                                                       recentlyViewedProductsIndex =
                                                           index;
                                                       setState(() {});
                                                     },
                                                     itemCount:
-                                                    (products.length > 8)
-                                                        ? 4
-                                                        : (products.length /
-                                                        2)
-                                                        .round(),
+                                                        (products.length > 8)
+                                                            ? 4
+                                                            : (products.length /
+                                                                    2)
+                                                                .round(),
                                                     itemBuilder:
                                                         (context, index) {
                                                       return Row(
@@ -1126,34 +1109,30 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                             flex: 1,
                                                             child: AppItemCard(
                                                               productModel:
-                                                              products[
-                                                              index *
-                                                                  2],
+                                                                  products[
+                                                                      index *
+                                                                          2],
                                                             ),
                                                           ),
                                                           SizedBox(
                                                             width:
-                                                            0.021 * scWidth,
+                                                                0.021 * scWidth,
                                                           ),
                                                           Expanded(
                                                             flex: 1,
-                                                            child: (products
-                                                                .length %
-                                                                2 !=
-                                                                0 &&
-                                                                index ==
-                                                                    (products
-                                                                        .length /
-                                                                        2)
-                                                                        .round() -
-                                                                        1)
+                                                            child: (products.length %
+                                                                            2 !=
+                                                                        0 &&
+                                                                    index ==
+                                                                        (products.length / 2).round() -
+                                                                            1)
                                                                 ? Container()
                                                                 : AppItemCard(
-                                                              productModel:
-                                                              products[
-                                                              index * 2 +
-                                                                  1],
-                                                            ),
+                                                                    productModel:
+                                                                        products[
+                                                                            index * 2 +
+                                                                                1],
+                                                                  ),
                                                           ),
                                                         ],
                                                       );
@@ -1165,32 +1144,28 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                 ),
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: List.generate(
                                                     (products.length > 8)
                                                         ? 4
                                                         : (products.length / 2)
-                                                        .round(),
-                                                        (index) =>
-                                                        Container(
-                                                          height: 8.h,
-                                                          width: 8.w,
-                                                          margin:
+                                                            .round(),
+                                                    (index) => Container(
+                                                      height: 8.h,
+                                                      width: 8.w,
+                                                      margin:
                                                           EdgeInsets.symmetric(
                                                               horizontal: 4.w),
-                                                          decoration: BoxDecoration(
-                                                            shape: BoxShape
-                                                                .circle,
-                                                            color: index ==
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: index ==
                                                                 recentlyViewedProductsIndex
-                                                                ? AppColor
-                                                                .appColor
-                                                                : AppColor
-                                                                .appColor
+                                                            ? AppColor.appColor
+                                                            : AppColor.appColor
                                                                 .withOpacity(
-                                                                0.2),
-                                                          ),
-                                                        ),
+                                                                    0.2),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -1239,7 +1214,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                                 horizontal: 0.042 * scWidth),
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Image.asset(
                                                   AssetsHelper.sthlLogo,
@@ -1327,7 +1302,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                   height: 0.029 * scHeight,
                                 ),
                                 Texts(
-                                  texts: 'All products',
+                                  texts: 'All Products',
                                   textStyle: AppStyles.text14PxMedium,
                                 ),
 
@@ -1337,8 +1312,10 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                   itemCount: 1,
                                   itemBuilder: (context, index) {
                                     return StickyHeader(
+                                      controller: _scrollController,
                                       overlapHeaders: false,
-                                      header: SizedBox(
+                                      header: Container(
+                                        color: AppColor.whiteColor,
                                         height: 0.12 * scHeight,
                                         width: scWidth,
                                         child: ListView.separated(
@@ -1347,42 +1324,46 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                           itemCount: apCategory.length,
                                           itemBuilder: (context, index) {
                                             return Container(
-                                              padding: EdgeInsets.all(0.03 * scWidth),
+                                              padding: EdgeInsets.all(
+                                                  0.03 * scWidth),
                                               width: 0.213 * scWidth,
                                               decoration: BoxDecoration(
-                                                color: Color(0xffFBFBFB),
+                                                color: const Color(0xffFBFBFB),
                                                 borderRadius:
-                                                BorderRadius.circular(8),
+                                                    BorderRadius.circular(8),
                                               ),
                                               child: Center(
                                                 child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 0.042 * scWidth,
-                                                        backgroundColor:
-                                                        apColors[index][1],
-                                                        child: Icon(
-                                                          apIcons[index],
-                                                          color: apColors[index][0],
-                                                          size: 25,
-                                                        ),
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 0.042 * scWidth,
+                                                      backgroundColor:
+                                                          apColors[index][1],
+                                                      child: Icon(
+                                                        apIcons[index],
+                                                        color: apColors[index]
+                                                            [0],
+                                                        size: 25,
                                                       ),
-                                                      SizedBox(
-                                                        height: 0.006 * scHeight,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 0.006 * scHeight,
+                                                    ),
+                                                    Texts(
+                                                      texts: apCategory[index]
+                                                          .trim(),
+                                                      textStyle: AppStyles
+                                                          .text12PxRegular
+                                                          .copyWith(
+                                                        fontSize: 10.sp,
+                                                        color: apColors[index]
+                                                            [0],
                                                       ),
-                                                      Texts(
-                                                        texts:
-                                                        apCategory[index].trim(),
-                                                        textStyle: AppStyles
-                                                            .text12PxRegular
-                                                            .copyWith(
-                                                            fontSize: 10.sp,
-                                                            color: apColors[index]
-                                                            [0]),
-                                                      )
-                                                    ]),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           },
@@ -1393,97 +1374,49 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                           },
                                         ),
                                       ),
-                                      content: BlocConsumer<HomeAllProductsCubit,
+                                      content: BlocConsumer<
+                                          HomeAllProductsCubit,
                                           HomeAllProductsState>(
                                         listener: (context, state) {},
                                         builder: (context, state) {
                                           return state.maybeWhen(
-                                            orElse: () {
-                                              return Container();
-                                            },
+                                            orElse: () => Container(),
                                             success: (data) {
                                               allProducts = data;
-
-                                              return GridView.builder(
-                                                physics:
-                                                const NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: allProducts.length,
-                                                gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  crossAxisSpacing: 0.021 * scWidth,
-                                                  mainAxisSpacing: 0.021 * scHeight,
-                                                  childAspectRatio: 0.7,
-                                                ),
-                                                itemBuilder: (context, index) {
-                                                  return AppItemCard(
-                                                    productModel: allProducts[index],
-                                                  );
-                                                },
-                                              );
+                                              return _buildProductGrid(
+                                                  allProducts,
+                                                  scWidth,
+                                                  scHeight);
                                             },
                                             loading: () {
                                               return Column(
                                                 children: [
-                                                  GridView.builder(
-                                                    physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount: allProducts.length,
-                                                    gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                                      crossAxisCount: 2,
-                                                      crossAxisSpacing:
-                                                      0.021 * scWidth,
-                                                      mainAxisSpacing:
-                                                      0.021 * scHeight,
-                                                      childAspectRatio: 0.7,
-                                                    ),
-                                                    itemBuilder: (context, index) {
-                                                      return AppItemCard(
-                                                        productModel:
-                                                        allProducts[index],
-                                                      );
-                                                    },
-                                                  ),
+                                                  _buildProductGrid(allProducts,
+                                                      scWidth, scHeight),
                                                   SizedBox(
                                                     height: 0.048 * scHeight,
                                                   ),
                                                   const Center(
-                                                    child: CircularProgressIndicator(),
+                                                    child:
+                                                        CircularProgressIndicator(),
                                                   ),
                                                 ],
                                               );
                                             },
                                             error: (message) {
-                                              return GridView.builder(
-                                                physics:
-                                                const NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount: allProducts.length,
-                                                gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  crossAxisSpacing: 0.021 * scWidth,
-                                                  mainAxisSpacing: 0.021 * scHeight,
-                                                  childAspectRatio: 0.7,
-                                                ),
-                                                itemBuilder: (context, index) {
-                                                  return AppItemCard(
-                                                    productModel: allProducts[index],
-                                                  );
-                                                },
-                                              );
+                                              return _buildProductGrid(
+                                                  allProducts,
+                                                  scWidth,
+                                                  scHeight);
                                             },
                                           );
                                         },
                                       ),
-
-
                                     );
                                   },
                                 ),
+
+// Reusable function for building product grids
 
                                 // SizedBox(
                                 //   height: 0.024 * scHeight,
@@ -1537,7 +1470,6 @@ class _HomeScreenState extends State<HomeScreenPage> {
                                 //     },
                                 //   ),
                                 // ),
-
                               ],
                             ),
                           ),
@@ -1557,6 +1489,26 @@ class _HomeScreenState extends State<HomeScreenPage> {
     );
   }
 
+  Widget _buildProductGrid(
+      List<ProductModel> products, double scWidth, double scHeight) {
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: products.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 0.021 * scWidth,
+        mainAxisSpacing: 0.021 * scHeight,
+        childAspectRatio: 0.7,
+      ),
+      itemBuilder: (context, index) {
+        return AppItemCard(
+          productModel: products[index],
+        );
+      },
+    );
+  }
+
   Widget buildDot(bool isActive) {
     return Container(
       width: isActive ? 10 : 8,
@@ -1564,7 +1516,7 @@ class _HomeScreenState extends State<HomeScreenPage> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color:
-        isActive ? AppColor.appColor : AppColor.appColor.withOpacity(0.4),
+            isActive ? AppColor.appColor : AppColor.appColor.withOpacity(0.4),
       ),
     );
   }

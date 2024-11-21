@@ -29,7 +29,7 @@ mixin _$ProductSupplierModel {
   int? get updated_by => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
   String? get updated_at => throw _privateConstructorUsedError;
-  int? get markup_percent => throw _privateConstructorUsedError;
+  String? get markup_percent => throw _privateConstructorUsedError;
   String? get code => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ abstract class $ProductSupplierModelCopyWith<$Res> {
       int? updated_by,
       String? created_at,
       String? updated_at,
-      int? markup_percent,
+      String? markup_percent,
       String? code,
       String? phone,
       String? email});
@@ -130,7 +130,7 @@ class _$ProductSupplierModelCopyWithImpl<$Res,
       markup_percent: freezed == markup_percent
           ? _value.markup_percent
           : markup_percent // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
@@ -165,7 +165,7 @@ abstract class _$$ProductSupplierModelImplCopyWith<$Res>
       int? updated_by,
       String? created_at,
       String? updated_at,
-      int? markup_percent,
+      String? markup_percent,
       String? code,
       String? phone,
       String? email});
@@ -236,7 +236,7 @@ class __$$ProductSupplierModelImplCopyWithImpl<$Res>
       markup_percent: freezed == markup_percent
           ? _value.markup_percent
           : markup_percent // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
@@ -294,7 +294,7 @@ class _$ProductSupplierModelImpl implements _ProductSupplierModel {
   @override
   final String? updated_at;
   @override
-  final int? markup_percent;
+  final String? markup_percent;
   @override
   final String? code;
   @override
@@ -378,7 +378,7 @@ abstract class _ProductSupplierModel implements ProductSupplierModel {
       final int? updated_by,
       final String? created_at,
       final String? updated_at,
-      final int? markup_percent,
+      final String? markup_percent,
       final String? code,
       final String? phone,
       final String? email}) = _$ProductSupplierModelImpl;
@@ -405,7 +405,7 @@ abstract class _ProductSupplierModel implements ProductSupplierModel {
   @override
   String? get updated_at;
   @override
-  int? get markup_percent;
+  String? get markup_percent;
   @override
   String? get code;
   @override
