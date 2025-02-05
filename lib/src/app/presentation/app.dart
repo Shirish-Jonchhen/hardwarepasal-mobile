@@ -9,6 +9,7 @@ import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 import 'package:hardwarepasal/src/feature/auth/presentation/cubit/login/login_cubit.dart';
 import 'package:hardwarepasal/src/feature/brand_detail_screen/presentation/cubit/brand_details_cubit.dart';
+import 'package:hardwarepasal/src/feature/brands_screen/presentation/cubit/brands_category_cubit.dart';
 import 'package:hardwarepasal/src/feature/brands_screen/presentation/cubit/brands_cubit.dart';
 import 'package:hardwarepasal/src/feature/cart_screen/presentation/cubit/quotation_email_cubit.dart';
 import 'package:hardwarepasal/src/feature/category_level_3_screen/presentation/cubit/category_wise_products_cubit.dart';
@@ -29,6 +30,7 @@ import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/
 import 'package:hardwarepasal/src/feature/my_orders_screen/presentation/cubit/my_order_cubit.dart';
 import 'package:hardwarepasal/src/feature/new_arrivals_screen/presentation/cubit/new_arrivals_cubit.dart';
 import 'package:hardwarepasal/src/feature/profile_screen/presntation/cubit/user_details_cubit.dart';
+import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_category_cubit.dart';
 import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_cubit.dart';
 import 'package:hardwarepasal/src/feature/update_profile/presentation/cubit/update_profile_cubit.dart';
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/add_wish_list_cubit.dart';
@@ -40,6 +42,7 @@ import '../../feature/auth/presentation/cubit/register/register_cubit.dart';
 import '../../feature/free_delivery_screen/prasentation/cubit/free_delivery_cubit.dart';
 import '../../feature/hot_deals_screen/presentation/cubit/hot_deals_cubit.dart';
 import '../../feature/search_screen/presentation/cubit/search_history_cubit.dart';
+import '../../feature/search_screen/presentation/cubit/search_list_cubit.dart';
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
@@ -66,7 +69,7 @@ class App extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (context) => getIt<AppCubit>(),
-              lazy: false,
+              lazy: false
             ),
             BlocProvider(
               create: (context) => getIt<LoginCubit>(),
@@ -120,9 +123,7 @@ class App extends StatelessWidget {
               create: (context) => getIt<BrandDetailsCubit>(),
             ),
             BlocProvider(
-              create: (context) => getIt<UpdateProfileCubit>(
-
-              ),
+              create: (context) => getIt<UpdateProfileCubit>(),
             ),
             BlocProvider(
               create: (context) => getIt<LogoutCubit>(),
@@ -145,14 +146,33 @@ class App extends StatelessWidget {
             BlocProvider(
               create: (context) => getIt<SearchHistoryCubit>(),
             ),
-            BlocProvider(create: (context) => getIt<ItemDetailsCubit>(),),
-            BlocProvider(create: (context) => getIt<QuotationEmailCubit>(),),
-            BlocProvider(create: (context) => getIt<NewArrivalsCubit>(),),
-            BlocProvider(create: (context) => getIt<FreeDeliveryCubit>(),),
-            BlocProvider(create: (context) => getIt<HotDealsCubit>(),),
-            BlocProvider(create: (context) => getIt<PostReviewCubit>(),),
-
-
+            BlocProvider(
+              create: (context) => getIt<ItemDetailsCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<QuotationEmailCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<NewArrivalsCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<FreeDeliveryCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<HotDealsCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<PostReviewCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<BrandsCategoryCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<SearchListCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<SearchCategoryCubit>(),
+            ),
           ],
           child: MaterialApp.router(
             builder: EasyLoading.init(),

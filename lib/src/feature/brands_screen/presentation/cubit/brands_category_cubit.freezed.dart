@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'post_review_cubit.dart';
+part of 'brands_category_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,14 +15,14 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$PostReviewState {
+mixin _$BrandsCategoryState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
     required TResult Function() noInternet,
-    required TResult Function(PostReviewResponseModel data) success,
+    required TResult Function(List<BrandsItemCategoryModel> data) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,7 +31,7 @@ mixin _$PostReviewState {
     TResult? Function()? loading,
     TResult? Function(String message)? error,
     TResult? Function()? noInternet,
-    TResult? Function(PostReviewResponseModel data)? success,
+    TResult? Function(List<BrandsItemCategoryModel> data)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,7 +40,7 @@ mixin _$PostReviewState {
     TResult Function()? loading,
     TResult Function(String message)? error,
     TResult Function()? noInternet,
-    TResult Function(PostReviewResponseModel data)? success,
+    TResult Function(List<BrandsItemCategoryModel> data)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -75,16 +75,16 @@ mixin _$PostReviewState {
 }
 
 /// @nodoc
-abstract class $PostReviewStateCopyWith<$Res> {
-  factory $PostReviewStateCopyWith(
-          PostReviewState value, $Res Function(PostReviewState) then) =
-      _$PostReviewStateCopyWithImpl<$Res, PostReviewState>;
+abstract class $BrandsCategoryStateCopyWith<$Res> {
+  factory $BrandsCategoryStateCopyWith(
+          BrandsCategoryState value, $Res Function(BrandsCategoryState) then) =
+      _$BrandsCategoryStateCopyWithImpl<$Res, BrandsCategoryState>;
 }
 
 /// @nodoc
-class _$PostReviewStateCopyWithImpl<$Res, $Val extends PostReviewState>
-    implements $PostReviewStateCopyWith<$Res> {
-  _$PostReviewStateCopyWithImpl(this._value, this._then);
+class _$BrandsCategoryStateCopyWithImpl<$Res, $Val extends BrandsCategoryState>
+    implements $BrandsCategoryStateCopyWith<$Res> {
+  _$BrandsCategoryStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -101,7 +101,7 @@ abstract class _$$InitialImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$InitialImplCopyWithImpl<$Res>
-    extends _$PostReviewStateCopyWithImpl<$Res, _$InitialImpl>
+    extends _$BrandsCategoryStateCopyWithImpl<$Res, _$InitialImpl>
     implements _$$InitialImplCopyWith<$Res> {
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
@@ -115,7 +115,7 @@ class _$InitialImpl implements _Initial {
 
   @override
   String toString() {
-    return 'PostReviewState.initial()';
+    return 'BrandsCategoryState.initial()';
   }
 
   @override
@@ -134,7 +134,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loading,
     required TResult Function(String message) error,
     required TResult Function() noInternet,
-    required TResult Function(PostReviewResponseModel data) success,
+    required TResult Function(List<BrandsItemCategoryModel> data) success,
   }) {
     return initial();
   }
@@ -146,7 +146,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? loading,
     TResult? Function(String message)? error,
     TResult? Function()? noInternet,
-    TResult? Function(PostReviewResponseModel data)? success,
+    TResult? Function(List<BrandsItemCategoryModel> data)? success,
   }) {
     return initial?.call();
   }
@@ -158,7 +158,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? loading,
     TResult Function(String message)? error,
     TResult Function()? noInternet,
-    TResult Function(PostReviewResponseModel data)? success,
+    TResult Function(List<BrandsItemCategoryModel> data)? success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -208,7 +208,7 @@ class _$InitialImpl implements _Initial {
   }
 }
 
-abstract class _Initial implements PostReviewState {
+abstract class _Initial implements BrandsCategoryState {
   const factory _Initial() = _$InitialImpl;
 }
 
@@ -221,7 +221,7 @@ abstract class _$$LoadingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$PostReviewStateCopyWithImpl<$Res, _$LoadingImpl>
+    extends _$BrandsCategoryStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
@@ -235,7 +235,7 @@ class _$LoadingImpl implements _Loading {
 
   @override
   String toString() {
-    return 'PostReviewState.loading()';
+    return 'BrandsCategoryState.loading()';
   }
 
   @override
@@ -254,7 +254,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loading,
     required TResult Function(String message) error,
     required TResult Function() noInternet,
-    required TResult Function(PostReviewResponseModel data) success,
+    required TResult Function(List<BrandsItemCategoryModel> data) success,
   }) {
     return loading();
   }
@@ -266,7 +266,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loading,
     TResult? Function(String message)? error,
     TResult? Function()? noInternet,
-    TResult? Function(PostReviewResponseModel data)? success,
+    TResult? Function(List<BrandsItemCategoryModel> data)? success,
   }) {
     return loading?.call();
   }
@@ -278,7 +278,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loading,
     TResult Function(String message)? error,
     TResult Function()? noInternet,
-    TResult Function(PostReviewResponseModel data)? success,
+    TResult Function(List<BrandsItemCategoryModel> data)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -328,7 +328,7 @@ class _$LoadingImpl implements _Loading {
   }
 }
 
-abstract class _Loading implements PostReviewState {
+abstract class _Loading implements BrandsCategoryState {
   const factory _Loading() = _$LoadingImpl;
 }
 
@@ -343,7 +343,7 @@ abstract class _$$ErrorImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$PostReviewStateCopyWithImpl<$Res, _$ErrorImpl>
+    extends _$BrandsCategoryStateCopyWithImpl<$Res, _$ErrorImpl>
     implements _$$ErrorImplCopyWith<$Res> {
   __$$ErrorImplCopyWithImpl(
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
@@ -373,7 +373,7 @@ class _$ErrorImpl implements _Error {
 
   @override
   String toString() {
-    return 'PostReviewState.error(message: $message)';
+    return 'BrandsCategoryState.error(message: $message)';
   }
 
   @override
@@ -400,7 +400,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() loading,
     required TResult Function(String message) error,
     required TResult Function() noInternet,
-    required TResult Function(PostReviewResponseModel data) success,
+    required TResult Function(List<BrandsItemCategoryModel> data) success,
   }) {
     return error(message);
   }
@@ -412,7 +412,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? loading,
     TResult? Function(String message)? error,
     TResult? Function()? noInternet,
-    TResult? Function(PostReviewResponseModel data)? success,
+    TResult? Function(List<BrandsItemCategoryModel> data)? success,
   }) {
     return error?.call(message);
   }
@@ -424,7 +424,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? loading,
     TResult Function(String message)? error,
     TResult Function()? noInternet,
-    TResult Function(PostReviewResponseModel data)? success,
+    TResult Function(List<BrandsItemCategoryModel> data)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -474,7 +474,7 @@ class _$ErrorImpl implements _Error {
   }
 }
 
-abstract class _Error implements PostReviewState {
+abstract class _Error implements BrandsCategoryState {
   const factory _Error({required final String message}) = _$ErrorImpl;
 
   String get message;
@@ -492,7 +492,7 @@ abstract class _$$NoInternetImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$NoInternetImplCopyWithImpl<$Res>
-    extends _$PostReviewStateCopyWithImpl<$Res, _$NoInternetImpl>
+    extends _$BrandsCategoryStateCopyWithImpl<$Res, _$NoInternetImpl>
     implements _$$NoInternetImplCopyWith<$Res> {
   __$$NoInternetImplCopyWithImpl(
       _$NoInternetImpl _value, $Res Function(_$NoInternetImpl) _then)
@@ -506,7 +506,7 @@ class _$NoInternetImpl implements _NoInternet {
 
   @override
   String toString() {
-    return 'PostReviewState.noInternet()';
+    return 'BrandsCategoryState.noInternet()';
   }
 
   @override
@@ -525,7 +525,7 @@ class _$NoInternetImpl implements _NoInternet {
     required TResult Function() loading,
     required TResult Function(String message) error,
     required TResult Function() noInternet,
-    required TResult Function(PostReviewResponseModel data) success,
+    required TResult Function(List<BrandsItemCategoryModel> data) success,
   }) {
     return noInternet();
   }
@@ -537,7 +537,7 @@ class _$NoInternetImpl implements _NoInternet {
     TResult? Function()? loading,
     TResult? Function(String message)? error,
     TResult? Function()? noInternet,
-    TResult? Function(PostReviewResponseModel data)? success,
+    TResult? Function(List<BrandsItemCategoryModel> data)? success,
   }) {
     return noInternet?.call();
   }
@@ -549,7 +549,7 @@ class _$NoInternetImpl implements _NoInternet {
     TResult Function()? loading,
     TResult Function(String message)? error,
     TResult Function()? noInternet,
-    TResult Function(PostReviewResponseModel data)? success,
+    TResult Function(List<BrandsItemCategoryModel> data)? success,
     required TResult orElse(),
   }) {
     if (noInternet != null) {
@@ -599,7 +599,7 @@ class _$NoInternetImpl implements _NoInternet {
   }
 }
 
-abstract class _NoInternet implements PostReviewState {
+abstract class _NoInternet implements BrandsCategoryState {
   const factory _NoInternet() = _$NoInternetImpl;
 }
 
@@ -609,14 +609,12 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({PostReviewResponseModel data});
-
-  $PostReviewResponseModelCopyWith<$Res> get data;
+  $Res call({List<BrandsItemCategoryModel> data});
 }
 
 /// @nodoc
 class __$$SuccessImplCopyWithImpl<$Res>
-    extends _$PostReviewStateCopyWithImpl<$Res, _$SuccessImpl>
+    extends _$BrandsCategoryStateCopyWithImpl<$Res, _$SuccessImpl>
     implements _$$SuccessImplCopyWith<$Res> {
   __$$SuccessImplCopyWithImpl(
       _$SuccessImpl _value, $Res Function(_$SuccessImpl) _then)
@@ -629,32 +627,30 @@ class __$$SuccessImplCopyWithImpl<$Res>
   }) {
     return _then(_$SuccessImpl(
       data: null == data
-          ? _value.data
+          ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as PostReviewResponseModel,
+              as List<BrandsItemCategoryModel>,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PostReviewResponseModelCopyWith<$Res> get data {
-    return $PostReviewResponseModelCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value));
-    });
   }
 }
 
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl({required this.data});
+  const _$SuccessImpl({required final List<BrandsItemCategoryModel> data})
+      : _data = data;
 
+  final List<BrandsItemCategoryModel> _data;
   @override
-  final PostReviewResponseModel data;
+  List<BrandsItemCategoryModel> get data {
+    if (_data is EqualUnmodifiableListView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_data);
+  }
 
   @override
   String toString() {
-    return 'PostReviewState.success(data: $data)';
+    return 'BrandsCategoryState.success(data: $data)';
   }
 
   @override
@@ -662,11 +658,12 @@ class _$SuccessImpl implements _Success {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessImpl &&
-            (identical(other.data, data) || other.data == data));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -681,7 +678,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function() loading,
     required TResult Function(String message) error,
     required TResult Function() noInternet,
-    required TResult Function(PostReviewResponseModel data) success,
+    required TResult Function(List<BrandsItemCategoryModel> data) success,
   }) {
     return success(data);
   }
@@ -693,7 +690,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? loading,
     TResult? Function(String message)? error,
     TResult? Function()? noInternet,
-    TResult? Function(PostReviewResponseModel data)? success,
+    TResult? Function(List<BrandsItemCategoryModel> data)? success,
   }) {
     return success?.call(data);
   }
@@ -705,7 +702,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? loading,
     TResult Function(String message)? error,
     TResult Function()? noInternet,
-    TResult Function(PostReviewResponseModel data)? success,
+    TResult Function(List<BrandsItemCategoryModel> data)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -755,11 +752,11 @@ class _$SuccessImpl implements _Success {
   }
 }
 
-abstract class _Success implements PostReviewState {
-  const factory _Success({required final PostReviewResponseModel data}) =
+abstract class _Success implements BrandsCategoryState {
+  const factory _Success({required final List<BrandsItemCategoryModel> data}) =
       _$SuccessImpl;
 
-  PostReviewResponseModel get data;
+  List<BrandsItemCategoryModel> get data;
   @JsonKey(ignore: true)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;

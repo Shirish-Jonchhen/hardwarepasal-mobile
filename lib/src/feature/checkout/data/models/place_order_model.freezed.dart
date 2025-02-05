@@ -29,6 +29,7 @@ mixin _$PlaceOrderModel {
   double? get delivery_charge => throw _privateConstructorUsedError;
   double? get totalCharge => throw _privateConstructorUsedError;
   String? get payment_id => throw _privateConstructorUsedError;
+  String? get order_comments => throw _privateConstructorUsedError;
   List<PlaceOrderProductModel>? get products =>
       throw _privateConstructorUsedError;
 
@@ -54,6 +55,7 @@ abstract class $PlaceOrderModelCopyWith<$Res> {
       double? delivery_charge,
       double? totalCharge,
       String? payment_id,
+      String? order_comments,
       List<PlaceOrderProductModel>? products});
 }
 
@@ -79,6 +81,7 @@ class _$PlaceOrderModelCopyWithImpl<$Res, $Val extends PlaceOrderModel>
     Object? delivery_charge = freezed,
     Object? totalCharge = freezed,
     Object? payment_id = freezed,
+    Object? order_comments = freezed,
     Object? products = freezed,
   }) {
     return _then(_value.copyWith(
@@ -118,6 +121,10 @@ class _$PlaceOrderModelCopyWithImpl<$Res, $Val extends PlaceOrderModel>
           ? _value.payment_id
           : payment_id // ignore: cast_nullable_to_non_nullable
               as String?,
+      order_comments: freezed == order_comments
+          ? _value.order_comments
+          : order_comments // ignore: cast_nullable_to_non_nullable
+              as String?,
       products: freezed == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
@@ -144,6 +151,7 @@ abstract class _$$PlaceOrderModelImplCopyWith<$Res>
       double? delivery_charge,
       double? totalCharge,
       String? payment_id,
+      String? order_comments,
       List<PlaceOrderProductModel>? products});
 }
 
@@ -167,6 +175,7 @@ class __$$PlaceOrderModelImplCopyWithImpl<$Res>
     Object? delivery_charge = freezed,
     Object? totalCharge = freezed,
     Object? payment_id = freezed,
+    Object? order_comments = freezed,
     Object? products = freezed,
   }) {
     return _then(_$PlaceOrderModelImpl(
@@ -206,6 +215,10 @@ class __$$PlaceOrderModelImplCopyWithImpl<$Res>
           ? _value.payment_id
           : payment_id // ignore: cast_nullable_to_non_nullable
               as String?,
+      order_comments: freezed == order_comments
+          ? _value.order_comments
+          : order_comments // ignore: cast_nullable_to_non_nullable
+              as String?,
       products: freezed == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
@@ -228,6 +241,7 @@ class _$PlaceOrderModelImpl implements _PlaceOrderModel {
       this.delivery_charge,
       this.totalCharge,
       this.payment_id,
+      this.order_comments,
       final List<PlaceOrderProductModel>? products})
       : _products = products;
 
@@ -252,6 +266,8 @@ class _$PlaceOrderModelImpl implements _PlaceOrderModel {
   final double? totalCharge;
   @override
   final String? payment_id;
+  @override
+  final String? order_comments;
   final List<PlaceOrderProductModel>? _products;
   @override
   List<PlaceOrderProductModel>? get products {
@@ -264,7 +280,7 @@ class _$PlaceOrderModelImpl implements _PlaceOrderModel {
 
   @override
   String toString() {
-    return 'PlaceOrderModel(customer_name: $customer_name, customer_address: $customer_address, customer_email: $customer_email, customer_number: $customer_number, total_weight: $total_weight, delivery: $delivery, delivery_charge: $delivery_charge, totalCharge: $totalCharge, payment_id: $payment_id, products: $products)';
+    return 'PlaceOrderModel(customer_name: $customer_name, customer_address: $customer_address, customer_email: $customer_email, customer_number: $customer_number, total_weight: $total_weight, delivery: $delivery, delivery_charge: $delivery_charge, totalCharge: $totalCharge, payment_id: $payment_id, order_comments: $order_comments, products: $products)';
   }
 
   @override
@@ -290,6 +306,8 @@ class _$PlaceOrderModelImpl implements _PlaceOrderModel {
                 other.totalCharge == totalCharge) &&
             (identical(other.payment_id, payment_id) ||
                 other.payment_id == payment_id) &&
+            (identical(other.order_comments, order_comments) ||
+                other.order_comments == order_comments) &&
             const DeepCollectionEquality().equals(other._products, _products));
   }
 
@@ -306,6 +324,7 @@ class _$PlaceOrderModelImpl implements _PlaceOrderModel {
       delivery_charge,
       totalCharge,
       payment_id,
+      order_comments,
       const DeepCollectionEquality().hash(_products));
 
   @JsonKey(ignore: true)
@@ -334,6 +353,7 @@ abstract class _PlaceOrderModel implements PlaceOrderModel {
       final double? delivery_charge,
       final double? totalCharge,
       final String? payment_id,
+      final String? order_comments,
       final List<PlaceOrderProductModel>? products}) = _$PlaceOrderModelImpl;
 
   factory _PlaceOrderModel.fromJson(Map<String, dynamic> json) =
@@ -357,6 +377,8 @@ abstract class _PlaceOrderModel implements PlaceOrderModel {
   double? get totalCharge;
   @override
   String? get payment_id;
+  @override
+  String? get order_comments;
   @override
   List<PlaceOrderProductModel>? get products;
   @override

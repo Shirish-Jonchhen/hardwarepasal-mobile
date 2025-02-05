@@ -14,6 +14,14 @@ class AppConstants {
 
   static const String searchHistory = 'search-history';
 
+  //filter keys
+  static const String filterDiscount = 'filter-discount';
+  static const String filterMinPrice = 'filter-min-price';
+  static const String filterMaxPrice = 'filter-max-price';
+  static const String filterPriceRange = 'filter-price-range';
+  static const String filterBrand = 'filter-brand';
+
+
   static const String noInternet =
       'Cannot login check the internet connection.';
 

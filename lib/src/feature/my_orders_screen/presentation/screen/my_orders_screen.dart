@@ -21,7 +21,7 @@ class MyOrdersScreenPage extends StatefulWidget {
 }
 
 class _MyOrdersScreenPageState extends State<MyOrdersScreenPage> {
-  final List<String> tabs = ['All', 'Pending', 'Delivered', 'Cancelled'];
+  final List<String> tabs = ['All', 'Placed', 'Delivered', 'Cancelled'];
   int selectedIndex = 0;
 
   @override
@@ -33,14 +33,8 @@ class _MyOrdersScreenPageState extends State<MyOrdersScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-    final scWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final scHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final scWidth = MediaQuery.of(context).size.width;
+    final scHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColor.scaffoldBg,
       appBar: AppBar(
@@ -136,28 +130,25 @@ class _MyOrdersScreenPageState extends State<MyOrdersScreenPage> {
               child: BlocConsumer<MyOrderCubit, MyOrderState>(
                 builder: (BuildContext context, state) {
                   return state.maybeWhen(
-                    orElse: () =>
-                    const Center(
+                    orElse: () => const Center(
                       child: CircularProgressIndicator(),
                     ),
                     loading: () => const LoadingWidget(),
-                    error: (message) =>
-                        ErrorScreen(
-                            message: message,
-                            onTap: () =>
-                                context.read<MyOrderCubit>().getMyOrders(1)),
-                    noInternet: () =>
-                        ErrorScreen(
-                            message: "No Internet Connection",
-                            onTap: () =>
-                                context.read<MyOrderCubit>().getMyOrders(1)),
+                    error: (message) => ErrorScreen(
+                        message: message,
+                        onTap: () =>
+                            context.read<MyOrderCubit>().getMyOrders(1)),
+                    noInternet: () => ErrorScreen(
+                        message: "No Internet Connection",
+                        onTap: () =>
+                            context.read<MyOrderCubit>().getMyOrders(1)),
                     success: (data) {
                       List<OrderData> displayData = [];
                       if (selectedIndex == 0) {
                         displayData = data.data!.data!.data!;
                       } else if (selectedIndex == 1) {
                         displayData = data.data!.data!.data!
-                            .where((element) => element.status == 'pending')
+                            .where((element) => element.status == 'placed')
                             .toList();
                       } else if (selectedIndex == 2) {
                         displayData = data.data!.data!.data!
@@ -168,38 +159,40 @@ class _MyOrdersScreenPageState extends State<MyOrdersScreenPage> {
                             .where((element) => element.status == 'cancelled')
                             .toList();
                       }
-                      return displayData.isNotEmpty ?
-                      ListView.separated(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index1) {
-                          return OrderCard(
-                            productName: displayData[index1].order_id!,
-                            orderDate: displayData[index1].created_at!,
-                            orderStatus: displayData[index1].status!,
-                            price: displayData[index1]
-                                .products!
-                                .fold(
-                              0.00,
-                                  (previousValue, element) =>
-                              previousValue +
-                                  (element.price! * element.quantity!),
+                      return displayData.isNotEmpty
+                          ? ListView.separated(
+                              shrinkWrap: true,
+                              itemBuilder: (context, index1) {
+                                return OrderCard(
+                                  productName: displayData[index1].order_id!,
+                                  orderDate: displayData[index1].created_at!,
+                                  orderStatus: displayData[index1].status!,
+                                  price: displayData[index1]
+                                      .products!
+                                      .fold(
+                                        0.00,
+                                        (previousValue, element) =>
+                                            previousValue +
+                                            (element.price! *
+                                                element.quantity!),
+                                      )
+                                      .toString(),
+                                  quantity: displayData[index1]
+                                      .products!
+                                      .length
+                                      .toString(),
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 0.0194 * scHeight),
+                              itemCount: displayData.length,
                             )
-                                .toString(),
-                            quantity: displayData[index1]
-                                .products!
-                                .length
-                                .toString(),
-                          );
-                        },
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 0.0194 * scHeight),
-                        itemCount: displayData.length,) :
-                       Center(
-                        child: Texts(
-                          texts: 'No Orders Found',
-                          textStyle: AppStyles.text16PxBold,
-                        ),
-                      );
+                          : Center(
+                              child: Texts(
+                                texts: 'No Orders Found',
+                                textStyle: AppStyles.text16PxBold,
+                              ),
+                            );
                     },
                   );
                 },
@@ -208,7 +201,7 @@ class _MyOrdersScreenPageState extends State<MyOrdersScreenPage> {
                       orElse: () {},
                       success: (data) {
                         setState(
-                              () {},
+                          () {},
                         );
                       });
                 },

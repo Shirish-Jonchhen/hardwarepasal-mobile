@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hardwarepasal/src/feature/search_screen/data/model/search_category_model/search_category_model.dart';
 import 'package:hardwarepasal/src/feature/search_screen/data/model/search_result/search_result.dart';
 import 'package:hardwarepasal/src/feature/search_screen/data/model/search_result_model/search_result_model.dart';
 import 'package:injectable/injectable.dart';
@@ -12,6 +13,10 @@ import '../../../../core/helpers/storage_helper.dart';
 abstract class SearchDataSource {
   Future<ApiResponse<SearchResultModel>> searchProducts(
       {required String keyword});
+
+  Future<ApiResponse<SearchCategoryModel>> searchCategory(
+      {required String keyword});
+
   Future<ApiResponse<SearchResult>> searchFilterProducts({
     required String searchText,
     int? sortBy,
@@ -78,7 +83,7 @@ class SearchDataSourceImpl implements SearchDataSource {
       sb.write('&range%5B%5D=$highRange');
     }
     if (discount != null && discount.isNotEmpty) {
-      sb.write('&discount=$discount');
+      sb.write('&discounts=$discount');
     }
     if (brand != null && brand.isNotEmpty) {
       sb.write('&brand=$brand');
@@ -124,5 +129,25 @@ class SearchDataSourceImpl implements SearchDataSource {
     StorageHelper storageHelper = StorageHelper(storage);
     int result = await storageHelper.clearSearchHistory();
     return ApiResponse(data: result, message: 'message');
+  }
+
+  @override
+  Future<ApiResponse<SearchCategoryModel>> searchCategory({required String keyword}) async{
+    try {
+      final response = await _dio.get('search-categories?keywords=$keyword');
+      if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
+        return ApiResponse(
+          data: SearchCategoryModel.fromJson(response.data),
+          message: 'message',
+        );
+      } else {
+        throw const AppException(message: 'Unknown Error');
+      }
+    } on DioError catch (e) {
+      throw AppException.fromDioError(e);
+    }
   }
 }

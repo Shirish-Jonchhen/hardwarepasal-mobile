@@ -5,7 +5,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hardwarepasal/src/core/di/injection.dart';
+import 'src/core/di/injection.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

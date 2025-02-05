@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
+import 'package:hardwarepasal/src/feature/brands_screen/presentation/cubit/brands_category_cubit.dart';
 import 'package:hardwarepasal/src/feature/brands_screen/presentation/cubit/brands_cubit.dart';
 import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/error_widget.dart';
 import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/helpers/assets_helper.dart';
 import '../../../../core/helpers/string_helper.dart';
@@ -30,18 +32,19 @@ class _BrandsScreenPageState extends State<BrandsScreenPage> {
 
   @override
   void initState() {
-    _scrollController.addListener(() {
-      print(_scrollController.position.maxScrollExtent);
-      print(_scrollController.position.pixels);
-
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.position.pixels) {
-        pageNumber++;
-        context.read<BrandsCubit>().loadMoreBrands();
-        print("puggio hai last ma last ma last ma");
-      }
-    });
-    context.read<BrandsCubit>().getBrands(1);
+    // _scrollController.addListener(() {
+    //   print(_scrollController.position.maxScrollExtent);
+    //   print(_scrollController.position.pixels);
+    //
+    //   if (_scrollController.position.maxScrollExtent ==
+    //       _scrollController.position.pixels) {
+    //     pageNumber++;
+    //     context.read<BrandsCubit>().loadMoreBrands();
+    //     print("puggio hai last ma last ma last ma");
+    //   }
+    // });
+    // context.read<BrandsCubit>().getBrands(1);
+    context.read<BrandsCategoryCubit>().getBrandsCategory();
     super.initState();
   }
 
@@ -88,150 +91,127 @@ class _BrandsScreenPageState extends State<BrandsScreenPage> {
                 SizedBox(
                   height: 0.024 * scHeight,
                 ),
-                BlocConsumer<BrandsCubit, BrandsState>(
+                BlocConsumer<BrandsCategoryCubit, BrandsCategoryState>(
                   builder: (context, state) => state.maybeWhen(
                     initial: () => Container(),
-                    loading: () => Column(
-                      children: [
-                        ListView.separated(
-                            physics: NeverScrollableScrollPhysics(),
-                            // physics: AlwaysScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () => context.router
-                                    .push(BrandDetailScreenRoute(
-                                    slug: _brands[index].slug!
-                                )),
-                                child: Container(
-                                  padding: EdgeInsets.all(0.03 * scWidth),
-                                  decoration: BoxDecoration(
-                                    color: AppColor.whiteColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 0.08 * scWidth,
-                                        width: 0.08 * scWidth,
-                                        decoration: BoxDecoration(
-                                          // color: AppColor.appColor.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        child: Center(
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                            '${StringHelper.brandImageBastUrl}${ _brands[index].image}',
-                                            placeholder: (context, url) =>
-                                            const CircularProgressIndicator(),
-                                            errorWidget: (context, url, error) =>
-                                                Image.asset(AssetsHelper.placeHolder),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 0.042 * scWidth,
-                                      ),
-                                      Texts(
-                                        texts:
-                                        _brands[index].name!,
-                                        textStyle: AppStyles.text14PxMedium.copyWith(
-                                          color: Color(0xff545464),
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AssetsHelper.rightArrow,
-                                        height: 0.053 * scWidth,
-                                        width: 0.053 * scWidth,
-                                        // color: AppColor.black,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: 0.009 * scHeight,
-                              );
-                            },
-                            itemCount: _brands.length),
-                        SizedBox(height: 0.024 * scHeight,),
-                        CircularProgressIndicator(
-                          color: AppColor.appColor,
-                        ),
-
-                      ],
-                    ),
+                    loading: () => const LoadingWidget(),
                     error: (message) => ErrorScreen(
                         message: message,
-                        onTap: () => context.read<BrandsCubit>().getBrands(1)
+                        onTap: () => context.read<BrandsCategoryCubit>().getBrandsCategory()
                     ),
-                    noInternet: () =>ErrorScreen(message: "No Internet Connection", onTap: ()=> context.read<BrandsCubit>().getBrands(1)),
+                    noInternet: () =>ErrorScreen(message: "No Internet Connection", onTap: ()=> context.read<BrandsCategoryCubit>().getBrandsCategory()),
                     orElse: () => Container(),
                     success: (data) => ListView.separated(
                         physics: NeverScrollableScrollPhysics(),
                         // physics: AlwaysScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () => context.router
-                                .push(BrandDetailScreenRoute(
-                                    slug: data[index].slug!
-                            )),
-                            child: Container(
-                              padding: EdgeInsets.all(0.03 * scWidth),
-                              decoration: BoxDecoration(
-                                color: AppColor.whiteColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 0.08 * scWidth,
-                                    width: 0.08 * scWidth,
-                                    decoration: BoxDecoration(
-                                      // color: AppColor.appColor.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Center(
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                        '${StringHelper.brandImageBastUrl}${ _brands[index].image}',
-                                        placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(AssetsHelper.placeHolder),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 0.042 * scWidth,
-                                  ),
-                                  Texts(
-                                    texts:
-                                        data[index].name!,
-                                    textStyle: AppStyles.text14PxMedium.copyWith(
-                                      color: Color(0xff545464),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Image.asset(
-                                    AssetsHelper.rightArrow,
-                                    height: 0.053 * scWidth,
-                                    width: 0.053 * scWidth,
-                                    // color: AppColor.black,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                          if(data[index].brands!.isNotEmpty) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Texts(texts: data[index].name!,
+                                  textStyle: AppStyles.text16PxMedium,),
+                                SizedBox(
+                                  height: 0.024 * scHeight,
+                                ),
+                                ListView.separated(
+                                    itemBuilder: (context, index1) {
+                                      return InkWell(
+                                        onTap: () =>
+                                            context.router
+                                                .push(BrandDetailScreenRoute(
+                                                slug: data[index]
+                                                    .brands![index1].slug!
+                                            )),
+                                        child: Container(
+                                          padding: EdgeInsets.all(
+                                              0.03 * scWidth),
+                                          decoration: BoxDecoration(
+                                            color: AppColor.whiteColor,
+                                            borderRadius: BorderRadius.circular(
+                                                8),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                height: 0.08 * scWidth,
+                                                width: 0.08 * scWidth,
+                                                decoration: BoxDecoration(
+                                                  // color: AppColor.appColor.withOpacity(0.2),
+                                                  borderRadius: BorderRadius
+                                                      .circular(8),
+                                                ),
+                                                child: Center(
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                    '${StringHelper
+                                                        .brandImageBastUrl}${ data[index]
+                                                        .brands![index1]
+                                                        .image}',
+                                                    placeholder: (context,
+                                                        url) =>
+                                                    const Shimmer(child: Icon(
+                                                        Icons
+                                                            .downloading_outlined),
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                              Colors.grey,
+                                                              Colors.white
+                                                            ])),
+                                                    errorWidget: (context, url,
+                                                        error) =>
+                                                        Image.asset(AssetsHelper
+                                                            .placeHolder),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 0.042 * scWidth,
+                                              ),
+                                              Texts(
+                                                texts:
+                                                data[index].brands![index1]
+                                                    .name!,
+                                                textStyle: AppStyles
+                                                    .text14PxMedium.copyWith(
+                                                  color: Color(0xff545464),
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Image.asset(
+                                                AssetsHelper.rightArrow,
+                                                height: 0.053 * scWidth,
+                                                width: 0.053 * scWidth,
+                                                // color: AppColor.black,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(
+                                        height: 0.009 * scHeight,
+                                      );
+                                    },
+                                    itemCount: data[index].brands!.length,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true),
+                              ],
+                            );
+                          }else{
+                            return Container();
+                          }
+
                         },
                         separatorBuilder: (context, index) {
+                          if(data[index].brands!.isNotEmpty){
                           return SizedBox(
-                            height: 0.009 * scHeight,
-                          );
+                            height: 0.03 * scHeight,
+                          );}else{
+                            return Container();
+                          }
                         },
                         itemCount: data.length),
                   ),
@@ -241,7 +221,7 @@ class _BrandsScreenPageState extends State<BrandsScreenPage> {
                       success: (data) {
                         // show data
                         setState(() {
-                          _brands = data;
+                          // _brands = data;
                         });
                       },
                     );

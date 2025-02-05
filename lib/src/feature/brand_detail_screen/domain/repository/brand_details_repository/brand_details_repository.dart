@@ -5,5 +5,5 @@ import '../../../../../core/api_response/api_response.dart';
 import '../../../../../core/errors/app_error.dart';
 
 abstract class BrandDetailsRepository{
-  Future<Either<AppError, ApiResponse<BrandDetailsResponseModel>>> getBrandDetails({required String slug});
+  Future<Either<AppError, ApiResponse<BrandDetailsResponseModel>>> getBrandDetails({required String slug, required int page, List<String>? Range, String? discount});
 }

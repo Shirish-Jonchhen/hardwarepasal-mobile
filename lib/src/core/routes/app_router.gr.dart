@@ -148,6 +148,7 @@ class AppRouter extends _i34.RootStackRouter {
           key: args.key,
           searchText: args.searchText,
           fromCategoryLevel3: args.fromCategoryLevel3,
+          fromBrandDetails: args.fromBrandDetails,
         ),
       );
     },
@@ -595,6 +596,7 @@ class SearchFilterScreenRoute
     _i35.Key? key,
     required String searchText,
     bool fromCategoryLevel3 = false,
+    bool fromBrandDetails = false,
   }) : super(
           SearchFilterScreenRoute.name,
           path: '/search-filter-screen-page',
@@ -602,6 +604,7 @@ class SearchFilterScreenRoute
             key: key,
             searchText: searchText,
             fromCategoryLevel3: fromCategoryLevel3,
+            fromBrandDetails: fromBrandDetails,
           ),
         );
 
@@ -613,6 +616,7 @@ class SearchFilterScreenRouteArgs {
     this.key,
     required this.searchText,
     this.fromCategoryLevel3 = false,
+    this.fromBrandDetails = false,
   });
 
   final _i35.Key? key;
@@ -621,9 +625,11 @@ class SearchFilterScreenRouteArgs {
 
   final bool fromCategoryLevel3;
 
+  final bool fromBrandDetails;
+
   @override
   String toString() {
-    return 'SearchFilterScreenRouteArgs{key: $key, searchText: $searchText, fromCategoryLevel3: $fromCategoryLevel3}';
+    return 'SearchFilterScreenRouteArgs{key: $key, searchText: $searchText, fromCategoryLevel3: $fromCategoryLevel3, fromBrandDetails: $fromBrandDetails}';
   }
 }
 

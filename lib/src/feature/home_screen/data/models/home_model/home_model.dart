@@ -23,7 +23,7 @@ class HomeInnerDataModel with _$HomeInnerDataModel {
     List<ProductModel>? recently_view_product,
     ClearanceSaleModel? clearance_sale,
     // AdsModel? ads,
-    // List<AdsDataModel>? ads,
+    List<AdsDataModel>? ads,
     List<AdsDataModel>? noticead,
   }) = _HomeInnerDataModel;
 

@@ -55,6 +55,7 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
     {'title': 'Change Password', 'route': ChangePasswordScreenRoute()}, // Assuming ChangePasswordScreenRoute is defined
     {'title': 'Report a Bug', 'route': null}, // Assuming ReportBugScreenRoute is defined
     {'title': 'Logout', 'route': null}, // Assuming LogoutScreenRoute is defined
+    {'title': 'Delete Account', 'route': null},
   ];
 
   @override
@@ -306,7 +307,7 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> {
                     if(personalList[index]['title'] == 'Logout'){
                       print("Hello");
                       context.read<LogoutCubit>().logout();
-                      context.router.push(const LoginScreenRoute());
+                      context.router.replace(const LoginScreenRoute());
                     }
                   },
                   child: Padding(

@@ -16,14 +16,13 @@ class PlaceOrderModel with _$PlaceOrderModel {
     double? delivery_charge,
     double? totalCharge,
     String? payment_id,
+    String? order_comments,
     List<PlaceOrderProductModel>? products,
   }) = _PlaceOrderModel;
 
   factory PlaceOrderModel.fromJson(Map<String, dynamic> json) =>
       _$PlaceOrderModelFromJson(json);
 }
-
-
 
 @freezed
 class PlaceOrderProductModel with _$PlaceOrderProductModel {

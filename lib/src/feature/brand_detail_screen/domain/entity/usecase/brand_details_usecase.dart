@@ -14,5 +14,5 @@ class BrandDetailsUsecase extends UseCase<ApiResponse<BrandDetailsResponseModel>
   BrandDetailsUsecase(this._repository);
 
   @override
-  Future<Either<AppError, ApiResponse<BrandDetailsResponseModel>>> call(BrandDetailsParams params) => _repository.getBrandDetails(slug: params.slug);
+  Future<Either<AppError, ApiResponse<BrandDetailsResponseModel>>> call(BrandDetailsParams params) => _repository.getBrandDetails(slug: params.slug, page: params.page,Range: params.Range, discount: params.discount);
 }

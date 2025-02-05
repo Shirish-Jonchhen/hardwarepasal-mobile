@@ -22,8 +22,11 @@ class AddToCartCubit extends Cubit<AddToCartState>{
     final response = await _addToCartUsecase.call(AddToCartParams(productId: productId, quantity: quantity));
     response.fold(
       (l) => l.when(
-        serverError: (message) => AddToCartState.error(message: message),
-        noInternet: () => const AddToCartState.noInternet(),
+        serverError: (message) {
+          print("Error: $message");
+              emit(AddToCartState.error(message: message));
+        },
+        noInternet: () => emit(const AddToCartState.noInternet()),
       ),
       (r) => emit(AddToCartState.success(data: r.data!)),
     );

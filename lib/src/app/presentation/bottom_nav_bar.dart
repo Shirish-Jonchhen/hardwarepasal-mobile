@@ -1,4 +1,5 @@
-import 'package:auto_route/auto_route.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:hardwarepasal/src/core/helpers/assets_helper.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
@@ -6,8 +7,8 @@ import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _BottomNavigationPageState createState() => _BottomNavigationPageState();

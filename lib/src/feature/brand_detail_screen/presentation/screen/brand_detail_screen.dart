@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../core/routes/app_router.dart';
 import '../cubit/brand_details_cubit.dart';
 import '../../../brands_screen/data/model/brands_model/brands_model.dart';
@@ -28,11 +29,26 @@ class BrandDetailScreenPage extends StatefulWidget {
 class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
   bool isReadMoreActive = false;
   int selectedIndex = 0;
+  List<ProductModel> _products = [];
+
+  ScrollController _scrollController = ScrollController();
+
 
   @override
   void initState() {
+
+    _scrollController.addListener(
+      () {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          context.read<BrandDetailsCubit>().loadMoreProducts(
+          );
+        }
+      },
+    );
+    print("Brand details state initstate");
     // TODO: implement initState
-    context.read<BrandDetailsCubit>().getBrandDetails(widget.slug);
+    context.read<BrandDetailsCubit>().getBrandDetails(slug: widget.slug,Range: ["0", "999999999999999"], discount: null);
     super.initState();
   }
 
@@ -95,6 +111,17 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
             SizedBox(
               width: 0.042 * scWidth,
             ),
+
+            InkWell(
+              onTap: () => context.router.push(SearchFilterScreenRoute(
+                  searchText: widget.slug, fromBrandDetails: true)),
+              child: Image.asset(
+                AssetsHelper.filterIcon,
+                color: AppColor.black,
+                height: 0.064 * scWidth,
+                width: 0.064 * scWidth,
+              ),
+            ),
           ],
         ),
       ),
@@ -112,18 +139,32 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
             orElse: () => SizedBox(),
             loading: () => const LoadingWidget(),
             error: (message) => ErrorScreen(message: message, onTap: () {
-              context.read<BrandDetailsCubit>().getBrandDetails(widget.slug!);
+              context.read<BrandDetailsCubit>().getBrandDetails(slug: widget.slug!);
             }),
             noInternet: () => ErrorScreen(message: "No Internet Connection", onTap: () {
-          context.read<BrandDetailsCubit>().getBrandDetails(widget.slug!);
+          context.read<BrandDetailsCubit>().getBrandDetails(slug: widget.slug!);
           }),
             success: (data)
             {
+              _products = data.data!.data!.data!.products!.data!;
+              // print(_products);
               BrandsItemModel brandData = data.data!.data!.data!.brand!;
-              List<CategoryItemModel> categoryData = data.data!.data!.data!.filteredCategories!;
-              List<ProductModel> productData = data.data!.data!.data!.products!.data!;
-              List<ProductModel> displayData = productData.where((e) => e.product_cat_id == categoryData[selectedIndex].id,).toList();
+              List<CategoryItemModel> categoryData = [
+                CategoryItemModel(
+                  id: 0,
+                  name: "All",
+                  image_url: "https://imgs.search.brave.com/EM9Novl-22GcsOJOr1D3d1wreM5bErig76QBz_EJ_vg/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5saWNkbi5jb20v/ZG1zL2ltYWdlL0M0/RDFCQVFGbEJnb1VQ/WjhvQ1EvY29tcGFu/eS1iYWNrZ3JvdW5k/XzEwMDAwLzAvMTYw/NTYyNzkwMDAwMS9o/YXJkd2FyZXBhc2Fs/X3B2dF9sdGRfY292/ZXI_ZT0yMTQ3NDgz/NjQ3JnY9YmV0YSZ0/PTNQQVdfLTFMNVVw/Ui1vZ3RSdlFuaDQ5/dUgwNmxvcUFISW9C/VXVwdzA0Tjg.jpeg",
+                ),
+                ...data.data!.data!.data!.filteredCategories!,
+              ];
+              // List<CategoryItemModel> categoryData = data.data!.data!.data!.filteredCategories!;
+              List<ProductModel> productData = _products;
+              List<ProductModel> displayData = categoryData[selectedIndex].name == "All" ? productData :productData.where((e) => e.product_cat_id == categoryData[selectedIndex].id,).toList();
+              if(displayData.length < 3){
+                context.read<BrandDetailsCubit>().loadMoreProducts();
+              }
               return SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: [
                     Container(
@@ -159,7 +200,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                                     imageUrl:
                                         "${StringHelper.brandImageBastUrl}${data.data!.data!.data!.brand!.image}",
                                     placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
+                                    const Shimmer(child: Icon(Icons.downloading_outlined) , gradient: LinearGradient(colors: [Colors.grey, Colors.white])),
                                     errorWidget: (context, url, error) =>
                                         Image.asset(AssetsHelper.placeHolder),
                                   ),
@@ -187,7 +228,7 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                             ),
                             Texts(
                               texts:
-                                  removeHtmlTags(data.data!.data!.data!.brand!.description!),
+                                  removeHtmlTags(data.data!.data!.data!.brand!.description ?? ""),
                               textStyle: AppStyles.text14PxRegular.copyWith(
                                 color: AppColor.textGreyColor,
                                 fontWeight: FontWeight.w300,
@@ -239,121 +280,119 @@ class _BrandDetailScreenPageState extends State<BrandDetailScreenPage> {
                       height: 0.024 * scHeight,
                     ),
 
-                    productData.isEmpty && categoryData.isEmpty
-                        ? Center(
-                            child: Texts(
-                              texts: 'No Products Found',
-                              textStyle: AppStyles.text14PxRegular.copyWith(
-                                color: AppColor.appColor,
+                      productData.isEmpty && categoryData.isEmpty
+                          ? Center(
+                        child: Texts(
+                          texts: 'No Products Found',
+                          textStyle: AppStyles.text14PxRegular.copyWith(
+                            color: AppColor.appColor,
+                          ),
+                        ),
+                      )
+                          :
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AppColor.whiteColor,
+                              AppColor.scaffoldBg,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            topRight: Radius.circular(8),
+                          ),
+                        ),
+                        child: Padding(
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 0.042 * scWidth),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 0.029 * scHeight,
                               ),
-                            ),
-                          )
-                        :
-                    Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColor.whiteColor,
-                            AppColor.scaffoldBg,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8),
-                        ),
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 0.042 * scWidth),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 0.029 * scHeight,
-                            ),
-                            Texts(
-                              texts: 'Brand Products',
-                              textStyle: AppStyles.text14PxMedium,
-                            ),
-                            SizedBox(
-                              height: 0.024 * scHeight,
-                            ),
-                            if(categoryData.isNotEmpty)
-                            SizedBox(
-                              height: 0.11 * scHeight,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: categoryData.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedIndex = index;
-                                      });
-                                    },
-                                    child: Container(
-                                      // margin: EdgeInsets.only(right: 0.042 * scWidth),
-                                      padding: EdgeInsets.all(0.01 * scWidth),
-                                      decoration: BoxDecoration(
-                                        color: (selectedIndex == index)
-                                            ? AppColor.appColor.withOpacity(0.1)
-                                            : AppColor.whiteColor,
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: (selectedIndex == index)
-                                              ? AppColor.appColor
-                                              : AppColor.greyButtonBorder,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            // width: 0.21 * scWidth,
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 0.004 * scWidth,
-                                              vertical: 0.004 * scHeight,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColor.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Center(
-                                              child: CachedNetworkImage(
-                                                height: 0.061 * scHeight,
-                                                width: 0.18 * scWidth,
-                                                imageUrl:"${categoryData[index].image_url}",
-                                                placeholder: (context, url) =>
-                                                    const CircularProgressIndicator(),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(AssetsHelper
-                                                            .placeHolder),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 0.006 * scHeight),
-                                          Texts(
-                                            texts: categoryData[index].name!,
-                                            textStyle: AppStyles.text12PxRegular
-                                                .copyWith(
-                                              fontSize: 9.sp,
+                              Texts(
+                                texts: 'Brand Products',
+                                textStyle: AppStyles.text14PxMedium,
+                              ),
+                              SizedBox(
+                                height: 0.024 * scHeight,
+                              ),
+                              if(categoryData.isNotEmpty)
+                                SizedBox(
+                                  height: 0.11 * scHeight,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: categoryData.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                        child: Container(
+                                          // margin: EdgeInsets.only(right: 0.042 * scWidth),
+                                          padding: EdgeInsets.all(0.01 * scWidth),
+                                          decoration: BoxDecoration(
+                                            color: (selectedIndex == index)
+                                                ? AppColor.appColor.withOpacity(0.1)
+                                                : AppColor.whiteColor,
+                                            borderRadius: BorderRadius.circular(8),
+                                            border: Border.all(
                                               color: (selectedIndex == index)
                                                   ? AppColor.appColor
-                                                  : AppColor.textGreyColor,
-                                              fontWeight: FontWeight.w300,
+                                                  : AppColor.greyButtonBorder,
+                                              width: 1,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                // width: 0.21 * scWidth,
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 0.004 * scWidth,
+                                                  vertical: 0.004 * scHeight,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: AppColor.transparent,
+                                                  borderRadius:
+                                                  BorderRadius.circular(8),
+                                                ),
+                                                child: Center(
+                                                  child: CachedNetworkImage(
+                                                    height: 0.061 * scHeight,
+                                                    width: 0.18 * scWidth,
+                                                    imageUrl:"${categoryData[index].image_url}",
+                                                    placeholder: (context, url) =>
+                                                    const Shimmer(child: Icon(Icons.downloading_outlined) , gradient: LinearGradient(colors: [Colors.grey, Colors.white])),
+                                                    errorWidget: (context, url, error) =>
+                                                        Image.asset(AssetsHelper.placeHolder),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 0.006 * scHeight),
+                                              Texts(
+                                                texts: categoryData[index].name!,
+                                                textStyle: AppStyles.text12PxRegular
+                                                    .copyWith(
+                                                  fontSize: 9.sp,
+                                                  color: (selectedIndex == index)
+                                                      ? AppColor.appColor
+                                                      : AppColor.textGreyColor,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
                                         SizedBox(width: 0.021 * scWidth),
                               ),
                             ),

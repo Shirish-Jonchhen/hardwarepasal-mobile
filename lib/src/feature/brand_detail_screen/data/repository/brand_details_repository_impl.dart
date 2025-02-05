@@ -18,10 +18,10 @@ class BrandDetailsRepositoryImpl implements BrandDetailsRepository{
 
 
   @override
-  Future<Either<AppError, ApiResponse<BrandDetailsResponseModel>>> getBrandDetails({required String slug}) async{
+  Future<Either<AppError, ApiResponse<BrandDetailsResponseModel>>> getBrandDetails({required String slug, required int page, List<String>? Range, String? discount}) async{
     if(await _networkInfo.isConnected){
       try {
-        final response = await _brandDetailsDataSource.getBrandDetails(slug: slug);
+        final response = await _brandDetailsDataSource.getBrandDetails(slug: slug, page: page, Range: Range, discount: discount);
         return Right(
           ApiResponse(
               data: response.data,

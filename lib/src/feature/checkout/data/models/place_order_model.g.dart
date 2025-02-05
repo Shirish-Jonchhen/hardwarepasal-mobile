@@ -18,6 +18,7 @@ _$PlaceOrderModelImpl _$$PlaceOrderModelImplFromJson(
       delivery_charge: (json['delivery_charge'] as num?)?.toDouble(),
       totalCharge: (json['total_charge'] as num?)?.toDouble(),
       payment_id: json['payment_id'] as String?,
+      order_comments: json['order_comments'] as String?,
       products: (json['products'] as List<dynamic>?)
           ?.map(
               (e) => PlaceOrderProductModel.fromJson(e as Map<String, dynamic>))
@@ -36,6 +37,7 @@ Map<String, dynamic> _$$PlaceOrderModelImplToJson(
       'delivery_charge': instance.delivery_charge,
       'total_charge': instance.totalCharge,
       'payment_id': instance.payment_id,
+      'order_comments': instance.order_comments,
       'products': instance.products,
     };
 

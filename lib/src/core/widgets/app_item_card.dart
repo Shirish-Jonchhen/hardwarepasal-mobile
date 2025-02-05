@@ -13,6 +13,7 @@ import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_recently_viewed_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/add_to_cart_cubit.dart';
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/item_details_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../feature/item_detail_screen/presentation/screen/item_detail_screen.dart';
 import '../di/injection.dart';
@@ -66,7 +67,7 @@ class AppItemCard extends StatelessWidget {
                     imageUrl:
                         '${StringHelper.productCoverImageBastUrl}${productModel.cover_image}',
                     placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                    const Shimmer(child: Icon(Icons.downloading_outlined) , gradient: LinearGradient(colors: [Colors.grey, Colors.white])),
                     errorWidget: (context, url, error) =>
                         Image.asset(AssetsHelper.placeHolder),
                   ),
@@ -213,7 +214,7 @@ class AppItemCard extends StatelessWidget {
                               const Center(child: CircularProgressIndicator()),
                           error: (String message) {
                             SnackBarHelper.showSnackBar(
-                              message: message,
+                              message: "Cannot add this product to Cart.",
                               context: context,
                               isError: true,
                             );
@@ -232,12 +233,24 @@ class AppItemCard extends StatelessWidget {
                           bool isLoading = state.maybeWhen(
                             orElse: () => false,
                             loading: () => true,
-                            // error: (String message) => false,
+                            success: (data) => false,
+                            initial: () => false,
+                            noInternet: () => false,
+                            error: (String message) {
+                              print("Error Statee ta gaiisakio nii $message");
+                              return false;
+                            },
                           );
 
                           return InkWell(
                             onTap: () {
-                              if (!isLoading) {
+                              if(productModel.quantity == 0){
+                                SnackBarHelper.showSnackBar(
+                                  message: "Product is out of stock",
+                                  context: context,
+                                  isError: true,
+                                );
+                              }else if (!isLoading) {
                                 context
                                     .read<AddToCartCubit>()
                                     .addToCart(productModel.id.toString(), "1");
@@ -262,6 +275,15 @@ class AppItemCard extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      if(productModel.quantity == 0)
+                                        Texts(
+                                          texts: 'Out of Stock',
+                                          textStyle: AppStyles.text12PxRegular.copyWith(
+                                            color: AppColor.errorColor,
+                                            fontSize: 10,
+                                          ),
+                                        )
+                                      else
                                       Texts(
                                         texts: (isLoading)
                                             ? 'Adding...'

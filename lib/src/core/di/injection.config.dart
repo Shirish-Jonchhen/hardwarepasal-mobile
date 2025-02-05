@@ -11,15 +11,15 @@
 import 'package:dio/dio.dart' as _i4;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i5;
 import 'package:get_it/get_it.dart' as _i1;
-import 'package:hardwarepasal/src/app/cubit/app_cubit.dart' as _i156;
+import 'package:hardwarepasal/src/app/cubit/app_cubit.dart' as _i160;
 import 'package:hardwarepasal/src/app/data/repository/app_data_repository_impl.dart'
-    as _i119;
+    as _i121;
 import 'package:hardwarepasal/src/app/data/source/app_source.dart' as _i49;
 import 'package:hardwarepasal/src/app/domain/entity/usecase/app_data_usecase.dart'
-    as _i120;
+    as _i122;
 import 'package:hardwarepasal/src/app/domain/repository/app_data_repository.dart'
-    as _i118;
-import 'package:hardwarepasal/src/core/di/register_modules.dart' as _i163;
+    as _i120;
+import 'package:hardwarepasal/src/core/di/register_modules.dart' as _i168;
 import 'package:hardwarepasal/src/core/helpers/storage_helper.dart' as _i31;
 import 'package:hardwarepasal/src/core/network/network_info.dart' as _i10;
 import 'package:hardwarepasal/src/core/routes/app_router.dart' as _i3;
@@ -38,11 +38,11 @@ import 'package:hardwarepasal/src/feature/auth/domain/entities/usecase/register_
 import 'package:hardwarepasal/src/feature/auth/domain/repository/auth_repository.dart'
     as _i55;
 import 'package:hardwarepasal/src/feature/auth/presentation/cubit/login/login_cubit.dart'
-    as _i146;
-import 'package:hardwarepasal/src/feature/auth/presentation/cubit/logout/logout_cubit.dart'
-    as _i147;
-import 'package:hardwarepasal/src/feature/auth/presentation/cubit/register/register_cubit.dart'
     as _i149;
+import 'package:hardwarepasal/src/feature/auth/presentation/cubit/logout/logout_cubit.dart'
+    as _i150;
+import 'package:hardwarepasal/src/feature/auth/presentation/cubit/register/register_cubit.dart'
+    as _i152;
 import 'package:hardwarepasal/src/feature/brand_detail_screen/data/repository/brand_details_repository_impl.dart'
     as _i59;
 import 'package:hardwarepasal/src/feature/brand_detail_screen/data/source/brand_details_source.dart'
@@ -52,21 +52,25 @@ import 'package:hardwarepasal/src/feature/brand_detail_screen/domain/entity/usec
 import 'package:hardwarepasal/src/feature/brand_detail_screen/domain/repository/brand_details_repository/brand_details_repository.dart'
     as _i58;
 import 'package:hardwarepasal/src/feature/brand_detail_screen/presentation/cubit/brand_details_cubit.dart'
-    as _i125;
+    as _i127;
 import 'package:hardwarepasal/src/feature/brands_screen/data/repository/brands_repository_impl.dart'
     as _i63;
 import 'package:hardwarepasal/src/feature/brands_screen/data/source/brands_data_source.dart'
     as _i61;
+import 'package:hardwarepasal/src/feature/brands_screen/domain/entity/usecase/brands_category_usecase.dart'
+    as _i128;
 import 'package:hardwarepasal/src/feature/brands_screen/domain/entity/usecase/brands_usecase.dart'
     as _i64;
 import 'package:hardwarepasal/src/feature/brands_screen/domain/repository/brands_repository/brands_repository.dart'
     as _i62;
+import 'package:hardwarepasal/src/feature/brands_screen/presentation/cubit/brands_category_cubit.dart'
+    as _i162;
 import 'package:hardwarepasal/src/feature/brands_screen/presentation/cubit/brands_cubit.dart'
-    as _i126;
+    as _i129;
 import 'package:hardwarepasal/src/feature/cart_screen/data/repository/apply_coupon_code_repository_impl.dart'
-    as _i122;
+    as _i124;
 import 'package:hardwarepasal/src/feature/cart_screen/data/repository/cart_data_repository_impl.dart'
-    as _i128;
+    as _i131;
 import 'package:hardwarepasal/src/feature/cart_screen/data/repository/quotation_email_repository_impl.dart'
     as _i25;
 import 'package:hardwarepasal/src/feature/cart_screen/data/source/apply_coupon_data_source.dart'
@@ -76,25 +80,25 @@ import 'package:hardwarepasal/src/feature/cart_screen/data/source/cart_data_sour
 import 'package:hardwarepasal/src/feature/cart_screen/data/source/quotation_email_data_source.dart'
     as _i23;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/entity/usecase/apply_xoupon_usecase.dart'
-    as _i124;
+    as _i126;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/entity/usecase/cart_data_usecase.dart'
-    as _i129;
+    as _i132;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/entity/usecase/quotation_email_usecase.dart'
     as _i26;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/entity/usecase/remove_from_cart_usecase.dart'
-    as _i150;
+    as _i153;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/entity/usecase/update_cart_usecase.dart'
-    as _i154;
+    as _i158;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/repository/apply_coupon_code_repository.dart'
-    as _i121;
+    as _i123;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/repository/cart_data_repository.dart'
-    as _i127;
+    as _i130;
 import 'package:hardwarepasal/src/feature/cart_screen/domain/repository/quotation_email_repository.dart'
     as _i24;
 import 'package:hardwarepasal/src/feature/cart_screen/presentation/cubit/apply_coupon_cubit.dart'
-    as _i157;
+    as _i161;
 import 'package:hardwarepasal/src/feature/cart_screen/presentation/cubit/cart_data_cubit.dart'
-    as _i158;
+    as _i163;
 import 'package:hardwarepasal/src/feature/cart_screen/presentation/cubit/quotation_email_cubit.dart'
     as _i106;
 import 'package:hardwarepasal/src/feature/category_level_3_screen/data/repository/category_wise_products_repositoy_impl.dart'
@@ -102,11 +106,11 @@ import 'package:hardwarepasal/src/feature/category_level_3_screen/data/repositor
 import 'package:hardwarepasal/src/feature/category_level_3_screen/data/source/category_wise_products_source.dart'
     as _i70;
 import 'package:hardwarepasal/src/feature/category_level_3_screen/domain/entity/usecase/category_wise_products_usecase.dart'
-    as _i131;
+    as _i134;
 import 'package:hardwarepasal/src/feature/category_level_3_screen/domain/repository/category_wise_products_repository/category_wise_products_repository.dart'
     as _i71;
 import 'package:hardwarepasal/src/feature/category_level_3_screen/presentation/cubit/category_wise_products_cubit.dart'
-    as _i159;
+    as _i164;
 import 'package:hardwarepasal/src/feature/category_screen/data/repository/category_repository/category_repository_impl.dart'
     as _i68;
 import 'package:hardwarepasal/src/feature/category_screen/data/source/category_data_source.dart'
@@ -116,17 +120,17 @@ import 'package:hardwarepasal/src/feature/category_screen/domain/entity/usecase/
 import 'package:hardwarepasal/src/feature/category_screen/domain/repository/category_repository/category_repository.dart'
     as _i67;
 import 'package:hardwarepasal/src/feature/category_screen/presentation/cubit/category_cubit.dart'
-    as _i130;
-import 'package:hardwarepasal/src/feature/change_password/data/repository/change_password_repository_impl.dart'
     as _i133;
+import 'package:hardwarepasal/src/feature/change_password/data/repository/change_password_repository_impl.dart'
+    as _i136;
 import 'package:hardwarepasal/src/feature/change_password/data/source/change_password_source.dart'
     as _i73;
 import 'package:hardwarepasal/src/feature/change_password/domain/entity/usecase/change_password_usecase.dart'
-    as _i134;
+    as _i137;
 import 'package:hardwarepasal/src/feature/change_password/domain/repository/change_password_repository.dart'
-    as _i132;
+    as _i135;
 import 'package:hardwarepasal/src/feature/change_password/presentation/cubit/change_password_cubit.dart'
-    as _i160;
+    as _i165;
 import 'package:hardwarepasal/src/feature/checkout/data/repository/apply_coupon_repository_impl.dart'
     as _i52;
 import 'package:hardwarepasal/src/feature/checkout/data/repository/checkout_repository_impl.dart'
@@ -154,13 +158,13 @@ import 'package:hardwarepasal/src/feature/checkout/domain/repository/checkout_re
 import 'package:hardwarepasal/src/feature/checkout/domain/repository/place_order_repository.dart'
     as _i16;
 import 'package:hardwarepasal/src/feature/checkout/presentation/cubit/apply_coupon_cubit.dart'
-    as _i123;
+    as _i125;
 import 'package:hardwarepasal/src/feature/checkout/presentation/cubit/checkout_cubit.dart'
-    as _i135;
+    as _i138;
 import 'package:hardwarepasal/src/feature/checkout/presentation/cubit/connectips_cubit.dart'
-    as _i136;
+    as _i139;
 import 'package:hardwarepasal/src/feature/checkout/presentation/cubit/ime_pay_cubit.dart'
-    as _i145;
+    as _i148;
 import 'package:hardwarepasal/src/feature/checkout/presentation/cubit/place_order_cubit.dart'
     as _i104;
 import 'package:hardwarepasal/src/feature/free_delivery_screen/data/repository/free_delivery_repository_impl.dart'
@@ -172,19 +176,19 @@ import 'package:hardwarepasal/src/feature/free_delivery_screen/domain/entity/use
 import 'package:hardwarepasal/src/feature/free_delivery_screen/domain/repository/free_delivery_repository.dart'
     as _i81;
 import 'package:hardwarepasal/src/feature/free_delivery_screen/prasentation/cubit/free_delivery_cubit.dart'
-    as _i138;
+    as _i141;
 import 'package:hardwarepasal/src/feature/home_screen/data/repository/home_repository_impl.dart'
     as _i86;
 import 'package:hardwarepasal/src/feature/home_screen/data/source/home_data_source.dart'
     as _i84;
 import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/add_recently_viewed_usecase.dart'
-    as _i115;
+    as _i117;
 import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/featured_brands_usecase.dart'
-    as _i137;
-import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/home_all_products_usecase.dart'
-    as _i139;
-import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/home_brands_usecase.dart'
     as _i140;
+import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/home_all_products_usecase.dart'
+    as _i142;
+import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/home_brands_usecase.dart'
+    as _i143;
 import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/home_usecase.dart'
     as _i87;
 import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/recently_viewed_usecase.dart'
@@ -192,15 +196,15 @@ import 'package:hardwarepasal/src/feature/home_screen/domain/entity/usecase/rece
 import 'package:hardwarepasal/src/feature/home_screen/domain/repository/home_repository.dart'
     as _i85;
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_all_products_cubit.dart'
-    as _i161;
+    as _i166;
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_brands_cubit.dart'
-    as _i162;
+    as _i167;
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_cubit.dart'
-    as _i141;
+    as _i144;
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_featured_brands_cubit.dart'
-    as _i142;
+    as _i145;
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_recently_viewed_cubit.dart'
-    as _i143;
+    as _i146;
 import 'package:hardwarepasal/src/feature/hot_deals_screen/data/repository/hot_deals_repository_impl.dart'
     as _i90;
 import 'package:hardwarepasal/src/feature/hot_deals_screen/data/source/hot_deals_data_source.dart'
@@ -210,7 +214,7 @@ import 'package:hardwarepasal/src/feature/hot_deals_screen/domain/entity/usecase
 import 'package:hardwarepasal/src/feature/hot_deals_screen/domain/repository/hot_deals_repository.dart'
     as _i89;
 import 'package:hardwarepasal/src/feature/hot_deals_screen/presentation/cubit/hot_deals_cubit.dart'
-    as _i144;
+    as _i147;
 import 'package:hardwarepasal/src/feature/item_detail_screen/data/repository/add_to_cart_repository_impl.dart'
     as _i46;
 import 'package:hardwarepasal/src/feature/item_detail_screen/data/repository/item_detail_repository_impl.dart'
@@ -236,7 +240,7 @@ import 'package:hardwarepasal/src/feature/item_detail_screen/domain/repository/i
 import 'package:hardwarepasal/src/feature/item_detail_screen/domain/repository/post_review_repository.dart'
     as _i20;
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/add_to_cart_cubit.dart'
-    as _i116;
+    as _i118;
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/item_details_cubit.dart'
     as _i97;
 import 'package:hardwarepasal/src/feature/item_detail_screen/presentation/cubit/post_review_cubit.dart'
@@ -250,7 +254,7 @@ import 'package:hardwarepasal/src/feature/my_orders_screen/domain/entity/usecase
 import 'package:hardwarepasal/src/feature/my_orders_screen/domain/repository/my_orders_repository.dart'
     as _i100;
 import 'package:hardwarepasal/src/feature/my_orders_screen/presentation/cubit/my_order_cubit.dart'
-    as _i148;
+    as _i151;
 import 'package:hardwarepasal/src/feature/new_arrivals_screen/data/repository/new_arrivals_repository_impl.dart'
     as _i13;
 import 'package:hardwarepasal/src/feature/new_arrivals_screen/data/source/new_arrivals_data_source.dart'
@@ -270,27 +274,33 @@ import 'package:hardwarepasal/src/feature/profile_screen/domain/entity/usecase/u
 import 'package:hardwarepasal/src/feature/profile_screen/domain/repository/user_detail_repository.dart'
     as _i37;
 import 'package:hardwarepasal/src/feature/profile_screen/presntation/cubit/user_details_cubit.dart'
-    as _i113;
+    as _i115;
 import 'package:hardwarepasal/src/feature/search_screen/data/repository/search_repository_impl.dart'
     as _i29;
 import 'package:hardwarepasal/src/feature/search_screen/data/source/search_data_source.dart'
     as _i27;
 import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/clear_history_usecase.dart'
     as _i78;
-import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_filter_usecase.dart'
+import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_category_usecase.dart'
     as _i110;
-import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_history_add_usecase.dart'
+import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_filter_usecase.dart'
     as _i111;
-import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_history_usecase.dart'
+import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_history_add_usecase.dart'
     as _i112;
+import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_history_usecase.dart'
+    as _i113;
 import 'package:hardwarepasal/src/feature/search_screen/domain/entity/usecase/search_usecase.dart'
     as _i30;
 import 'package:hardwarepasal/src/feature/search_screen/domain/repository/search_repository.dart'
     as _i28;
+import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_category_cubit.dart'
+    as _i155;
 import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_cubit.dart'
-    as _i152;
+    as _i156;
 import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_history_cubit.dart'
-    as _i153;
+    as _i157;
+import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_list_cubit.dart'
+    as _i114;
 import 'package:hardwarepasal/src/feature/update_profile/data/repository/update_profile_repository_impl.dart'
     as _i34;
 import 'package:hardwarepasal/src/feature/update_profile/data/source/update_profile_data_source.dart'
@@ -300,7 +310,7 @@ import 'package:hardwarepasal/src/feature/update_profile/domin/entity/usecase/up
 import 'package:hardwarepasal/src/feature/update_profile/domin/repository/update_profile_repository.dart'
     as _i33;
 import 'package:hardwarepasal/src/feature/update_profile/presentation/cubit/update_profile_cubit.dart'
-    as _i155;
+    as _i159;
 import 'package:hardwarepasal/src/feature/wishlist_screen/data/repository/wishlist_repository_impl.dart'
     as _i42;
 import 'package:hardwarepasal/src/feature/wishlist_screen/data/source/wishlist_source.dart'
@@ -314,11 +324,11 @@ import 'package:hardwarepasal/src/feature/wishlist_screen/domain/entity/usecase/
 import 'package:hardwarepasal/src/feature/wishlist_screen/domain/repository/wishlist_repository.dart'
     as _i41;
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/add_wish_list_cubit.dart'
-    as _i117;
+    as _i119;
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/remove_wish_list_cubit.dart'
-    as _i151;
+    as _i154;
 import 'package:hardwarepasal/src/feature/wishlist_screen/presentation/cubit/wishlist_cubit.dart'
-    as _i114;
+    as _i116;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:internet_connection_checker/internet_connection_checker.dart'
     as _i6;
@@ -338,18 +348,14 @@ extension GetItInjectableX on _i1.GetIt {
     final registerModule = _$RegisterModule();
     gh.lazySingleton<_i3.AppRouter>(() => registerModule.router);
     gh.lazySingleton<_i4.Dio>(
+      () => registerModule.unauthenticatedDio,
+      instanceName: 'un-authenticated',
+    );
+    gh.lazySingleton<_i4.Dio>(
       () => registerModule.authenticatedDio,
       instanceName: 'authenticated',
     );
-    gh.lazySingleton<_i4.Dio>(
-      () => registerModule.unauthenticatedDio,
-      instanceName: 'un-authenticated',
-    );
     gh.lazySingleton<_i4.Dio>(() => registerModule.dio);
-    gh.lazySingleton<_i4.Dio>(
-      () => registerModule.unauthenticatedDio,
-      instanceName: 'un-authenticated',
-    );
     gh.lazySingleton<_i5.FlutterSecureStorage>(() => registerModule.storage);
     gh.lazySingleton<_i6.InternetConnectionChecker>(
         () => registerModule.internetConnectionChecker);
@@ -627,137 +633,147 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i108.RegisterUseCase(gh<_i55.AuthRepository>()));
     gh.lazySingleton<_i109.RemoveWishListUsecase>(
         () => _i109.RemoveWishListUsecase(gh<_i41.WishlistRepository>()));
-    gh.lazySingleton<_i110.SearchFilterUseCase>(
-        () => _i110.SearchFilterUseCase(gh<_i28.SearchRepository>()));
-    gh.lazySingleton<_i111.SearchHistoryAddUsecase>(
-        () => _i111.SearchHistoryAddUsecase(gh<_i28.SearchRepository>()));
-    gh.lazySingleton<_i112.SearchHistoryUsecase>(
-        () => _i112.SearchHistoryUsecase(gh<_i28.SearchRepository>()));
-    gh.factory<_i113.UserDetailsCubit>(
-        () => _i113.UserDetailsCubit(gh<_i39.UserDetailsUseCase>()));
-    gh.factory<_i114.WishlistCubit>(() => _i114.WishlistCubit(
+    gh.lazySingleton<_i110.SearchCategoryUseCase>(
+        () => _i110.SearchCategoryUseCase(gh<_i28.SearchRepository>()));
+    gh.lazySingleton<_i111.SearchFilterUseCase>(
+        () => _i111.SearchFilterUseCase(gh<_i28.SearchRepository>()));
+    gh.lazySingleton<_i112.SearchHistoryAddUsecase>(
+        () => _i112.SearchHistoryAddUsecase(gh<_i28.SearchRepository>()));
+    gh.lazySingleton<_i113.SearchHistoryUsecase>(
+        () => _i113.SearchHistoryUsecase(gh<_i28.SearchRepository>()));
+    gh.factory<_i114.SearchListCubit>(
+        () => _i114.SearchListCubit(gh<_i30.SearchUseCase>()));
+    gh.factory<_i115.UserDetailsCubit>(
+        () => _i115.UserDetailsCubit(gh<_i39.UserDetailsUseCase>()));
+    gh.factory<_i116.WishlistCubit>(() => _i116.WishlistCubit(
           gh<_i43.WishlistUsecase>(),
           gh<_i48.AddWishListUsecase>(),
           gh<_i109.RemoveWishListUsecase>(),
         ));
-    gh.lazySingleton<_i115.AddRecentlyViewedUsecase>(
-        () => _i115.AddRecentlyViewedUsecase(gh<_i85.HomeRepository>()));
-    gh.factory<_i116.AddToCartCubit>(
-        () => _i116.AddToCartCubit(gh<_i47.AddToCartUsecase>()));
-    gh.factory<_i117.AddWishListCubit>(
-        () => _i117.AddWishListCubit(gh<_i48.AddWishListUsecase>()));
-    gh.lazySingleton<_i118.AppDataRepository>(() => _i119.AppDataRepositoryImpl(
+    gh.lazySingleton<_i117.AddRecentlyViewedUsecase>(
+        () => _i117.AddRecentlyViewedUsecase(gh<_i85.HomeRepository>()));
+    gh.factory<_i118.AddToCartCubit>(
+        () => _i118.AddToCartCubit(gh<_i47.AddToCartUsecase>()));
+    gh.factory<_i119.AddWishListCubit>(
+        () => _i119.AddWishListCubit(gh<_i48.AddWishListUsecase>()));
+    gh.lazySingleton<_i120.AppDataRepository>(() => _i121.AppDataRepositoryImpl(
           gh<_i49.AppDataSource>(),
           gh<_i10.NetworkInfo>(),
           gh<_i31.StorageHelper>(),
         ));
-    gh.lazySingleton<_i120.AppDataUsecase>(
-        () => _i120.AppDataUsecase(gh<_i118.AppDataRepository>()));
-    gh.lazySingleton<_i121.ApplyCouponCodeRepository>(
-        () => _i122.ApplyCouponCodeRepositoryImpl(
+    gh.lazySingleton<_i122.AppDataUsecase>(
+        () => _i122.AppDataUsecase(gh<_i120.AppDataRepository>()));
+    gh.lazySingleton<_i123.ApplyCouponCodeRepository>(
+        () => _i124.ApplyCouponCodeRepositoryImpl(
               gh<_i50.ApplyCouponDataSource>(),
               gh<_i10.NetworkInfo>(),
             ));
-    gh.factory<_i123.ApplyCouponCubit>(
-        () => _i123.ApplyCouponCubit(gh<_i53.ApplyCouponUsecase>()));
-    gh.lazySingleton<_i124.ApplyXouponUsecase>(
-        () => _i124.ApplyXouponUsecase(gh<_i121.ApplyCouponCodeRepository>()));
-    gh.factory<_i125.BrandDetailsCubit>(
-        () => _i125.BrandDetailsCubit(gh<_i60.BrandDetailsUsecase>()));
-    gh.factory<_i126.BrandsCubit>(
-        () => _i126.BrandsCubit(gh<_i64.BrandsUsecase>()));
-    gh.lazySingleton<_i127.CartDataRepository>(
-        () => _i128.CartDataRepositoryImpl(
+    gh.factory<_i125.ApplyCouponCubit>(
+        () => _i125.ApplyCouponCubit(gh<_i53.ApplyCouponUsecase>()));
+    gh.lazySingleton<_i126.ApplyXouponUsecase>(
+        () => _i126.ApplyXouponUsecase(gh<_i123.ApplyCouponCodeRepository>()));
+    gh.factory<_i127.BrandDetailsCubit>(
+        () => _i127.BrandDetailsCubit(gh<_i60.BrandDetailsUsecase>()));
+    gh.lazySingleton<_i128.BrandsCategoryUsecase>(
+        () => _i128.BrandsCategoryUsecase(gh<_i62.BrandsRepository>()));
+    gh.factory<_i129.BrandsCubit>(
+        () => _i129.BrandsCubit(gh<_i64.BrandsUsecase>()));
+    gh.lazySingleton<_i130.CartDataRepository>(
+        () => _i131.CartDataRepositoryImpl(
               gh<_i65.CartDataSource>(),
               gh<_i10.NetworkInfo>(),
             ));
-    gh.lazySingleton<_i129.CartDataUsecase>(
-        () => _i129.CartDataUsecase(gh<_i127.CartDataRepository>()));
-    gh.factory<_i130.CategoryCubit>(
-        () => _i130.CategoryCubit(gh<_i69.CategoryUsecase>()));
-    gh.lazySingleton<_i131.CategoryWiseProductsUsecase>(() =>
-        _i131.CategoryWiseProductsUsecase(
+    gh.lazySingleton<_i132.CartDataUsecase>(
+        () => _i132.CartDataUsecase(gh<_i130.CartDataRepository>()));
+    gh.factory<_i133.CategoryCubit>(
+        () => _i133.CategoryCubit(gh<_i69.CategoryUsecase>()));
+    gh.lazySingleton<_i134.CategoryWiseProductsUsecase>(() =>
+        _i134.CategoryWiseProductsUsecase(
             gh<_i71.CategoryWithProductsRepository>()));
-    gh.lazySingleton<_i132.ChangePasswordRepository>(
-        () => _i133.ChangePasswordRepositoryImpl(
+    gh.lazySingleton<_i135.ChangePasswordRepository>(
+        () => _i136.ChangePasswordRepositoryImpl(
               gh<_i73.ChangePasswordSource>(),
               gh<_i10.NetworkInfo>(),
             ));
-    gh.lazySingleton<_i134.ChangePasswordUsecase>(() =>
-        _i134.ChangePasswordUsecase(gh<_i132.ChangePasswordRepository>()));
-    gh.factory<_i135.CheckoutCubit>(
-        () => _i135.CheckoutCubit(gh<_i77.CheckoutUsecase>()));
-    gh.factory<_i136.ConnectipsCubit>(
-        () => _i136.ConnectipsCubit(gh<_i79.ConnectipsUsecase>()));
-    gh.lazySingleton<_i137.FeaturedBrandsUsecase>(
-        () => _i137.FeaturedBrandsUsecase(gh<_i85.HomeRepository>()));
-    gh.factory<_i138.FreeDeliveryCubit>(
-        () => _i138.FreeDeliveryCubit(gh<_i83.FreeDeliveryUsecase>()));
-    gh.lazySingleton<_i139.HomeAllProductsUseCase>(
-        () => _i139.HomeAllProductsUseCase(gh<_i85.HomeRepository>()));
-    gh.lazySingleton<_i140.HomeBrandsUseCase>(
-        () => _i140.HomeBrandsUseCase(gh<_i85.HomeRepository>()));
-    gh.factory<_i141.HomeCubit>(() => _i141.HomeCubit(gh<_i87.HomeUseCase>()));
-    gh.factory<_i142.HomeFeaturedBrandsCubit>(
-        () => _i142.HomeFeaturedBrandsCubit(gh<_i137.FeaturedBrandsUsecase>()));
-    gh.factory<_i143.HomeRecentlyViewedCubit>(
-        () => _i143.HomeRecentlyViewedCubit(
+    gh.lazySingleton<_i137.ChangePasswordUsecase>(() =>
+        _i137.ChangePasswordUsecase(gh<_i135.ChangePasswordRepository>()));
+    gh.factory<_i138.CheckoutCubit>(
+        () => _i138.CheckoutCubit(gh<_i77.CheckoutUsecase>()));
+    gh.factory<_i139.ConnectipsCubit>(
+        () => _i139.ConnectipsCubit(gh<_i79.ConnectipsUsecase>()));
+    gh.lazySingleton<_i140.FeaturedBrandsUsecase>(
+        () => _i140.FeaturedBrandsUsecase(gh<_i85.HomeRepository>()));
+    gh.factory<_i141.FreeDeliveryCubit>(
+        () => _i141.FreeDeliveryCubit(gh<_i83.FreeDeliveryUsecase>()));
+    gh.lazySingleton<_i142.HomeAllProductsUseCase>(
+        () => _i142.HomeAllProductsUseCase(gh<_i85.HomeRepository>()));
+    gh.lazySingleton<_i143.HomeBrandsUseCase>(
+        () => _i143.HomeBrandsUseCase(gh<_i85.HomeRepository>()));
+    gh.factory<_i144.HomeCubit>(() => _i144.HomeCubit(gh<_i87.HomeUseCase>()));
+    gh.factory<_i145.HomeFeaturedBrandsCubit>(
+        () => _i145.HomeFeaturedBrandsCubit(gh<_i140.FeaturedBrandsUsecase>()));
+    gh.factory<_i146.HomeRecentlyViewedCubit>(
+        () => _i146.HomeRecentlyViewedCubit(
               gh<_i107.RecentlyViewedUsecase>(),
-              gh<_i115.AddRecentlyViewedUsecase>(),
+              gh<_i117.AddRecentlyViewedUsecase>(),
             ));
-    gh.factory<_i144.HotDealsCubit>(
-        () => _i144.HotDealsCubit(gh<_i91.HotDealsUsecase>()));
-    gh.factory<_i145.ImePayCubit>(
-        () => _i145.ImePayCubit(gh<_i92.ImePayUsecase>()));
-    gh.factory<_i146.LoginCubit>(
-        () => _i146.LoginCubit(gh<_i98.LoginUseCase>()));
-    gh.factory<_i147.LogoutCubit>(
-        () => _i147.LogoutCubit(gh<_i99.LogoutUsecase>()));
-    gh.factory<_i148.MyOrderCubit>(
-        () => _i148.MyOrderCubit(gh<_i102.MyOrdersUsecase>()));
-    gh.factory<_i149.RegisterCubit>(
-        () => _i149.RegisterCubit(gh<_i108.RegisterUseCase>()));
-    gh.lazySingleton<_i150.RemoveFromCartUsecase>(
-        () => _i150.RemoveFromCartUsecase(gh<_i127.CartDataRepository>()));
-    gh.factory<_i151.RemoveWishListCubit>(
-        () => _i151.RemoveWishListCubit(gh<_i109.RemoveWishListUsecase>()));
-    gh.factory<_i152.SearchCubit>(
-        () => _i152.SearchCubit(gh<_i110.SearchFilterUseCase>()));
-    gh.factory<_i153.SearchHistoryCubit>(() => _i153.SearchHistoryCubit(
-          gh<_i112.SearchHistoryUsecase>(),
+    gh.factory<_i147.HotDealsCubit>(
+        () => _i147.HotDealsCubit(gh<_i91.HotDealsUsecase>()));
+    gh.factory<_i148.ImePayCubit>(
+        () => _i148.ImePayCubit(gh<_i92.ImePayUsecase>()));
+    gh.factory<_i149.LoginCubit>(
+        () => _i149.LoginCubit(gh<_i98.LoginUseCase>()));
+    gh.factory<_i150.LogoutCubit>(
+        () => _i150.LogoutCubit(gh<_i99.LogoutUsecase>()));
+    gh.factory<_i151.MyOrderCubit>(
+        () => _i151.MyOrderCubit(gh<_i102.MyOrdersUsecase>()));
+    gh.factory<_i152.RegisterCubit>(
+        () => _i152.RegisterCubit(gh<_i108.RegisterUseCase>()));
+    gh.lazySingleton<_i153.RemoveFromCartUsecase>(
+        () => _i153.RemoveFromCartUsecase(gh<_i130.CartDataRepository>()));
+    gh.factory<_i154.RemoveWishListCubit>(
+        () => _i154.RemoveWishListCubit(gh<_i109.RemoveWishListUsecase>()));
+    gh.factory<_i155.SearchCategoryCubit>(
+        () => _i155.SearchCategoryCubit(gh<_i110.SearchCategoryUseCase>()));
+    gh.factory<_i156.SearchCubit>(
+        () => _i156.SearchCubit(gh<_i111.SearchFilterUseCase>()));
+    gh.factory<_i157.SearchHistoryCubit>(() => _i157.SearchHistoryCubit(
+          gh<_i113.SearchHistoryUsecase>(),
           gh<_i78.ClearHistoryUsecase>(),
-          gh<_i111.SearchHistoryAddUsecase>(),
+          gh<_i112.SearchHistoryAddUsecase>(),
         ));
-    gh.lazySingleton<_i154.UpdateCartUsecase>(
-        () => _i154.UpdateCartUsecase(gh<_i127.CartDataRepository>()));
-    gh.factory<_i155.UpdateProfileCubit>(() => _i155.UpdateProfileCubit(
+    gh.lazySingleton<_i158.UpdateCartUsecase>(
+        () => _i158.UpdateCartUsecase(gh<_i130.CartDataRepository>()));
+    gh.factory<_i159.UpdateProfileCubit>(() => _i159.UpdateProfileCubit(
           gh<_i35.UpdateProfileUsecase>(),
-          gh<_i113.UserDetailsCubit>(),
+          gh<_i115.UserDetailsCubit>(),
         ));
-    gh.factory<_i156.AppCubit>(() => _i156.AppCubit(
+    gh.factory<_i160.AppCubit>(() => _i160.AppCubit(
           gh<_i31.StorageHelper>(),
-          gh<_i120.AppDataUsecase>(),
+          gh<_i122.AppDataUsecase>(),
         ));
-    gh.factory<_i157.ApplyCouponCubit>(
-        () => _i157.ApplyCouponCubit(gh<_i124.ApplyXouponUsecase>()));
-    gh.factory<_i158.CartDataCubit>(() => _i158.CartDataCubit(
-          gh<_i129.CartDataUsecase>(),
-          gh<_i150.RemoveFromCartUsecase>(),
-          gh<_i154.UpdateCartUsecase>(),
+    gh.factory<_i161.ApplyCouponCubit>(
+        () => _i161.ApplyCouponCubit(gh<_i126.ApplyXouponUsecase>()));
+    gh.factory<_i162.BrandsCategoryCubit>(
+        () => _i162.BrandsCategoryCubit(gh<_i128.BrandsCategoryUsecase>()));
+    gh.factory<_i163.CartDataCubit>(() => _i163.CartDataCubit(
+          gh<_i132.CartDataUsecase>(),
+          gh<_i153.RemoveFromCartUsecase>(),
+          gh<_i158.UpdateCartUsecase>(),
         ));
-    gh.factory<_i159.CategoryWiseProductsCubit>(() =>
-        _i159.CategoryWiseProductsCubit(
-            gh<_i131.CategoryWiseProductsUsecase>()));
-    gh.factory<_i160.ChangePasswordCubit>(
-        () => _i160.ChangePasswordCubit(gh<_i134.ChangePasswordUsecase>()));
-    gh.factory<_i161.HomeAllProductsCubit>(() => _i161.HomeAllProductsCubit(
-          gh<_i139.HomeAllProductsUseCase>(),
-          gh<_i131.CategoryWiseProductsUsecase>(),
+    gh.factory<_i164.CategoryWiseProductsCubit>(() =>
+        _i164.CategoryWiseProductsCubit(
+            gh<_i134.CategoryWiseProductsUsecase>()));
+    gh.factory<_i165.ChangePasswordCubit>(
+        () => _i165.ChangePasswordCubit(gh<_i137.ChangePasswordUsecase>()));
+    gh.factory<_i166.HomeAllProductsCubit>(() => _i166.HomeAllProductsCubit(
+          gh<_i142.HomeAllProductsUseCase>(),
+          gh<_i134.CategoryWiseProductsUsecase>(),
         ));
-    gh.factory<_i162.HomeBrandsCubit>(
-        () => _i162.HomeBrandsCubit(gh<_i140.HomeBrandsUseCase>()));
+    gh.factory<_i167.HomeBrandsCubit>(
+        () => _i167.HomeBrandsCubit(gh<_i143.HomeBrandsUseCase>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i163.RegisterModule {}
+class _$RegisterModule extends _i168.RegisterModule {}

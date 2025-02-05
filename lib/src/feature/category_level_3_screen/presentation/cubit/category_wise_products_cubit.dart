@@ -57,7 +57,7 @@ class CategoryWiseProductsCubit extends Cubit<CategoryWiseProductsState> {
 
     _isFetching = true;
     // emit(const HomeAllProductsState.loading());
-    emit(const CategoryWiseProductsState.loading());
+    // emit(const CategoryWiseProductsState.loading());
 
     final response = await _useCase.call(CategoryWiseProductsParams(
       slug: slug,

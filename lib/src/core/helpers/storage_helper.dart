@@ -219,4 +219,52 @@ class StorageHelper {
     await _storage.write(key: AppConstants.recentlyViewed, value: jsonString);
     return 1;
   }
+
+
+  //filter states
+ Future<void> saveDiscountState({required String discount})async{
+    await _storage.write(key: AppConstants.filterDiscount, value: discount);
+  }
+
+  Future<String?> getDiscountState() async {
+    return await _storage.read(key: AppConstants.filterDiscount);
+  }
+
+
+  Future<void> saveMinPriceState({required String minPrice})async{
+    await _storage.write(key: AppConstants.filterMinPrice, value: minPrice);
+  }
+  Future<void> saveMaxPriceState({required String minPrice})async{
+    await _storage.write(key: AppConstants.filterMaxPrice, value: minPrice);
+  }
+
+  Future<void> savePriceRangeState({required String range})async{
+    await _storage.write(key: AppConstants.filterPriceRange, value: range);
+  }
+
+
+  Future<String> getMinPriceState() async {
+    return await _storage.read(key: AppConstants.filterMinPrice) ?? "0";
+  }
+
+  Future<String> getMaxPriceState() async {
+    return await _storage.read(key: AppConstants.filterMaxPrice) ?? "9999";
+  }
+
+  Future<String> getPriceRangeState() async {
+    return await _storage.read(key: AppConstants.filterPriceRange) ?? "000";
+  }
+
+
+  Future<void> resetFilterStates() async {
+    await _storage.delete(key: AppConstants.filterDiscount);
+    await _storage.delete(key: AppConstants.filterMinPrice);
+    await _storage.delete(key: AppConstants.filterMaxPrice);
+    await _storage.delete(key: AppConstants.filterPriceRange);
+  }
+
+
+
+
+
 }

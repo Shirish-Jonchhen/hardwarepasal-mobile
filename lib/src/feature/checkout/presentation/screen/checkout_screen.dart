@@ -220,8 +220,9 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
 
     context.read<UserDetailsCubit>().getUserDetails();
 
-  storageHelper.getUserData().then((value) {
-      fullNameController = TextEditingController(text: "${value.first_name!} ${value.last_name!}");
+    storageHelper.getUserData().then((value) {
+      fullNameController = TextEditingController(
+          text: "${value.first_name!} ${value.last_name!}");
       addressController = TextEditingController(text: value.address!);
       emailController = TextEditingController(text: value.email!);
       mobileController = TextEditingController(text: value.contact!);
@@ -457,21 +458,21 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                   width: scWidth -
                                       0.021 * 2 * scWidth -
                                       0.048 * 2 * scWidth,
-                                  initialSelection: data
-                                      .data!.data!.data!.districts!.first,
+                                  initialSelection:
+                                      data.data!.data!.data!.districts!.first,
                                   dropdownMenuEntries: data
                                       .data!.data!.data!.districts!
                                       .map<DropdownMenuEntry<String>>(
                                           (String value) {
-                                        return DropdownMenuEntry<String>(
-                                            value: value,
-                                            label: value,
-                                            style: ButtonStyle(
-                                              backgroundColor:
+                                    return DropdownMenuEntry<String>(
+                                        value: value,
+                                        label: value,
+                                        style: ButtonStyle(
+                                          backgroundColor:
                                               MaterialStateProperty.all(
                                                   AppColor.whiteColor),
-                                            ));
-                                      }).toList(),
+                                        ));
+                                  }).toList(),
                                   enabled: addressGrpVal == "outsideValley",
                                 ),
                                 SizedBox(
@@ -499,31 +500,29 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                 TextField(
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 5,
+                                  controller: noteController,
                                   // Allows the text field to grow with content
                                   decoration: InputDecoration(
                                     hintText:
-                                    'Notes about your order. Eg. Special notes for delivery',
+                                        'Notes about your order. Eg. Special notes for delivery',
                                     hintStyle:
-                                    AppStyles.text12PxRegular.copyWith(
+                                        AppStyles.text12PxRegular.copyWith(
                                       color: Colors.grey.shade400,
                                       fontWeight: FontWeight.w300,
                                     ),
                                     border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
                                           color: AppColor.borderGrey),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
                                         color: AppColor.textGrey,
                                       ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
                                         color: AppColor.appColor,
                                       ),
@@ -976,11 +975,9 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
             orElse: () {
               return Container();
             },
-
             error: (message) {
               return Container();
             },
-
             success: (data) {
               return Container(
                 height: 0.1 * scHeight,
@@ -1015,31 +1012,76 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                     paymentOption == "qrpayment" ||
                                     paymentOption == "swipecaedondelivery") {
                                   context.read<PlaceOrderCubit>().placeOrder(
-                                    placeOrderModel: PlaceOrderModel(
-                                      customer_address: addressController.text,
-                                      customer_email: emailController.text,
-                                      customer_name: fullNameController.text,
-                                      customer_number: mobileController.text,
-                                      payment_id: paymentOption,
-                                      delivery: addressGrpVal,
-                                      delivery_charge: addressGrpVal == "outsideRingRoad"
-                                          ? (data.data!.data!.data!.delivery_charge!.outside_ringroad!).toDouble()
-                                          : addressGrpVal == "outsideValley"
-                                              ? data.data!.data!.data!.delivery_charge!.outside_valley!.toDouble()
-                                              : data.data!.data!.data!.delivery_charge!.inside_ringroad!.toDouble(),
-                                      total_weight: totalWeight,
-                                      totalCharge: total + (addressGrpVal == "outsideRingRoad"
-                                          ? (data.data!.data!.data!.delivery_charge!.outside_ringroad!).toDouble()
-                                          : addressGrpVal == "outsideValley"
-                                          ? data.data!.data!.data!.delivery_charge!.outside_valley!.toDouble()
-                                          : data.data!.data!.data!.delivery_charge!.inside_ringroad!.toDouble()),
-                                      products: widget.products
-                                          .map((e) => PlaceOrderProductModel(
-                                          product_id: e.id,
-                                          quantity: e.quantity))
-                                          .toList(),
-                                    ),
-                                  );
+                                        placeOrderModel: PlaceOrderModel(
+                                          order_comments: noteController.text,
+                                          customer_address:
+                                              addressController.text,
+                                          customer_email: emailController.text,
+                                          customer_name:
+                                              fullNameController.text,
+                                          customer_number:
+                                              mobileController.text,
+                                          payment_id: paymentOption,
+                                          delivery: addressGrpVal,
+                                          delivery_charge: addressGrpVal ==
+                                                  "outsideRingRoad"
+                                              ? (data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .outside_ringroad!)
+                                                  .toDouble()
+                                              : addressGrpVal == "outsideValley"
+                                                  ? data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .outside_valley!
+                                                      .toDouble()
+                                                  : data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .inside_ringroad!
+                                                      .toDouble(),
+                                          total_weight: totalWeight,
+                                          totalCharge: total +
+                                              (addressGrpVal ==
+                                                      "outsideRingRoad"
+                                                  ? (data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .outside_ringroad!)
+                                                      .toDouble()
+                                                  : addressGrpVal ==
+                                                          "outsideValley"
+                                                      ? data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .outside_valley!
+                                                          .toDouble()
+                                                      : data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .inside_ringroad!
+                                                          .toDouble()),
+                                          products: widget.products
+                                              .map((e) =>
+                                                  PlaceOrderProductModel(
+                                                      product_id: e.id,
+                                                      quantity: e.quantity))
+                                              .toList(),
+                                        ),
+                                      );
                                 }
                               }
                             },
@@ -1079,14 +1121,14 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text('Order Confirmation'),
-                                    content: Text(
-                                        data.message ?? "Order Placed Successfully"),
+                                    content: Text(data.message ??
+                                        "Order Placed Successfully"),
                                     actions: <Widget>[
                                       TextButton(
                                         child: Text('OK'),
                                         onPressed: () {
                                           context.router.popUntil(
-                                                  (route) => route.isFirst == true);
+                                              (route) => route.isFirst == true);
                                         },
                                       ),
                                     ],
@@ -1098,7 +1140,9 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                             },
                             error: (message) {
                               SnackBarHelper.showSnackBar(
-                                  context: context, message: message, isError: true);
+                                  context: context,
+                                  message: message,
+                                  isError: true);
                             },
                             loading: () {
                               SnackBarHelper.showSnackBar(
@@ -1128,31 +1172,75 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                   termsAndCondition) {
                                 if (paymentOption == "imepay") {
                                   context.read<ImePayCubit>().placeOrder(
-                                    placeOrderModel: PlaceOrderModel(
-                                      customer_address: addressController.text,
-                                      customer_email: emailController.text,
-                                      customer_name: fullNameController.text,
-                                      customer_number: mobileController.text,
-                                      payment_id: paymentOption,
-                                      delivery: addressGrpVal,
-                                      delivery_charge: addressGrpVal == "outsideRingRoad"
-                                          ? (data.data!.data!.data!.delivery_charge!.outside_ringroad!).toDouble()
-                                          : addressGrpVal == "outsideValley"
-                                          ? data.data!.data!.data!.delivery_charge!.outside_valley!.toDouble()
-                                          : data.data!.data!.data!.delivery_charge!.inside_ringroad!.toDouble(),
-                                      total_weight: totalWeight,
-                                      totalCharge: total + (addressGrpVal == "outsideRingRoad"
-                                          ? (data.data!.data!.data!.delivery_charge!.outside_ringroad!).toDouble()
-                                          : addressGrpVal == "outsideValley"
-                                          ? data.data!.data!.data!.delivery_charge!.outside_valley!.toDouble()
-                                          : data.data!.data!.data!.delivery_charge!.inside_ringroad!.toDouble()),
-                                      products: widget.products
-                                          .map((e) => PlaceOrderProductModel(
-                                          product_id: e.id,
-                                          quantity: e.quantity))
-                                          .toList(),
-                                    ),
-                                  );
+                                        placeOrderModel: PlaceOrderModel(
+                                          customer_address:
+                                              addressController.text,
+                                          customer_email: emailController.text,
+                                          customer_name:
+                                              fullNameController.text,
+                                          customer_number:
+                                              mobileController.text,
+                                          payment_id: paymentOption,
+                                          delivery: addressGrpVal,
+                                          delivery_charge: addressGrpVal ==
+                                                  "outsideRingRoad"
+                                              ? (data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .outside_ringroad!)
+                                                  .toDouble()
+                                              : addressGrpVal == "outsideValley"
+                                                  ? data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .outside_valley!
+                                                      .toDouble()
+                                                  : data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .inside_ringroad!
+                                                      .toDouble(),
+                                          total_weight: totalWeight,
+                                          totalCharge: total +
+                                              (addressGrpVal ==
+                                                      "outsideRingRoad"
+                                                  ? (data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .outside_ringroad!)
+                                                      .toDouble()
+                                                  : addressGrpVal ==
+                                                          "outsideValley"
+                                                      ? data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .outside_valley!
+                                                          .toDouble()
+                                                      : data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .inside_ringroad!
+                                                          .toDouble()),
+                                          products: widget.products
+                                              .map((e) =>
+                                                  PlaceOrderProductModel(
+                                                      product_id: e.id,
+                                                      quantity: e.quantity))
+                                              .toList(),
+                                        ),
+                                      );
                                 }
                               }
                             },
@@ -1187,96 +1275,20 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                           state.maybeWhen(
                             orElse: () {},
                             success: (data) {
-                              // print(
-                              //     "====================print data=====================");
-                              // print(data.data!.data!.TokenId);
-                              // print(data.data!.data!.Amount);
-                              // print(data.data!.data!.IMEPAY_CHECKOUT_URL);
-                              // print(data.data!.data!.MerchantCode);
-                              // print(data.data!.data!.RefId);
-                              // print(data.data!.data!.responseUrl);
-
-                              // StartSdk.callSdk(
-                              //   context,
-                              //   merchantCode: data.data!.data!.MerchantCode!,
-                              //   merchantName: "",
-                              //   merchantUrl: merchantUrl,
-                              //   amount: amount,
-                              //   refId: refId,
-                              //   module: module,
-                              //   user: user,
-                              //   password: password,
-                              //   deliveryUrl: deliveryUrl,
-                              //   buildType: buildType,
-                              // );
-
-                              // Dio().post(
-                              //   "https://payment.imepay.com.np:7979/WebCheckout/Checkout",
-                              //   data: {
-                              //     "TokenId": data.data!.data!.TokenId,
-                              //     "TranAnount": "100.00",
-                              //     "IMEPAY_CHECKOUT_URL": data.data!.data!.IMEPAY_CHECKOUT_URL,
-                              //     "MerchantCode": data.data!.data!.MerchantCode,
-                              //     "RefId": data.data!.data!.RefId,
-                              //     "RespUrl": data.data!.data!.responseUrl,
-                              //   },
-                              // ).then(
-                              //   (value) {
-                              //     print(value);
-
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         ImePaymentScreenPage(
-                                          htmlContent: data.data!.viewdata.toString(),
+                                          htmlContent:
+                                              data.data!.viewdata.toString(),
                                         )),
                               );
-                              //   },
-                              // );
-
-                              // StartSdk.callSdk(
-                              //   context,
-                              //   merchantCode: "HARDWARE",
-                              //   merchantName: "Hardware Pasal",
-                              //   // merchantUrl: data.data!.data!.IMEPAY_CHECKOUT_URL!,
-                              //   // amount: data.data!.data!.Amount!,
-                              //   amount: "100",
-                              //   refId: data.data!.data!.RefId!,
-                              //   module: "HARDWARE",
-                              //   user: "hardwarepasal",
-                              //   password: "Hardware@123",
-                              //   deliveryUrl: data.data!.data!.IMEPAY_CHECKOUT_URL!,
-                              //   merchantUrl: "http://202.166.194.90:8383/Login",
-                              //   buildType: BuildType.STAGE,
-                              // ).then(
-                              //   (value) => print(value),
-                              // );
-
-                              // showDialog(
-                              //   context: context,
-                              //   builder: (BuildContext context) {
-                              //     return AlertDialog(
-                              //       title: Text('Order Confirmation'),
-                              //       content:
-                              //       Text(data.message ?? "Order Placed Successfully"),
-                              //       actions: <Widget>[
-                              //         TextButton(
-                              //           child: Text('OK'),
-                              //           onPressed: () {
-                              //             context.router
-                              //                 .popUntil((route) => route.isFirst == true);
-                              //           },
-                              //         ),
-                              //       ],
-                              //     );
-                              //   },
-                              // );
-                              // SnackBarHelper.showSnackBar(context: context, message: data.message!, isError: false);
-                              // context.router.popUntil((route) => route.isFirst == true);
                             },
                             error: (message) {
                               SnackBarHelper.showSnackBar(
-                                  context: context, message: message, isError: true);
+                                  context: context,
+                                  message: message,
+                                  isError: true);
                             },
                             loading: () {
                               SnackBarHelper.showSnackBar(
@@ -1306,31 +1318,75 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                   termsAndCondition) {
                                 if (paymentOption == "connectips") {
                                   context.read<ConnectipsCubit>().placeOrder(
-                                    placeOrderModel: PlaceOrderModel(
-                                      customer_address: addressController.text,
-                                      customer_email: emailController.text,
-                                      customer_name: fullNameController.text,
-                                      customer_number: mobileController.text,
-                                      payment_id: paymentOption,
-                                      delivery: addressGrpVal,
-                                      delivery_charge: addressGrpVal == "outsideRingRoad"
-                                          ? (data.data!.data!.data!.delivery_charge!.outside_ringroad!).toDouble()
-                                          : addressGrpVal == "outsideValley"
-                                          ? data.data!.data!.data!.delivery_charge!.outside_valley!.toDouble()
-                                          : data.data!.data!.data!.delivery_charge!.inside_ringroad!.toDouble(),
-                                      total_weight: totalWeight,
-                                      totalCharge: total + (addressGrpVal == "outsideRingRoad"
-                                          ? (data.data!.data!.data!.delivery_charge!.outside_ringroad!).toDouble()
-                                          : addressGrpVal == "outsideValley"
-                                          ? data.data!.data!.data!.delivery_charge!.outside_valley!.toDouble()
-                                          : data.data!.data!.data!.delivery_charge!.inside_ringroad!.toDouble()),
-                                      products: widget.products
-                                          .map((e) => PlaceOrderProductModel(
-                                          product_id: e.id,
-                                          quantity: e.quantity))
-                                          .toList(),
-                                    ),
-                                  );
+                                        placeOrderModel: PlaceOrderModel(
+                                          customer_address:
+                                              addressController.text,
+                                          customer_email: emailController.text,
+                                          customer_name:
+                                              fullNameController.text,
+                                          customer_number:
+                                              mobileController.text,
+                                          payment_id: paymentOption,
+                                          delivery: addressGrpVal,
+                                          delivery_charge: addressGrpVal ==
+                                                  "outsideRingRoad"
+                                              ? (data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .outside_ringroad!)
+                                                  .toDouble()
+                                              : addressGrpVal == "outsideValley"
+                                                  ? data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .outside_valley!
+                                                      .toDouble()
+                                                  : data
+                                                      .data!
+                                                      .data!
+                                                      .data!
+                                                      .delivery_charge!
+                                                      .inside_ringroad!
+                                                      .toDouble(),
+                                          total_weight: totalWeight,
+                                          totalCharge: total +
+                                              (addressGrpVal ==
+                                                      "outsideRingRoad"
+                                                  ? (data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .outside_ringroad!)
+                                                      .toDouble()
+                                                  : addressGrpVal ==
+                                                          "outsideValley"
+                                                      ? data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .outside_valley!
+                                                          .toDouble()
+                                                      : data
+                                                          .data!
+                                                          .data!
+                                                          .data!
+                                                          .delivery_charge!
+                                                          .inside_ringroad!
+                                                          .toDouble()),
+                                          products: widget.products
+                                              .map((e) =>
+                                                  PlaceOrderProductModel(
+                                                      product_id: e.id,
+                                                      quantity: e.quantity))
+                                              .toList(),
+                                        ),
+                                      );
                                 }
                               }
                             },
@@ -1372,14 +1428,16 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       ConnectipsScreenPage(
-                                        data: data.data!.data!,
-                                      ),
+                                    data: data.data!.data!,
+                                  ),
                                 ),
                               );
                             },
                             error: (message) {
                               SnackBarHelper.showSnackBar(
-                                  context: context, message: message, isError: true);
+                                  context: context,
+                                  message: message,
+                                  isError: true);
                             },
                             loading: () {
                               SnackBarHelper.showSnackBar(
@@ -1406,11 +1464,9 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
             loading: () {
               return Container();
             },
-
             noInternet: () {
               return Container();
             },
-
           );
         },
         listener: (context, state) {
@@ -1423,7 +1479,6 @@ class _CheckoutScreenPageState extends State<CheckoutScreenPage> {
           );
         },
       ),
-
     );
   }
 }

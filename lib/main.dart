@@ -1,13 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hardwarepasal/bootstrap.dart';
-import 'package:hardwarepasal/src/app/presentation/app.dart';
+import 'bootstrap.dart';
+import 'src/app/presentation/app.dart';
 
 void main() async {
   configLoading();
   bootstrap(() {
-
     return App();
   });
 }

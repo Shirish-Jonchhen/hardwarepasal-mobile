@@ -3,6 +3,7 @@ import 'package:hardwarepasal/src/core/api_response/api_response.dart';
 import 'package:hardwarepasal/src/core/errors/app_error.dart';
 import 'package:hardwarepasal/src/core/errors/app_exceptions.dart';
 import 'package:hardwarepasal/src/core/network/network_info.dart';
+import 'package:hardwarepasal/src/feature/search_screen/data/model/search_category_model/search_category_model.dart';
 import 'package:hardwarepasal/src/feature/search_screen/data/model/search_result/search_result.dart';
 import 'package:hardwarepasal/src/feature/search_screen/data/model/search_result_model/search_result_model.dart';
 import 'package:hardwarepasal/src/feature/search_screen/data/source/search_data_source.dart';
@@ -101,6 +102,26 @@ class SearchRepositoryImpl implements SearchRepository {
       );
     } on AppException catch (e) {
       return Left(AppError.serverError(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<AppError, ApiResponse<SearchCategoryModel>>> searchCategory({required String keyword}) async{
+    if(await _networkInfo.isConnected){
+      try {
+        final response = await _searchDataSource.searchCategory(keyword: keyword);
+        return Right(
+            ApiResponse(
+                data: response.data,
+                message: response.message,
+                error: response.error
+            )
+        );
+      } on AppException catch (e) {
+        return Left(AppError.serverError(message: e.message));
+      }
+    }else{
+      return const Left(AppError.noInternet());
     }
   }
 }

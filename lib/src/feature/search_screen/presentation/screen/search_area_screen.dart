@@ -6,9 +6,12 @@ import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 import 'package:hardwarepasal/src/core/themes/app_styles.dart';
 import 'package:hardwarepasal/src/core/widgets/app_texts.dart';
+import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
 import 'package:hardwarepasal/src/feature/home_screen/presentation/cubit/home_recently_viewed_cubit.dart';
+import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_category_cubit.dart';
 import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_history_cubit.dart';
+import 'package:hardwarepasal/src/feature/search_screen/presentation/cubit/search_list_cubit.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/helpers/snackbar_helper.dart';
@@ -237,36 +240,15 @@ class _SearchAreaScreenPageState extends State<SearchAreaScreenPage> {
                     initialSelection: sortBy.first,
                     dropdownMenuEntries: sortBy
                         .map<DropdownMenuEntry<String>>(
-                          (e) => DropdownMenuEntry(value: e, label: e),
+                          (e) => DropdownMenuEntry(
+                              value: e, label: e, leadingIcon: Icon(Icons.abc)),
                         )
                         .toList(),
+                    menuStyle: MenuStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColor.whiteColor),
+                    ),
                   ),
-                  // SizedBox(width: 0.021 * scWidth),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     // color: AppColor.appColor.withOpacity(0.2),
-                  //     borderRadius: BorderRadius.circular(8),
-                  //     border: Border.all(
-                  //       width: 1,
-                  //       color: AppColor.textGrey,
-                  //     ),
-                  //   ),
-                  //   padding: EdgeInsets.all(0.009 * scHeight),
-                  //   child: Row(
-                  //     children: [
-                  //       Texts(
-                  //         texts: "Category",
-                  //         textStyle: AppStyles.text14PxRegular,
-                  //       ),
-                  //       SizedBox(width: 0.014 * scWidth),
-                  //       const Icon(
-                  //         Icons.keyboard_arrow_down_outlined,
-                  //         size: 13,
-                  //         color: AppColor.textGrey,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                   const Spacer(),
                   InkWell(
                     onTap: () {
@@ -443,18 +425,10 @@ class _SearchAreaScreenPageState extends State<SearchAreaScreenPage> {
   }
 
   onChanged(String value) {
+    print(value);
+    context.read<SearchListCubit>().searchProducts(value);
+    context.read<SearchCategoryCubit>().searchCategory(value);
     if (value.isNotEmpty) {
-      searchList.clear();
-      for (var element in itemList) {
-        if (element.toLowerCase().contains(value.toLowerCase())) {
-          searchList.add(element);
-        }
-      }
-      searchList.forEach(
-        (element) {
-          print(element);
-        },
-      );
       setState(
         () {
           searchInvoked = false;
@@ -529,6 +503,7 @@ class searchPageWidget extends StatelessWidget {
                   );
                 },
                 success: (data) {
+                  print("object");
                   if (data.isEmpty) {
                     return Center(
                       child: Texts(
@@ -926,7 +901,8 @@ class ItemListCardWidget extends StatelessWidget {
                         BlocProvider(
                           create: (context) => getIt<AddToCartCubit>(),
                           child: BlocListener<AddToCartCubit, AddToCartState>(
-                            listener: (BuildContext context, AddToCartState state) {
+                            listener:
+                                (BuildContext context, AddToCartState state) {
                               state.maybeWhen(
                                 orElse: () => Container(),
                                 success: (data) {
@@ -937,25 +913,30 @@ class ItemListCardWidget extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(11),
                                       ),
                                       content: Container(
-                                        padding: EdgeInsets.all(0.037 * scWidth),
+                                        padding:
+                                            EdgeInsets.all(0.037 * scWidth),
                                         child: Row(
                                           children: [
                                             Column(
                                               children: [
                                                 Texts(
                                                   texts: "Item added to cart",
-                                                  textStyle: AppStyles.text14PxMedium
+                                                  textStyle: AppStyles
+                                                      .text14PxMedium
                                                       .copyWith(
-                                                      color: AppColor.whiteColor),
+                                                          color: AppColor
+                                                              .whiteColor),
                                                 ),
                                                 SizedBox(
                                                   height: 0.0041 * scHeight,
                                                 ),
                                                 Texts(
                                                   texts: "Continue to Checkout",
-                                                  textStyle: AppStyles.text12PxRegular
+                                                  textStyle: AppStyles
+                                                      .text12PxRegular
                                                       .copyWith(
-                                                      color: AppColor.whiteColor),
+                                                          color: AppColor
+                                                              .whiteColor),
                                                 ),
                                               ],
                                             ),
@@ -965,8 +946,8 @@ class ItemListCardWidget extends StatelessWidget {
                                               scHeight: scHeight,
                                               title: "Continue",
                                               onTap: () {
-                                                context.router
-                                                    .push(const CartScreenRoute());
+                                                context.router.push(
+                                                    const CartScreenRoute());
                                               },
                                               hollow: true,
                                             )
@@ -979,8 +960,8 @@ class ItemListCardWidget extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                loading: () =>
-                                const Center(child: CircularProgressIndicator()),
+                                loading: () => const Center(
+                                    child: CircularProgressIndicator()),
                                 error: (String message) {
                                   SnackBarHelper.showSnackBar(
                                     message: message,
@@ -1010,13 +991,17 @@ class ItemListCardWidget extends StatelessWidget {
                                   // initialValue: "Hello World",
                                   onSelected: (String item) {
                                     print(item);
-                                    if(item == "Add To Cart"){
-                                      context.read<AddToCartCubit>().addToCart(productModel.id!.toString(), 1.toString());
-                                    }else{
-                                      context.router.push(ItemDetailScreenRoute(productModel: productModel));
+                                    if (item == "Add To Cart") {
+                                      context.read<AddToCartCubit>().addToCart(
+                                          productModel.id!.toString(),
+                                          1.toString());
+                                    } else {
+                                      context.router.push(ItemDetailScreenRoute(
+                                          productModel: productModel));
                                     }
                                   },
-                                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry<String>>[
                                     const PopupMenuItem<String>(
                                       value: "Add To Cart",
                                       child: Text('Add To Cart'),
@@ -1070,34 +1055,231 @@ class searchListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemBuilder: (context, index) => SizedBox(
-        child: Padding(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
           padding: EdgeInsets.symmetric(
-              horizontal: 0.042 * scWidth, vertical: 0.019 * scHeight),
-          child: InkWell(
-            onTap: () {
-              searchController.text = searchList[index];
-            },
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.search,
-                  size: 16,
-                  color: AppColor.textGrey,
-                ),
-                SizedBox(width: 0.032 * scWidth),
-                Texts(
-                  texts: searchList[index],
-                  textStyle: AppStyles.text14PxRegular,
-                ),
-              ],
+              horizontal: 0.042 * scWidth,
+              vertical: 0.019 * scHeight),
+          child:  Texts(
+            texts: "Products",
+            textStyle: AppStyles.text16PxMedium.copyWith(
+              color: AppColor.appColor,
             ),
           ),
         ),
-      ),
-      itemCount: searchList.length,
+        BlocConsumer<SearchListCubit, SearchListState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              orElse: () => Container(),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              error: (message) => Center(
+                child: Texts(
+                  texts: message,
+                  textStyle: AppStyles.text14PxRegular.copyWith(
+                    color: AppColor.appColor,
+                  ),
+                ),
+              ),
+              noInternet: () => Center(
+                child: Texts(
+                  texts: "No Internet Connection",
+                  textStyle: AppStyles.text14PxRegular.copyWith(
+                    color: AppColor.appColor,
+                  ),
+                ),
+              ),
+              success: (data) {
+                if (data.data!.data!.isNotEmpty) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => SizedBox(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.042 * scWidth,
+                            vertical: 0.019 * scHeight),
+                        child: InkWell(
+                          onTap: () {
+                            searchController.text =
+                                data.data!.data![index].name!;
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.search,
+                                size: 16,
+                                color: AppColor.textGrey,
+                              ),
+                              SizedBox(width: 0.032 * scWidth),
+                              Texts(
+                                texts: data.data!.data![index].name!.length > 45
+                                    ? "${data.data!.data![index].name!.substring(0, 45)}..."
+                                    : data.data!.data![index].name!,
+                                textStyle: AppStyles.text14PxRegular,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    itemCount: data.data!.data!.length > 5
+                        ? 5
+                        : data.data!.data!.length,
+                  );
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 0.1 * scWidth),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 0.120 * scHeight,
+                          ),
+                          Image.asset(AssetsHelper.emptyLogo),
+                          SizedBox(
+                            height: 0.0590 * scHeight,
+                          ),
+                          Texts(
+                            texts: "No Results Found",
+                            textStyle: AppStyles.text20PxSemiBold,
+                          ),
+                          SizedBox(
+                            height: 0.008 * scHeight,
+                          ),
+                          Texts(
+                            textAlign: TextAlign.center,
+                            texts:
+                                "Sorry, we cannot find any matches \n for your search. ",
+                            textStyle: AppStyles.text16PxRegular.copyWith(
+                              color: AppColor.textGrey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
+          },
+          listener: (context, state) {},
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: 0.042 * scWidth,
+              vertical: 0.019 * scHeight),
+          child:  Texts(
+            texts: "Categories",
+            textStyle: AppStyles.text16PxMedium.copyWith(
+              color: AppColor.appColor,
+            ),
+          ),
+        ),
+        BlocConsumer<SearchCategoryCubit, SearchCategoryState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              orElse: () => Container(),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              error: (message) => Center(
+                child: Texts(
+                  texts: message,
+                  textStyle: AppStyles.text14PxRegular.copyWith(
+                    color: AppColor.appColor,
+                  ),
+                ),
+              ),
+              noInternet: () => Center(
+                child: Texts(
+                  texts: "No Internet Connection",
+                  textStyle: AppStyles.text14PxRegular.copyWith(
+                    color: AppColor.appColor,
+                  ),
+                ),
+              ),
+              success: (data) {
+                if (data.data!.data!.isNotEmpty) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => SizedBox(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.042 * scWidth,
+                            vertical: 0.019 * scHeight),
+                        child: InkWell(
+                          onTap: () {
+                            context.router.push(
+                              CategoryLevel3ScreenRoute(slug: data.data!.data![index].slug!)
+                            );
+                            // searchController.text =
+                            // data.data!.data![index].name!;
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.search,
+                                size: 16,
+                                color: AppColor.textGrey,
+                              ),
+                              SizedBox(width: 0.032 * scWidth),
+                              Texts(
+                                texts: data.data!.data![index].name!.length > 45
+                                    ? "${data.data!.data![index].name!.substring(0, 45)}..."
+                                    : data.data!.data![index].name!,
+                                textStyle: AppStyles.text14PxRegular,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    itemCount: data.data!.data!.length > 5
+                        ? 5
+                        : data.data!.data!.length,
+                  );
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 0.1 * scWidth),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 0.120 * scHeight,
+                          ),
+                          Image.asset(AssetsHelper.emptyLogo),
+                          SizedBox(
+                            height: 0.0590 * scHeight,
+                          ),
+                          Texts(
+                            texts: "No Results Found",
+                            textStyle: AppStyles.text20PxSemiBold,
+                          ),
+                          SizedBox(
+                            height: 0.008 * scHeight,
+                          ),
+                          Texts(
+                            textAlign: TextAlign.center,
+                            texts:
+                            "Sorry, we cannot find any matches \n for your search. ",
+                            textStyle: AppStyles.text16PxRegular.copyWith(
+                              color: AppColor.textGrey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
+          },
+          listener: (context, state) {},
+        ),
+      ],
     );
   }
 }

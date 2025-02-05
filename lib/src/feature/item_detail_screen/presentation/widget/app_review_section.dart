@@ -8,7 +8,8 @@ import '../../data/models/product_review_model/product_review_model.dart';
 import 'app_review_card.dart';
 
 class AppReviewSection extends StatelessWidget {
-  const AppReviewSection({super.key, required this.reviews, required this.onTap});
+  const AppReviewSection(
+      {super.key, required this.reviews, required this.onTap});
   final List<ProductReviewModel> reviews;
   final void Function() onTap;
 
@@ -22,8 +23,7 @@ class AppReviewSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-        padding:
-        EdgeInsets.symmetric(horizontal: 0.029 * scWidth),
+        padding: EdgeInsets.symmetric(horizontal: 0.029 * scWidth),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,7 +59,6 @@ class AppReviewSection extends StatelessWidget {
                     ],
                   ),
                 ),
-
               ],
             ),
             SizedBox(
@@ -75,22 +74,18 @@ class AppReviewSection extends StatelessWidget {
             ),
 
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 0.021 * scWidth),
+              padding: EdgeInsets.symmetric(horizontal: 0.021 * scWidth),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 2,
+                    flex: 4,
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "${CounterHelper.calculateAvgReview(reviews)}",
@@ -102,8 +97,7 @@ class AppReviewSection extends StatelessWidget {
                             ),
                             Texts(
                               texts: "(${reviews.length})",
-                              textStyle: AppStyles.text12PxRegular
-                                  .copyWith(
+                              textStyle: AppStyles.text12PxRegular.copyWith(
                                 color: AppColor.textGrey,
                               ),
                             )
@@ -113,8 +107,7 @@ class AppReviewSection extends StatelessWidget {
                           height: 0.009 * scHeight,
                         ),
                         const Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Icon(
                               Icons.star,
@@ -143,8 +136,7 @@ class AppReviewSection extends StatelessWidget {
                         ),
                         Texts(
                           texts: "${reviews.length} Comments",
-                          textStyle:
-                          AppStyles.text12PxRegular.copyWith(
+                          textStyle: AppStyles.text12PxRegular.copyWith(
                             color: AppColor.textGrey,
                           ),
                         )
@@ -155,16 +147,13 @@ class AppReviewSection extends StatelessWidget {
                     width: 0.098 * scWidth,
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 5,
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "5",
@@ -175,12 +164,15 @@ class AppReviewSection extends StatelessWidget {
                             ),
                             Expanded(
                               child: LinearProgressIndicator(
-                                value: reviews.isNotEmpty? CounterHelper.countNoOfRating(reviews, "5.00")/reviews.length : 0 ,
-                                backgroundColor: AppColor.textGrey
-                                    .withOpacity(0.1),
+                                value: reviews.isNotEmpty
+                                    ? CounterHelper.countNoOfRating(
+                                            reviews, "5.00") /
+                                        reviews.length
+                                    : 0,
+                                backgroundColor:
+                                    AppColor.textGrey.withOpacity(0.1),
                                 color: AppColor.appColor,
-                                borderRadius:
-                                BorderRadius.circular(17.87),
+                                borderRadius: BorderRadius.circular(17.87),
                               ),
                             ),
                           ],
@@ -189,10 +181,8 @@ class AppReviewSection extends StatelessWidget {
                           height: 0.014 * scHeight,
                         ),
                         Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "4",
@@ -203,12 +193,15 @@ class AppReviewSection extends StatelessWidget {
                             ),
                             Expanded(
                               child: LinearProgressIndicator(
-                                value: reviews.isNotEmpty? CounterHelper.countNoOfRating(reviews, "4.00")/reviews.length : 0,
-                                backgroundColor: AppColor.textGrey
-                                    .withOpacity(0.1),
+                                value: reviews.isNotEmpty
+                                    ? CounterHelper.countNoOfRating(
+                                            reviews, "4.00") /
+                                        reviews.length
+                                    : 0,
+                                backgroundColor:
+                                    AppColor.textGrey.withOpacity(0.1),
                                 color: AppColor.appColor,
-                                borderRadius:
-                                BorderRadius.circular(17.87),
+                                borderRadius: BorderRadius.circular(17.87),
                               ),
                             ),
                           ],
@@ -217,10 +210,8 @@ class AppReviewSection extends StatelessWidget {
                           height: 0.014 * scHeight,
                         ),
                         Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "3",
@@ -231,12 +222,15 @@ class AppReviewSection extends StatelessWidget {
                             ),
                             Expanded(
                               child: LinearProgressIndicator(
-                                value: reviews.isNotEmpty? CounterHelper.countNoOfRating(reviews, "3.00")/reviews.length : 0,
-                                backgroundColor: AppColor.textGrey
-                                    .withOpacity(0.1),
+                                value: reviews.isNotEmpty
+                                    ? CounterHelper.countNoOfRating(
+                                            reviews, "3.00") /
+                                        reviews.length
+                                    : 0,
+                                backgroundColor:
+                                    AppColor.textGrey.withOpacity(0.1),
                                 color: AppColor.appColor,
-                                borderRadius:
-                                BorderRadius.circular(17.87),
+                                borderRadius: BorderRadius.circular(17.87),
                               ),
                             ),
                           ],
@@ -245,10 +239,8 @@ class AppReviewSection extends StatelessWidget {
                           height: 0.014 * scHeight,
                         ),
                         Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "2",
@@ -259,12 +251,15 @@ class AppReviewSection extends StatelessWidget {
                             ),
                             Expanded(
                               child: LinearProgressIndicator(
-                                value: reviews.isNotEmpty? CounterHelper.countNoOfRating(reviews, "2.00")/reviews.length : 0,
-                                backgroundColor: AppColor.textGrey
-                                    .withOpacity(0.1),
+                                value: reviews.isNotEmpty
+                                    ? CounterHelper.countNoOfRating(
+                                            reviews, "2.00") /
+                                        reviews.length
+                                    : 0,
+                                backgroundColor:
+                                    AppColor.textGrey.withOpacity(0.1),
                                 color: AppColor.appColor,
-                                borderRadius:
-                                BorderRadius.circular(17.87),
+                                borderRadius: BorderRadius.circular(17.87),
                               ),
                             ),
                           ],
@@ -273,10 +268,8 @@ class AppReviewSection extends StatelessWidget {
                           height: 0.014 * scHeight,
                         ),
                         Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "1",
@@ -287,12 +280,15 @@ class AppReviewSection extends StatelessWidget {
                             ),
                             Expanded(
                               child: LinearProgressIndicator(
-                                value: reviews.isNotEmpty? CounterHelper.countNoOfRating(reviews, "1.00")/reviews.length : 0,
-                                backgroundColor: AppColor.textGrey
-                                    .withOpacity(0.1),
+                                value: reviews.isNotEmpty
+                                    ? CounterHelper.countNoOfRating(
+                                            reviews, "1.00") /
+                                        reviews.length
+                                    : 0,
+                                backgroundColor:
+                                    AppColor.textGrey.withOpacity(0.1),
                                 color: AppColor.appColor,
-                                borderRadius:
-                                BorderRadius.circular(17.87),
+                                borderRadius: BorderRadius.circular(17.87),
                               ),
                             ),
                           ],
@@ -319,13 +315,12 @@ class AppReviewSection extends StatelessWidget {
             ),
             ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: (reviews.length >= 3)? 3 : reviews.length,
+              itemCount: (reviews.length >= 3) ? 3 : reviews.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return AppReviewCard(reviewModel: reviews[index]);
               },
-              separatorBuilder:
-                  (BuildContext context, int index) {
+              separatorBuilder: (BuildContext context, int index) {
                 return Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
@@ -355,21 +350,22 @@ class AppReviewSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Texts(
-                  texts: reviews.isEmpty?"No Reviews": "View All",
-                  textStyle: AppStyles.text12PxRegular
-                      .copyWith(color: reviews.isEmpty? AppColor.errorColor :AppColor.appColor),
+                  texts: reviews.isEmpty ? "No Reviews" : "View All",
+                  textStyle: AppStyles.text12PxRegular.copyWith(
+                      color: reviews.isEmpty
+                          ? AppColor.errorColor
+                          : AppColor.appColor),
                 ),
-
-                if(reviews.isNotEmpty)
-                SizedBox(
-                  width: 0.01 * scWidth,
-                ),
-                if(reviews.isNotEmpty)
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColor.appColor,
-                  size: 0.03 * scWidth,
-                )
+                if (reviews.isNotEmpty)
+                  SizedBox(
+                    width: 0.01 * scWidth,
+                  ),
+                if (reviews.isNotEmpty)
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColor.appColor,
+                    size: 0.03 * scWidth,
+                  )
               ],
             ),
 
@@ -383,6 +379,4 @@ class AppReviewSection extends StatelessWidget {
       ),
     );
   }
-
-
 }

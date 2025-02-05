@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hardwarepasal/src/core/routes/app_router.dart';
 import 'package:hardwarepasal/src/feature/category_screen/data/model/category_model/category_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../core/helpers/assets_helper.dart';
 import '../../core/helpers/string_helper.dart';
@@ -104,10 +105,11 @@ class _SubCategoryScreenPageState extends State<SubCategoryScreenPage> {
                             child: CachedNetworkImage(
                               imageUrl:
                               '${StringHelper.productCategoryImageBastUrl}${widget.categoryItemModel.sub_categories![index].icon}',
+                              // placeholder: (context, url) =>
                               placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Image.asset(AssetsHelper.placeHolder),
+                              const Shimmer(child: Icon(Icons.downloading_outlined) , gradient: LinearGradient(colors: [Colors.grey, Colors.white])),
+                        errorWidget: (context, url, error) =>
+                            Image.asset(AssetsHelper.placeHolder),
                             ),
                             // child: Image.asset(
                             //   AssetsHelper.categoryIcon,

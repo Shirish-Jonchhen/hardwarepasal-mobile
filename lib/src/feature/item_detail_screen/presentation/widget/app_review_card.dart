@@ -22,30 +22,39 @@ class AppReviewCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(
-                  Icons.star,
-                  color: AppColor.appColor,
-                  size: 11,
-                ),
-                const Icon(
-                  Icons.star,
-                  color: AppColor.appColor,
-                  size: 11,
-                ),
-                const Icon(
-                  Icons.star,
-                  color: AppColor.appColor,
-                  size: 11,
-                ),
-                const Icon(
-                  Icons.star,
-                  color: AppColor.appColor,
-                  size: 11,
-                ),
+                if (reviewModel.stars! >= 1.00)
+                  const Icon(
+                    Icons.star,
+                    color: AppColor.appColor,
+                    size: 11,
+                  ),
+                if (reviewModel.stars! >= 2.00)
+                  const Icon(
+                    Icons.star,
+                    color: AppColor.appColor,
+                    size: 11,
+                  ),
+                if (reviewModel.stars! >= 3.00)
+                  const Icon(
+                    Icons.star,
+                    color: AppColor.appColor,
+                    size: 11,
+                  ),
+                if (reviewModel.stars! >= 4.00)
+                  const Icon(
+                    Icons.star,
+                    color: AppColor.appColor,
+                    size: 11,
+                  ),
+                if (reviewModel.stars! >= 5.00)
+                  const Icon(
+                    Icons.star,
+                    color: AppColor.appColor,
+                    size: 11,
+                  ),
                 Texts(
                   texts: " " + reviewModel.stars.toString(),
-                  textStyle: AppStyles.text12PxRegular
-                      .copyWith(
+                  textStyle: AppStyles.text12PxRegular.copyWith(
                     fontSize: 10,
                   ),
                 ),
@@ -54,8 +63,7 @@ class AppReviewCard extends StatelessWidget {
             const Spacer(),
             Texts(
               texts: DateTimeHelper.timeAgo(reviewModel.created_at.toString()),
-              textStyle:
-              AppStyles.text12PxRegular.copyWith(
+              textStyle: AppStyles.text12PxRegular.copyWith(
                 color: AppColor.textGrey,
                 fontSize: 10,
               ),
@@ -67,8 +75,7 @@ class AppReviewCard extends StatelessWidget {
         ),
         Texts(
           texts: reviewModel.user_id.toString(),
-          textStyle:
-          AppStyles.text12PxRegular.copyWith(
+          textStyle: AppStyles.text12PxRegular.copyWith(
             color: AppColor.appColor,
           ),
         ),
@@ -76,12 +83,9 @@ class AppReviewCard extends StatelessWidget {
           height: 0.012 * scHeight,
         ),
         Texts(
-          texts:
-          reviewModel.description.toString(),
-          textStyle: AppStyles.text12PxRegular
-              .copyWith(
-              color: AppColor.textGrey
-                  .withOpacity(0.7),
+          texts: reviewModel.description.toString(),
+          textStyle: AppStyles.text12PxRegular.copyWith(
+              color: AppColor.textGrey.withOpacity(0.7),
               fontWeight: FontWeight.w300),
         ),
       ],

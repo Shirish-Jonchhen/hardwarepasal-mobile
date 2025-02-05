@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hardwarepasal/src/feature/brands_screen/data/model/brands_model/brands_category_model.dart';
 import 'package:hardwarepasal/src/feature/brands_screen/data/model/brands_model/brands_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -8,6 +9,7 @@ import '../../../../core/errors/app_exceptions.dart';
 
 abstract class BrandsDataSource {
   Future<ApiResponse<BrandsModel>> getBrands(int page);
+  Future<ApiResponse<BrandsCategoryModel>> getBrandsCategory();
 }
 
 @LazySingleton(as: BrandsDataSource)
@@ -27,6 +29,26 @@ class BrandsDataSourceImpl implements BrandsDataSource {
         }
         return ApiResponse(
           data: BrandsModel.fromJson(response.data),
+          message: 'message',
+        );
+      } else {
+        throw const AppException(message: 'Unknown Error');
+      }
+    } on DioError catch (e) {
+      throw AppException.fromDioError(e);
+    }
+  }
+
+  @override
+  Future<ApiResponse<BrandsCategoryModel>> getBrandsCategory() async{
+    try {
+      final response = await _dio.get('brand-category');
+      if (response.statusCode == 200) {
+        if(response.data["message"] == "Access denied by Imunify360 bot-protection. IPs used for automation should be whitelisted"){
+          throw const AppException(message: 'The server Detected this request as bot generated request.');
+        }
+        return ApiResponse(
+          data: BrandsCategoryModel.fromJson(response.data),
           message: 'message',
         );
       } else {

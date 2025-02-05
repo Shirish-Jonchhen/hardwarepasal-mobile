@@ -16,6 +16,7 @@ import 'package:hardwarepasal/src/feature/cart_screen/presentation/cubit/quotati
 import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/error_widget.dart';
 import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
 import 'package:hardwarepasal/src/feature/home_screen/data/models/product_model/product_model.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/di/injection.dart';
@@ -735,7 +736,7 @@ class _CartScreenPageState extends State<CartScreenPage> {
                                           (previousValue, element) =>
                                               (previousValue +
                                                   ((element.old_price!.isEmpty
-                                                          ? element.price!
+                                                          ? 0
                                                           : int.parse(element
                                                                   .old_price!) -
                                                               element.price!) *
@@ -880,7 +881,9 @@ class _CartScreenPageState extends State<CartScreenPage> {
                           print('Email entered: $email');
                           sendQuatation(email);
                           context.read<QuotationEmailCubit>().sendEmail(email);
-                          SnackBarHelper.showSnackBar(message: "Email Sent to $email", context: context);
+                          SnackBarHelper.showSnackBar(
+                              message: "Email Sent to $email",
+                              context: context);
                           Navigator.of(context).pop();
                         }
                       : null, // Disable if email is not valid
@@ -987,9 +990,11 @@ class AppCartCardWidget extends StatelessWidget {
                     child: Center(
                       child: CachedNetworkImage(
                         imageUrl:
-                        '${StringHelper.productCoverImageBastUrl}${product.cover_image}',
-                        placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                            '${StringHelper.productCoverImageBastUrl}${product.cover_image}',
+                        placeholder: (context, url) => const Shimmer(
+                            child: Icon(Icons.downloading_outlined),
+                            gradient: LinearGradient(
+                                colors: [Colors.grey, Colors.white])),
                         errorWidget: (context, url, error) =>
                             Image.asset(AssetsHelper.placeHolder),
                       ),
@@ -1004,10 +1009,14 @@ class AppCartCardWidget extends StatelessWidget {
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Texts(
                       texts: product.name!,
                       textStyle: AppStyles.text12PxRegular,
+                    ),
+                    SizedBox(
+                      height: 0.01 * scHeight,
                     ),
                     Row(
                       children: [
@@ -1029,7 +1038,7 @@ class AppCartCardWidget extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 0.002 * scHeight,
+                      height: 0.01 * scHeight,
                     ),
                     Row(
                       children: [
@@ -1118,6 +1127,5 @@ class AppCartCardWidget extends StatelessWidget {
         ),
       ),
     );
-      
   }
 }

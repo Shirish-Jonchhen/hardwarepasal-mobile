@@ -7,6 +7,7 @@ import 'package:hardwarepasal/src/core/themes/app_colors.dart';
 import 'package:hardwarepasal/src/core/widgets/app_texts.dart';
 import 'package:hardwarepasal/src/feature/category_screen/presentation/cubit/category_cubit.dart';
 import 'package:hardwarepasal/src/feature/category_screen/presentation/widget/loading_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/helpers/string_helper.dart';
 import '../../../../core/themes/app_styles.dart';
@@ -149,10 +150,19 @@ class _CategoryScreenPageState extends State<CategoryScreenPage> {
                                       child: CachedNetworkImage(
                                         imageUrl:
                                         '${StringHelper.productCategoryImageBastUrl}${data.data!.data!.data![index].icon}',
+                                        // placeholder: (context, url) =>
                                         placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
+                                            const Shimmer(
+                                                child: Icon(
+                                                    Icons.downloading_outlined),
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.grey,
+                                                      Colors.white
+                                                    ])),
                                         errorWidget: (context, url, error) =>
-                                            Image.asset(AssetsHelper.placeHolder),
+                                            Image.asset(
+                                                AssetsHelper.placeHolder),
                                       ),
                                       // child: Image.asset(
                                       //   AssetsHelper.categoryIcon,
